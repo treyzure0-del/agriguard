@@ -19,7 +19,7 @@ Format responses with clear headings and bullet points when listing multiple ite
 async function callGeminiText(messages) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({
-    model: 'gemini-1.5-flash',
+    model: 'gemini-2.0-flash',
     systemInstruction: ADVISOR_SYSTEM_PROMPT
   });
 
@@ -44,7 +44,7 @@ async function callGeminiText(messages) {
 
 async function callGeminiVision(base64Image, mimeType, prompt) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   const result = await model.generateContent([
     prompt,

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AgriGuard AI — Smart Crop Protection Platform for East African Farmers" />
+  <title>AgriGuard AI</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ─── NAVBAR ─────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="navbar-brand" data-page="home">
+    <div class="navbar-logo">🌿</div>
+    <span class="navbar-title">Agri<span>Guard</span> AI</span>
+  </div>
+  <ul class="navbar-links">
+    <li><a href="#" data-page="home">🏠 Home</a></li>
+    <li><a href="#" data-page="scan">🔬 Scan</a></li>
+    <li><a href="#" data-page="advisor">🤖 Advisor</a></li>
+    <li><a href="#" data-page="pest">🐛 Pests</a></li>
+    <li><a href="#" data-page="map">🗺️ Map</a></li>
+    <li><a href="#" data-page="dashboard">📊 Dashboard</a></li>
+  </ul>
+  <div class="navbar-badge">AI Online</div>
+</nav>
+
+<!-- ─── MOBILE NAV ──────────────────────────────────── -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-item" data-page="home"><span class="nav-icon">🏠</span>Home</button>
+    <button class="mobile-nav-item" data-page="scan"><span class="nav-icon">🔬</span>Scan</button>
+    <button class="mobile-nav-item" data-page="advisor"><span class="nav-icon">🤖</span>AI Chat</button>
+    <button class="mobile-nav-item" data-page="pest"><span class="nav-icon">🐛</span>Pests</button>
+    <button class="mobile-nav-item" data-page="map"><span class="nav-icon">🗺️</span>Map</button>
+    <button class="mobile-nav-item" data-page="dashboard"><span class="nav-icon">📊</span>Stats</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: HOME
+═══════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-badge">🌍 East Africa's Crop Protection Platform</div>
+      <h1>Protect Your Crops<br>with AI Intelligence</h1>
+      <p>Scan diseased leaves, get instant diagnosis, track outbreaks across East Africa, and consult your AI agricultural advisor — all in one platform.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary" data-page="scan">🔬 Scan a Crop</button>
+        <button class="btn btn-secondary" data-page="advisor">🤖 Ask AI Advisor</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" data-target="1240" data-suffix="">0</div>
+        <div class="stat-label">🌾 Crops Analyzed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="52" data-suffix="">0</div>
+        <div class="stat-label">🦠 Diseases Detected</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="98" data-suffix="%">0%</div>
+        <div class="stat-label">🎯 Accuracy Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="3" data-suffix=" Countries">0 Countries</div>
+        <div class="stat-label">🌍 Countries Covered</div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="section-header mt-24">
+      <h2>Everything You Need</h2>
+      <p>A complete crop protection toolkit designed for East African smallholder farmers</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" data-page="scan">
+        <span class="feature-icon">🔬</span>
+        <h3>AI Disease Scanner</h3>
+        <p>Upload or capture a photo of your crop leaf. Get instant diagnosis with confidence score, disease name, and full treatment plan.</p>
+        <span class="feature-arrow">Try now →</span>
+      </div>
+      <div class="feature-card" data-page="advisor">
+        <span class="feature-icon">🤖</span>
+        <h3>AI Farming Advisor</h3>
+        <p>Chat with your personal AI agronomist 24/7. Ask about diseases, pests, fertilizers, soil health, weather, or any farming challenge.</p>
+        <span class="feature-arrow">Start chatting →</span>
+      </div>
+      <div class="feature-card" data-page="pest">
+        <span class="feature-icon">🐛</span>
+        <h3>Pest Detection</h3>
+        <p>Identify Fall Armyworm, Desert Locust, Aphids and 50+ pests. Get emergency response protocols and economic impact assessment.</p>
+        <span class="feature-arrow">Check pests →</span>
+      </div>
+      <div class="feature-card" data-page="map">
+        <span class="feature-icon">🗺️</span>
+        <h3>Disease Outbreak Map</h3>
+        <p>Live map of disease reports across Uganda, Kenya, and Tanzania. See outbreaks in your region before they reach your farm.</p>
+        <span class="feature-arrow">View map →</span>
+      </div>
+      <div class="feature-card" data-page="dashboard">
+        <span class="feature-icon">📊</span>
+        <h3>Farm Dashboard</h3>
+        <p>Track your scan history, crop health trends over time, and receive AI-generated alerts for high-risk disease conditions.</p>
+        <span class="feature-arrow">Open dashboard →</span>
+      </div>
+      <div class="feature-card" data-page="scan">
+        <span class="feature-icon">📷</span>
+        <h3>Camera Capture</h3>
+        <p>Use your phone camera directly in the app. No need to download photos. Point at affected leaves and scan instantly in the field.</p>
+        <span class="feature-arrow">Open camera →</span>
+      </div>
+    </div>
+
+    <!-- Quick Questions -->
+    <div class="section-header mt-24">
+      <h2>Ask AgriGuard AI</h2>
+      <p>Common questions from East African farmers</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px">
+      <button class="quick-q-btn" data-question="How do I treat maize lethal necrosis in Uganda?">How do I treat maize lethal necrosis?</button>
+      <button class="quick-q-btn" data-question="What fertilizer should I use for tomatoes in East Africa?">Best fertilizer for tomatoes</button>
+      <button class="quick-q-btn" data-question="How do I control Fall Armyworm on maize organically?">Control Fall Armyworm organically</button>
+      <button class="quick-q-btn" data-question="What are the signs of cassava mosaic disease and how do I manage it?">Cassava mosaic disease signs</button>
+      <button class="quick-q-btn" data-question="How do I improve soil health for better crop yields?">How to improve soil health</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: SCAN
+═══════════════════════════════════════════════════ -->
+<div id="page-scan" class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>🔬 Crop Disease Scanner</h1>
+      <p>Upload a leaf photo for instant AI diagnosis and treatment recommendations</p>
+    </div>
+
+    <!-- Crop Selector -->
+    <div class="mb-24">
+      <div class="section-header" style="margin-bottom:12px">
+        <h2 style="font-size:18px">Select Crop Type</h2>
+      </div>
+      <div class="crop-selector">
+        <button class="crop-btn active" data-crop="Maize" onclick="selectCrop(this)">🌽 Maize</button>
+        <button class="crop-btn" data-crop="Cassava" onclick="selectCrop(this)">🌿 Cassava</button>
+        <button class="crop-btn" data-crop="Tomato" onclick="selectCrop(this)">🍅 Tomato</button>
+        <button class="crop-btn" data-crop="Bean" onclick="selectCrop(this)">🫘 Bean</button>
+        <button class="crop-btn" data-crop="Potato" onclick="selectCrop(this)">🥔 Potato</button>
+        <button class="crop-btn" data-crop="Banana" onclick="selectCrop(this)">🍌 Banana</button>
+        <button class="crop-btn" data-crop="Coffee" onclick="selectCrop(this)">☕ Coffee</button>
+        <button class="crop-btn" data-crop="Sorghum" onclick="selectCrop(this)">🌾 Sorghum</button>
+      </div>
+    </div>
+
+    <div id="uploadArea" class="scan-layout">
+      <!-- Upload Zone -->
+      <div>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fileInput" accept="image/*" />
+          <span class="upload-icon">📸</span>
+          <h3>Drop your crop image here</h3>
+          <p>or click to browse · PNG, JPG, WEBP · max 10MB</p>
+        </div>
+        <div class="image-preview" id="imagePreview">
+          <img id="previewImg" src="" alt="Preview" />
+        </div>
+      </div>
+
+      <!-- Camera Card -->
+      <div>
+        <div class="camera-card mb-16">
+          <h3>📷 Camera Capture</h3>
+          <p>Use your phone or webcam to photograph diseased leaves directly in the field</p>
+          <video id="cameraView" autoplay playsinline></video>
+          <canvas id="captureCanvas"></canvas>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+            <button class="btn btn-secondary btn-sm" id="startCameraBtn">📷 Open Camera</button>
+            <button class="btn btn-primary btn-sm" id="captureBtn" style="display:none">📸 Capture</button>
+            <button class="btn btn-danger btn-sm" id="stopCameraBtn" style="display:none">✕ Stop</button>
+          </div>
+        </div>
+
+        <div style="padding:20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:16px">
+          <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:10px">📋 Tips for best results:</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Focus on affected leaves, not the whole plant</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Use natural light, avoid shadows</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Include both healthy and diseased areas</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Keep the camera steady for a clear image</li>
+          </ul>
+        </div>
+
+        <button class="btn btn-primary" id="scanBtn" style="width:100%" disabled>
+          🔬 Analyze Crop
+        </button>
+      </div>
+    </div>
+
+    <!-- Scan Animation -->
+    <div class="scan-animation" id="scanAnimation">
+      <div class="scan-rings">
+        <div class="scan-ring ring-1"></div>
+        <div class="scan-ring ring-2"></div>
+        <div class="scan-ring ring-3"></div>
+        <span class="scan-icon">🔬</span>
+      </div>
+      <div class="scan-status" id="scanStatus">Uploading image...</div>
+      <div class="scan-sub" id="scanSub">Preparing for analysis</div>
+      <div class="scan-progress">
+        <div class="scan-progress-bar" id="scanProgressBar"></div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-card mt-24" id="resultsSection">
+      <div class="results-header">
+        <div>
+          <div class="results-crop" id="resultCrop">—</div>
+          <div class="results-disease" id="resultDisease">—</div>
+          <div style="margin-top:8px">
+            <span class="severity-tag medium" id="resultSeverity">Medium Severity</span>
+          </div>
+        </div>
+        <div class="confidence-badge" id="resultConfidence">—%</div>
+      </div>
+
+      <!-- Health Score -->
+      <div class="health-score-section">
+        <div class="health-score-label">
+          <span class="health-score-text">🌿 Crop Health Score</span>
+          <span class="health-score-value" id="resultHealthScore">—%</span>
+        </div>
+        <div class="health-bar">
+          <div class="health-bar-fill medium" id="resultHealthFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Explanation -->
+      <div class="results-section">
+        <div class="results-section-title">🔍 Analysis</div>
+        <div class="results-text" id="resultExplanation">—</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Treatment -->
+      <div class="results-section">
+        <div class="results-section-title">💊 Treatment Plan</div>
+        <div class="results-text" id="resultTreatment">—</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Prevention Tips -->
+      <div class="results-section">
+        <div class="results-section-title">🛡️ Prevention Tips</div>
+        <ul class="tips-list" id="resultTips"></ul>
+      </div>
+
+      <!-- Issues -->
+      <div class="results-section mt-16" id="issuesSection">
+        <div class="results-section-title">⚠️ Identified Issues</div>
+        <div class="issues-list" id="resultIssues"></div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">🤖 Ask AI for More Help</button>
+        <button class="btn btn-secondary btn-sm" onclick="showPage('map')">🗺️ View Disease Map</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('resultsSection').classList.remove('visible');document.getElementById('imagePreview').classList.remove('visible');currentImageFile=null;document.getElementById('scanBtn').disabled=true">🔄 Scan Another</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: AI ADVISOR
+═══════════════════════════════════════════════════ -->
+<div id="page-advisor" class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>🤖 AI Farming Advisor</h1>
+      <p>Your personal agronomist — available 24/7 for East African farmers</p>
+    </div>
+
+    <div class="advisor-layout">
+      <!-- Quick Questions Sidebar -->
+      <div>
+        <div class="section-header" style="margin-bottom:14px">
+          <h2 style="font-size:16px">Quick Questions</h2>
+        </div>
+        <div class="quick-questions">
+          <button class="quick-q-btn" data-question="My maize leaves are turning yellow from the bottom up. What is causing this and what should I do?">🌽 Why are my maize leaves yellowing?</button>
+          <button class="quick-q-btn" data-question="How do I identify and treat Fall Armyworm on maize in Uganda?">🐛 Fall Armyworm emergency!</button>
+          <button class="quick-q-btn" data-question="What organic fertilizers work best for beans in East Africa?">🌿 Best organic fertilizers?</button>
+          <button class="quick-q-btn" data-question="How do I irrigate tomatoes during the dry season in East Africa?">💧 Tomato irrigation help</button>
+          <button class="quick-q-btn" data-question="My cassava has mosaic patterns on the leaves. Is it cassava mosaic disease and how do I treat it?">🌱 Cassava mosaic disease?</button>
+          <button class="quick-q-btn" data-question="How do I test and improve my soil for better crop yields in Uganda?">🏔️ Soil health improvement</button>
+          <button class="quick-q-btn" data-question="What is the best crop rotation plan for a small farm in East Africa?">🔄 Crop rotation planning</button>
+          <button class="quick-q-btn" data-question="How do I store maize after harvest to prevent aflatoxin and weevils?">📦 Post-harvest storage tips</button>
+        </div>
+      </div>
+
+      <!-- Chat Window -->
+      <div>
+        <div class="chat-container">
+          <div class="chat-header">
+            <h3>🌿 AgriGuard AI Advisor</h3>
+            <button class="btn btn-secondary btn-sm" id="clearChatBtn">Clear chat</button>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <!-- Messages injected by JS -->
+            <div class="typing-indicator" id="typingIndicator">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <textarea
+              class="chat-input"
+              id="chatInput"
+              placeholder="Ask about crop diseases, pests, soil, or any farming challenge..."
+              rows="1"
+              maxlength="1000"
+            ></textarea>
+            <button class="btn btn-primary" id="sendBtn" style="min-width:48px;height:48px;padding:0">
+              ➤
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: PEST DETECTION
+═══════════════════════════════════════════════════ -->
+<div id="page-pest" class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>🐛 Pest Detection</h1>
+      <p>Identify crop pests, assess threat levels, and get emergency response protocols</p>
+    </div>
+
+    <!-- Known Pests Grid -->
+    <div class="section-header">
+      <h2>Common East African Crop Pests</h2>
+      <p>Click a pest to see detailed information and control measures</p>
+    </div>
+    <div class="pest-grid">
+      <div class="pest-card" onclick="selectPest(this, 'Fall Armyworm')">
+        <span class="pest-card-icon">🐛</span>
+        <h4>Fall Armyworm</h4>
+        <p>Maize, Sorghum</p>
+        <div class="threat-badge CRITICAL">CRITICAL</div>
+      </div>
+      <div class="pest-card" onclick="selectPest(this, 'Desert Locust')">
+        <span class="pest-card-icon">🦗</span>
+        <h4>Desert Locust</h4>
+        <p>All crops</p>
+        <div class="threat-badge CRITICAL">CRITICAL</div>
+      </div>
+      <div class="pest-card" onclick="selectPest(this, 'Aphids')">
+        <span class="pest-card-icon">🦟</span>
+        <h4>Aphids</h4>
+        <p>Cassava, Beans, Tomato</p>
+        <div class="threat-badge HIGH">HIGH</div>
+      </div>
+      <div class="pest-card" onclick="selectPest(this, 'Whitefly')">
+        <span class="pest-card-icon">🦋</span>
+        <h4>Whitefly</h4>
+        <p>Cassava, Tomatoes</p>
+        <div class="threat-badge HIGH">HIGH</div>
+      </div>
+      <div class="pest-card" onclick="selectPest(this, 'Stalk Borer')">
+        <span class="pest-card-icon">🐜</span>
+        <h4>Stalk Borer</h4>
+        <p>Maize, Sorghum</p>
+        <div class="threat-badge MEDIUM">MEDIUM</div>
+      </div>
+      <div class="pest-card" onclick="selectPest(this, 'Thrips')">
+        <span class="pest-card-icon">🦠</span>
+        <h4>Thrips</h4>
+        <p>Onions, Tomatoes</p>
+        <div class="threat-badge MEDIUM">MEDIUM</div>
+      </div>
+    </div>
+
+    <!-- Pest Info Card (populated by JS) -->
+    <div class="pest-info-card" id="pestInfoCard">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestInfoName">—</div>
+          <div id="pestInfoCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
+        </div>
+        <div id="pestInfoThreat" class="threat-badge MEDIUM">MEDIUM</div>
+      </div>
+
+      <div class="results-section">
+        <div class="results-section-title">📋 Description</div>
+        <div class="results-text" id="pestInfoDesc">—</div>
+      </div>
+
+      <div class="two-col mt-16">
+        <div class="results-section">
+          <div class="results-section-title">⚠️ Symptoms</div>
+          <ul class="tips-list" id="pestInfoSymptoms"></ul>
+        </div>
+        <div class="results-section">
+          <div class="results-section-title">🛡️ Prevention</div>
+          <ul class="tips-list" id="pestInfoPrevention"></ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="results-section">
+        <div class="results-section-title">💊 Treatment</div>
+        <div class="results-text" id="pestInfoTreatment">—</div>
+      </div>
+
+      <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
+        <div class="results-section-title" style="color:var(--gold)">💰 Economic Impact</div>
+        <div class="results-text" style="font-size:14px" id="pestInfoImpact">—</div>
+      </div>
+    </div>
+
+    <!-- AI Pest Scanner -->
+    <div class="card mb-24">
+      <div class="section-header" style="margin-bottom:16px">
+        <h2 style="font-size:20px">🤖 AI Pest Scanner</h2>
+        <p>Upload a photo of a pest or damaged crop for instant AI identification</p>
+      </div>
+
+      <input type="file" id="pestFileInput" accept="image/*" style="display:none" />
+
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-primary" id="analyzePestBtn">
+          🔍 Upload Image to Analyze Pest
+        </button>
+        <span style="font-size:13px;color:var(--text-secondary)">Supports JPG, PNG, WEBP · max 10MB</span>
+      </div>
+    </div>
+
+    <!-- Pest AI Result Card -->
+    <div class="pest-result-card" id="pestResultCard">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+        <div>
+          <div style="font-size:13px;color:var(--sage);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">AI Detection Result</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestResultName">—</div>
+          <div id="pestResultCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
+        </div>
+        <div id="pestResultThreat" class="threat-badge MEDIUM">MEDIUM</div>
+      </div>
+
+      <div class="results-section">
+        <div class="results-section-title">📋 Description</div>
+        <div class="results-text" id="pestResultDesc">—</div>
+      </div>
+
+      <div class="two-col mt-16">
+        <div class="results-section">
+          <div class="results-section-title">⚠️ Symptoms</div>
+          <ul class="tips-list" id="pestResultSymptoms"></ul>
+        </div>
+        <div class="results-section">
+          <div class="results-section-title">🛡️ Prevention</div>
+          <ul class="tips-list" id="pestResultPrevention"></ul>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="results-section">
+        <div class="results-section-title">💊 Treatment</div>
+        <div class="results-text" id="pestResultTreatment">—</div>
+      </div>
+
+      <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
+        <div class="results-section-title" style="color:var(--gold)">💰 Economic Impact</div>
+        <div class="results-text" style="font-size:14px" id="pestResultImpact">—</div>
+      </div>
+
+      <div style="margin-top:20px">
+        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">🤖 Ask AI for Help</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: DISEASE MAP
+═══════════════════════════════════════════════════ -->
+<div id="page-map" class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>🗺️ Disease Outbreak Map</h1>
+      <p>Live disease reports across Uganda, Kenya, and Tanzania — updated automatically</p>
+    </div>
+
+    <!-- Map Stats -->
+    <div class="map-stats">
+      <div class="map-stat">
+        <div class="map-stat-number" id="mapTotalReports">—</div>
+        <div class="map-stat-label">Total Reports</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-number" id="mapOutbreaks" style="color:var(--crimson)">—</div>
+        <div class="map-stat-label">⚠️ Outbreaks</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-number" id="mapCountries">3+</div>
+        <div class="map-stat-label">Countries</div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div id="diseaseMap"></div>
+
+    <!-- Legend -->
+    <div class="map-legend">
+      <strong style="font-size:13px;color:var(--text-primary)">Legend:</strong>
+      <div class="legend-item"><div class="legend-dot outbreak"></div> Critical / Outbreak (&lt;30% health)</div>
+      <div class="legend-item"><div class="legend-dot high"></div> High Risk (30–50%)</div>
+      <div class="legend-item"><div class="legend-dot medium"></div> Medium Risk (50–70%)</div>
+      <div class="legend-item"><div class="legend-dot low"></div> Healthy (70%+)</div>
+      <button class="btn btn-secondary btn-sm" id="refreshMapBtn" style="margin-left:auto">🔄 Refresh</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: DASHBOARD
+═══════════════════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+  <div class="container">
+    <div class="page-hero">
+      <div class="flex-between">
+        <div>
+          <h1>📊 Farm Dashboard</h1>
+          <p id="dashDate">Loading date...</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="dashboard-grid">
+      <div class="kpi-card">
+        <span class="kpi-icon">🔬</span>
+        <div class="kpi-number" id="dashTotalScans">—</div>
+        <div class="kpi-label">Total Scans</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">✅</span>
+        <div class="kpi-number" id="dashHealthy" style="color:var(--lime)">—</div>
+        <div class="kpi-label">Healthy Reports</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🦠</span>
+        <div class="kpi-number" id="dashDiseased" style="color:var(--crimson)">—</div>
+        <div class="kpi-label">Diseased Reports</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">📈</span>
+        <div class="kpi-number" id="dashAvgHealth" style="color:var(--gold)">—</div>
+        <div class="kpi-label">Avg Health Score</div>
+      </div>
+    </div>
+
+    <!-- Dashboard Bottom -->
+    <div class="dashboard-bottom">
+
+      <!-- Scan History -->
+      <div class="card">
+        <div class="flex-between mb-16">
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">🕐 Recent Scans</h3>
+          <button class="btn btn-secondary btn-sm" onclick="showPage('scan')">+ New Scan</button>
+        </div>
+        <div id="scanHistoryList">
+          <p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px">Loading scan history...</p>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div style="display:flex;flex-direction:column;gap:24px">
+
+        <!-- Alerts -->
+        <div class="card">
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">🚨 Alerts</h3>
+          <div id="alertsList">
+            <p style="color:var(--text-secondary);font-size:14px">Loading alerts...</p>
+          </div>
+        </div>
+
+        <!-- Crop Health Overview -->
+        <div class="card">
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">🌿 Crop Health Overview</h3>
+          <div id="healthOverview">
+            <p style="color:var(--text-secondary);font-size:14px">Loading...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Health Trend Chart -->
+    <div class="card mt-24">
+      <div class="flex-between mb-16">
+        <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">📈 Crop Health Trend</h3>
+      </div>
+      <div class="chart-container">
+        <canvas id="healthChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- App JS -->
+<script src="app.js"></script>
+</body>
+</html>

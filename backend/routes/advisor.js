@@ -7,6 +7,7 @@ const router = express.Router();
 const advisorLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 20,
+  validate: { xForwardedForHeader: false },
   message: { error: 'Too many requests. Please wait a moment before asking again.' }
 });
 

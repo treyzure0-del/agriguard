@@ -91,11 +91,12 @@ app.listen(PORT, () => {
   console.log('');
 
   // Warn if no API key configured
-  const keyMap = {
-    gemini: process.env.GEMINI_API_KEY,
-    openai: process.env.OPENAI_API_KEY,
-    deepseek: process.env.DEEPSEEK_API_KEY
-  };
+ const keyMap = {
+  gemini: process.env.GEMINI_API_KEY,
+  openai: process.env.OPENAI_API_KEY,
+  deepseek: process.env.DEEPSEEK_API_KEY,
+  groq: process.env.GROQ_API_KEY
+};
   const activeKey = keyMap[PROVIDER];
   if (!activeKey || activeKey.startsWith('paste_your')) {
     console.warn(`⚠️  WARNING: ${PROVIDER.toUpperCase()} API key not configured in .env`);

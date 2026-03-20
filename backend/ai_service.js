@@ -32,8 +32,34 @@ async function callGroqText(messages) {
 }
 
 async function callGroqVision(base64Image, mimeType, prompt) {
-  console.log('[AI] Groq has no vision API — falling back to Gemini');
-  return callGeminiVision(base64Image, mimeType, prompt);
+  console.log('[AI] Groq has no vision API — using OpenRouter');
+  return callOpenRouterVision(base64Image, mimeType, prompt);
+}
+
+async function callOpenRouterVision(base64Image, mimeType, prompt) {
+  const openai = new OpenAI({
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL: 'https://openrouter.ai/api/v1'
+  });
+  const completion = await openai.chat.completions.create({
+    model: 'meta-llama/llama-4-scout:free',
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: prompt },
+          {
+            type: 'image_url',
+            image_url: {
+              url: `data:${mimeType};base64,${base64Image}`
+            }
+          }
+        ]
+      }
+    ],
+    max_tokens: 1000
+  });
+  return completion.choices[0].message.content;
 }
 
 async function callGeminiText(messages) {

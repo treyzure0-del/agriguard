@@ -14,7 +14,27 @@ Use simple clear language. Suggest both chemical and organic options.
 Be specific about dosages and local product names available in East Africa. 
 Format responses with clear headings and bullet points when listing multiple items.`;
 
-// ─── GEMINI ──────────────────────────────────────────────────────────────────
+async function callGroqText(messages) {
+  const groq = new OpenAI({
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: 'https://api.groq.com/openai/v1'
+  });
+  const fullMessages = [
+    { role: 'system', content: ADVISOR_SYSTEM_PROMPT },
+    ...messages
+  ];
+  const completion = await groq.chat.completions.create({
+    model: 'llama-3.3-70b-versatile',
+    messages: fullMessages,
+    max_tokens: 1000
+  });
+  return completion.choices[0].message.content;
+}
+
+async function callGroqVision(base64Image, mimeType, prompt) {
+  console.log('[AI] Groq has no vision API — falling back to Gemini');
+  return callGeminiVision(base64Image, mimeType, prompt);
+}
 
 async function callGeminiText(messages) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -22,21 +42,15 @@ async function callGeminiText(messages) {
     model: 'gemini-2.0-flash',
     systemInstruction: ADVISOR_SYSTEM_PROMPT
   });
-
-  // Convert messages array to Gemini history format
   const history = [];
   const messagesCopy = [...messages];
-
-  // Last message is the current user message
   const lastMessage = messagesCopy.pop();
-
   for (const msg of messagesCopy) {
     history.push({
       role: msg.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: msg.content }]
     });
   }
-
   const chat = model.startChat({ history });
   const result = await chat.sendMessage(lastMessage.content);
   return result.response.text();
@@ -45,30 +59,18 @@ async function callGeminiText(messages) {
 async function callGeminiVision(base64Image, mimeType, prompt) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
   const result = await model.generateContent([
     prompt,
-    {
-      inlineData: {
-        data: base64Image,
-        mimeType: mimeType
-      }
-    }
+    { inlineData: { data: base64Image, mimeType: mimeType } }
   ]);
   return result.response.text();
 }
 
-// ─── OPENAI ──────────────────────────────────────────────────────────────────
-
 async function callOpenAIText(messages) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  const fullMessages = [
-    { role: 'system', content: ADVISOR_SYSTEM_PROMPT },
-    ...messages
-  ];
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
-    messages: fullMessages,
+    messages: [{ role: 'system', content: ADVISOR_SYSTEM_PROMPT }, ...messages],
     max_tokens: 1000
   });
   return completion.choices[0].message.content;
@@ -78,61 +80,38 @@ async function callOpenAIVision(base64Image, mimeType, prompt) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o',
-    messages: [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: prompt },
-          {
-            type: 'image_url',
-            image_url: {
-              url: `data:${mimeType};base64,${base64Image}`
-            }
-          }
-        ]
-      }
-    ],
+    messages: [{ role: 'user', content: [
+      { type: 'text', text: prompt },
+      { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64Image}` } }
+    ]}],
     max_tokens: 1000
   });
   return completion.choices[0].message.content;
 }
-
-// ─── DEEPSEEK ────────────────────────────────────────────────────────────────
 
 async function callDeepSeekText(messages) {
   const openai = new OpenAI({
     apiKey: process.env.DEEPSEEK_API_KEY,
-    baseURL: 'https://api.deepseek.com/v1'
+    baseURL: 'https://api.deepseek.com'
   });
-  const fullMessages = [
-    { role: 'system', content: ADVISOR_SYSTEM_PROMPT },
-    ...messages
-  ];
   const completion = await openai.chat.completions.create({
     model: 'deepseek-chat',
-    messages: fullMessages,
+    messages: [{ role: 'system', content: ADVISOR_SYSTEM_PROMPT }, ...messages],
     max_tokens: 1000
   });
   return completion.choices[0].message.content;
 }
 
-// DeepSeek has no vision - fallback to Gemini
 async function callDeepSeekVision(base64Image, mimeType, prompt) {
-  console.log('[AI] DeepSeek has no vision API — falling back to Gemini for image analysis');
   return callGeminiVision(base64Image, mimeType, prompt);
 }
 
-// ─── PUBLIC API ──────────────────────────────────────────────────────────────
-
 async function callAdvisorAI(messages) {
   try {
-    if (PROVIDER === 'openai') {
-      return await callOpenAIText(messages);
-    } else if (PROVIDER === 'deepseek') {
-      return await callDeepSeekText(messages);
-    } else {
-      return await callGeminiText(messages);
-    }
+    if (PROVIDER === 'openai') return await callOpenAIText(messages);
+    if (PROVIDER === 'deepseek') return await callDeepSeekText(messages);
+    if (PROVIDER === 'groq') return await callGroqText(messages);
+    return await callGeminiText(messages);
   } catch (err) {
     console.error('[AI] Advisor call failed:', err.message);
     throw err;
@@ -141,13 +120,10 @@ async function callAdvisorAI(messages) {
 
 async function callVisionAI(base64Image, mimeType, prompt) {
   try {
-    if (PROVIDER === 'openai') {
-      return await callOpenAIVision(base64Image, mimeType, prompt);
-    } else if (PROVIDER === 'deepseek') {
-      return await callDeepSeekVision(base64Image, mimeType, prompt);
-    } else {
-      return await callGeminiVision(base64Image, mimeType, prompt);
-    }
+    if (PROVIDER === 'openai') return await callOpenAIVision(base64Image, mimeType, prompt);
+    if (PROVIDER === 'deepseek') return await callDeepSeekVision(base64Image, mimeType, prompt);
+    if (PROVIDER === 'groq') return await callGroqVision(base64Image, mimeType, prompt);
+    return await callGeminiVision(base64Image, mimeType, prompt);
   } catch (err) {
     console.error('[AI] Vision call failed:', err.message);
     throw err;
@@ -158,25 +134,12 @@ async function callPestVisionAI(base64Image, mimeType) {
   const prompt = `You are an expert agricultural entomologist specializing in African crop pests.
 Analyze this image for crop-damaging pests.
 Return ONLY valid JSON with no extra text:
-{
-  "pest_name": "name of pest",
-  "threat_level": "CRITICAL or HIGH or MEDIUM or LOW",
-  "affected_crops": "comma separated crop names",
-  "description": "2-3 sentence description",
-  "symptoms": ["symptom 1", "symptom 2", "symptom 3"],
-  "treatment": "specific treatment steps",
-  "prevention": ["tip 1", "tip 2", "tip 3"],
-  "economic_impact": "brief economic impact statement"
-}`;
-
+{"pest_name":"name","threat_level":"CRITICAL or HIGH or MEDIUM or LOW","affected_crops":"crops","description":"description","symptoms":["s1","s2"],"treatment":"treatment","prevention":["p1","p2"],"economic_impact":"impact"}`;
   try {
-    if (PROVIDER === 'openai') {
-      return await callOpenAIVision(base64Image, mimeType, prompt);
-    } else if (PROVIDER === 'deepseek') {
-      return await callDeepSeekVision(base64Image, mimeType, prompt);
-    } else {
-      return await callGeminiVision(base64Image, mimeType, prompt);
-    }
+    if (PROVIDER === 'openai') return await callOpenAIVision(base64Image, mimeType, prompt);
+    if (PROVIDER === 'deepseek') return await callDeepSeekVision(base64Image, mimeType, prompt);
+    if (PROVIDER === 'groq') return await callGroqVision(base64Image, mimeType, prompt);
+    return await callGeminiVision(base64Image, mimeType, prompt);
   } catch (err) {
     console.error('[AI] Pest vision call failed:', err.message);
     throw err;

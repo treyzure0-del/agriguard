@@ -178,8 +178,43 @@ body::after {
  
 .hero {
   text-align: center;
-  padding: 80px 20px 50px;
-  position: relative; overflow: hidden;
+  padding: 120px 20px 80px;
+  position: relative;
+  overflow: hidden;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('hero-farm.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.35) saturate(1.2);
+  z-index: 0;
+  transform: scale(1.05);
+  animation: heroZoom 20s ease-in-out infinite alternate;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(5, 15, 9, 0.3) 0%,
+      rgba(5, 15, 9, 0.1) 30%,
+      rgba(5, 15, 9, 0.1) 60%,
+      rgba(5, 15, 9, 0.95) 100%),
+    linear-gradient(90deg,
+      rgba(5, 15, 9, 0.6) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(5, 15, 9, 0.6) 100%);
 }
  
 .hero::before {
@@ -804,7 +839,11 @@ body::after {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
- 
+
+@keyframes heroZoom {
+  from { transform: scale(1.0); }
+  to { transform: scale(1.08); }
+}
 @media (max-width: 768px) {
   .navbar-links { display: none; }
   .navbar-badge { display: none; }

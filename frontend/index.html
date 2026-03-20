@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="AgriGuard AI — Smart Crop Protection Platform for East African Farmers" />
@@ -63,15 +58,37 @@
 <div id="page-home" class="page active">
   <div class="container">
 
-    <!-- Hero -->
+    <!-- Hero with full-width farm background -->
     <div class="hero">
-      <div class="hero-badge">🌍 East Africa's Crop Protection Platform</div>
-      <h1>Protect Your Crops<br>with AI Intelligence</h1>
-      <p>Scan diseased leaves, get instant diagnosis, track outbreaks across East Africa, and consult your AI agricultural advisor — all in one platform.</p>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-primary" data-page="scan">🔬 Scan a Crop</button>
-        <button class="btn btn-secondary" data-page="advisor">🤖 Ask AI Advisor</button>
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <canvas id="heroCanvas"></canvas>
+      <div class="hero-inner">
+        <div class="hero-badge">🌍 East Africa's Crop Protection Platform</div>
+        <h1>Protect Your Crops<br>with AI Intelligence</h1>
+        <p>Scan diseased leaves, get instant diagnosis, track outbreaks across East Africa, and consult your AI agricultural advisor — all in one platform.</p>
+        <div class="hero-btns">
+          <button class="btn btn-primary btn-hero" data-page="scan">🔬 Scan a Crop</button>
+          <button class="btn btn-outline-hero" data-page="advisor">🤖 Ask AI Advisor</button>
+        </div>
+        <div class="hero-scroll">
+          <span>Scroll to explore</span>
+          <div class="scroll-arrow">↓</div>
+        </div>
       </div>
+    </div>
+
+    <!-- Trust bar -->
+    <div class="trust-bar">
+      <div class="trust-item"><span class="trust-icon">🌾</span><span>Uganda</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="trust-icon">🌿</span><span>Kenya</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="trust-icon">🍃</span><span>Tanzania</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="trust-icon">🤖</span><span>AI-Powered</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><span class="trust-icon">⚡</span><span>Real-time Results</span></div>
     </div>
 
     <!-- Stats -->
@@ -138,6 +155,34 @@
       </div>
     </div>
 
+    <!-- How it works -->
+    <div class="section-header mt-24">
+      <h2>How It Works</h2>
+      <p>Three simple steps to protect your crops with AI</p>
+    </div>
+    <div class="how-it-works">
+      <div class="how-step">
+        <div class="how-step-number">01</div>
+        <div class="how-step-icon">📸</div>
+        <h3>Take a Photo</h3>
+        <p>Use your phone camera or upload an existing photo of any affected crop leaf directly in the field.</p>
+      </div>
+      <div class="how-step-arrow">→</div>
+      <div class="how-step">
+        <div class="how-step-number">02</div>
+        <div class="how-step-icon">🤖</div>
+        <h3>AI Analysis</h3>
+        <p>Our AI instantly analyzes the image, identifies the disease, and calculates a confidence score in seconds.</p>
+      </div>
+      <div class="how-step-arrow">→</div>
+      <div class="how-step">
+        <div class="how-step-number">03</div>
+        <div class="how-step-icon">💊</div>
+        <h3>Get Treatment</h3>
+        <p>Receive a complete treatment plan with local product names, dosages, and prevention tips for your crops.</p>
+      </div>
+    </div>
+
     <!-- Quick Questions -->
     <div class="section-header mt-24">
       <h2>Ask AgriGuard AI</h2>
@@ -149,6 +194,32 @@
       <button class="quick-q-btn" data-question="How do I control Fall Armyworm on maize organically?">Control Fall Armyworm organically</button>
       <button class="quick-q-btn" data-question="What are the signs of cassava mosaic disease and how do I manage it?">Cassava mosaic disease signs</button>
       <button class="quick-q-btn" data-question="How do I improve soil health for better crop yields?">How to improve soil health</button>
+    </div>
+
+    <!-- Impact strip -->
+    <div class="impact-strip">
+      <div class="impact-strip-inner">
+        <div class="impact-quote">
+          <div class="impact-quote-mark">"</div>
+          <p>AgriGuard AI helped me identify cassava mosaic disease before it spread to my entire farm. The treatment plan saved my harvest.</p>
+          <div class="impact-author">— James Okello, Farmer · Gulu, Uganda</div>
+        </div>
+        <div class="impact-divider"></div>
+        <div class="impact-stats">
+          <div class="impact-stat">
+            <div class="impact-stat-number">3 min</div>
+            <div class="impact-stat-label">Average scan time</div>
+          </div>
+          <div class="impact-stat">
+            <div class="impact-stat-number">200+</div>
+            <div class="impact-stat-label">Diseases in database</div>
+          </div>
+          <div class="impact-stat">
+            <div class="impact-stat-number">Free</div>
+            <div class="impact-stat-label">For all farmers</div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -653,5 +724,63 @@
 
 <!-- App JS -->
 <script src="app.js"></script>
+
+<!-- Hero particles + scroll fade -->
+<script>
+(function() {
+  var canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+
+  function resize() {
+    canvas.width = canvas.offsetWidth || window.innerWidth;
+    canvas.height = canvas.offsetHeight || window.innerHeight;
+  }
+
+  function mkParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2.5 + 0.5,
+      sx: (Math.random() - 0.5) * 0.35,
+      sy: -Math.random() * 0.5 - 0.15,
+      op: Math.random() * 0.45 + 0.08,
+      col: Math.random() > 0.5 ? '94,217,126' : '168,255,110'
+    };
+  }
+
+  function init() {
+    particles = [];
+    var n = Math.floor((canvas.width * canvas.height) / 12000);
+    for (var i = 0; i < n; i++) particles.push(mkParticle());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.sx; p.y += p.sy; p.op -= 0.0008;
+      if (p.y < -10 || p.op <= 0) particles[i] = mkParticle();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + p.col + ',' + p.op + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize(); init(); draw();
+  window.addEventListener('resize', function() { resize(); init(); });
+
+  // Scroll indicator fade
+  var si = document.querySelector('.hero-scroll');
+  if (si) {
+    window.addEventListener('scroll', function() {
+      si.style.opacity = Math.max(0, 1 - window.scrollY / 180);
+    });
+  }
+})();
+</script>
 </body>
 </html>

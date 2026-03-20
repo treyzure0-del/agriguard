@@ -42,7 +42,7 @@ async function callOpenRouterVision(base64Image, mimeType, prompt) {
     baseURL: 'https://openrouter.ai/api/v1'
   });
   const completion = await openai.chat.completions.create({
-   model: 'google/gemini-2.0-flash-exp:free',
+   model: 'openrouter/free',
     messages: [
       {
         role: 'user',

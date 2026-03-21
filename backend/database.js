@@ -51,6 +51,23 @@ db.exec(`
     location_name TEXT,
     timestamp TEXT DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now'))
+  );
+
+  CREATE TABLE IF NOT EXISTS chat_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    role TEXT NOT NULL,
+    content TEXT NOT NULL,
+    timestamp TEXT DEFAULT (datetime('now')),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
 `);
 
 // Seed demo data if table is empty
@@ -247,7 +264,7 @@ if (existingCount.count === 0) {
   console.log(`[DB] Seeded ${demoReports.length} demo disease reports`);
 }
 
-// ─── FUNCTIONS ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function saveReport(data) {
   const stmt = db.prepare(`
@@ -343,7 +360,7 @@ function savePestReport(data) {
   return result.lastInsertRowid;
 }
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
+// â”€â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371; // km
@@ -369,4 +386,43 @@ function safeParseJSON(str, fallback) {
   }
 }
 
-module.exports = { saveReport, getAllReports, checkOutbreak, saveHealthLog, getHealthHistory, savePestReport };
+// â”€â”€â”€ USER FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function createUser(data) {
+  const stmt = db.prepare(
+    'INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)'
+  );
+  const result = stmt.run(data.name, data.email, data.passwordHash);
+  return { id: result.lastInsertRowid, name: data.name, email: data.email };
+}
+
+function findUserByEmail(email) {
+  return db.prepare('SELECT * FROM users WHERE email = ?').get(email) || null;
+}
+
+function findUserById(id) {
+  return db.prepare('SELECT * FROM users WHERE id = ?').get(id) || null;
+}
+
+// â”€â”€â”€ CHAT HISTORY FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+function saveChatMessage(userId, role, content) {
+  const stmt = db.prepare(
+    'INSERT INTO chat_history (user_id, role, content) VALUES (?, ?, ?)'
+  );
+  const result = stmt.run(userId, role, content);
+  return result.lastInsertRowid;
+}
+
+function getUserChatHistory(userId, limit = 100) {
+  return db.prepare(
+    'SELECT * FROM chat_history WHERE user_id = ? ORDER BY timestamp ASC LIMIT ?'
+  ).all(userId, limit);
+}
+
+module.exports = {
+  saveReport, getAllReports, checkOutbreak,
+  saveHealthLog, getHealthHistory, savePestReport,
+  createUser, findUserByEmail, findUserById,
+  saveChatMessage, getUserChatHistory
+};

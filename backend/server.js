@@ -18,7 +18,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const PROVIDER = process.env.AI_PROVIDER || 'gemini';
 
-// ─── MIDDLEWARE ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.use(helmet({
   contentSecurityPolicy: false, // Disabled for CDN resources in frontend
@@ -36,18 +36,20 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ─── STATIC FILES ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ STATIC FILES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// ─── ROUTES ───────────────────────────────────────────────────────────────────
+// â”€â”€â”€ ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const advisorRouter = require('./routes/advisor');
 const scanRouter = require('./routes/scan');
 const pestRouter = require('./routes/pest');
 const reportsRouter = require('./routes/reports');
 
+const authRouter = require('./routes/auth');
 app.use('/api/advisor', advisorRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/scan', scanRouter);
 app.use('/api/pest', pestRouter);
 app.use('/api', reportsRouter);
@@ -66,7 +68,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// ─── ERROR HANDLER ────────────────────────────────────────────────────────────
+// â”€â”€â”€ ERROR HANDLER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.use((err, req, res, next) => {
   console.error('[server] Unhandled error:', err.message);
@@ -76,34 +78,37 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || 'Internal server error' });
 });
 
-// ─── START ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ START â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.listen(PORT, () => {
   console.log('');
-  console.log('╔══════════════════════════════════════════╗');
-  console.log('║        AgriGuard AI is running!          ║');
-  console.log('╠══════════════════════════════════════════╣');
-  console.log(`║  URL:      http://localhost:${PORT}          ║`);
-  console.log(`║  Provider: ${PROVIDER.padEnd(30)} ║`);
-  console.log('╠══════════════════════════════════════════╣');
-  console.log('║  Press Ctrl+C to stop                    ║');
-  console.log('╚══════════════════════════════════════════╝');
+  console.log('â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—');
+  console.log('â•‘        AgriGuard AI is running!          â•‘');
+  console.log('â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£');
+  console.log(`â•‘  URL:      http://localhost:${PORT}          â•‘`);
+  console.log(`â•‘  Provider: ${PROVIDER.padEnd(30)} â•‘`);
+  console.log('â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£');
+  console.log('â•‘  Press Ctrl+C to stop                    â•‘');
+  console.log('â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
   console.log('');
 
   // Warn if no API key configured
- const keyMap = {
-  gemini: process.env.GEMINI_API_KEY,
-  openai: process.env.OPENAI_API_KEY,
-  deepseek: process.env.DEEPSEEK_API_KEY,
-  groq: process.env.GROQ_API_KEY
-};
+  const keyMap = {
+    gemini: process.env.GEMINI_API_KEY,
+    openai: process.env.OPENAI_API_KEY,
+    deepseek: process.env.DEEPSEEK_API_KEY
+  };
   const activeKey = keyMap[PROVIDER];
   if (!activeKey || activeKey.startsWith('paste_your')) {
-    console.warn(`⚠️  WARNING: ${PROVIDER.toUpperCase()} API key not configured in .env`);
+    console.warn(`âš ï¸  WARNING: ${PROVIDER.toUpperCase()} API key not configured in .env`);
     console.warn('   AI features will not work until you add your key.');
     console.warn('   Get a free Gemini key at: https://aistudio.google.com');
     console.warn('');
   } else {
-    console.log(`✅ AI Provider: ${PROVIDER} (key configured)`);
+    console.log(`âœ… AI Provider: ${PROVIDER} (key configured)`);
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    console.warn('âš ï¸  JWT_SECRET not set in .env â€” using default (set one for production)');
+  }
   }
 });

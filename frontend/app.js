@@ -1,10 +1,10 @@
 /* =========================================================
-   AgriGuard AI — Frontend Application
+   AgriGuard AI â€” Frontend Application
    ========================================================= */
 
 'use strict';
 
-// ─── SECTION 1: STATE ────────────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 1: STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 let selectedCrop = 'Maize';
 let conversationHistory = [];
@@ -17,69 +17,69 @@ let cameraStream = null;
 let healthChart = null;
 
 const CROP_ICONS = {
-  'Maize': '🌽', 'Cassava': '🌿', 'Tomato': '🍅', 'Bean': '🫘',
-  'Potato': '🥔', 'Banana': '🍌', 'Coffee': '☕', 'Sorghum': '🌾',
-  'Default': '🌱'
+  'Maize': 'ðŸŒ½', 'Cassava': 'ðŸŒ¿', 'Tomato': 'ðŸ…', 'Bean': 'ðŸ«˜',
+  'Potato': 'ðŸ¥”', 'Banana': 'ðŸŒ', 'Coffee': 'â˜•', 'Sorghum': 'ðŸŒ¾',
+  'Default': 'ðŸŒ±'
 };
 
 const PEST_DATA = {
   'Fall Armyworm': {
-    icon: '🐛', threat: 'CRITICAL',
+    icon: 'ðŸ›', threat: 'CRITICAL',
     affected: 'Maize, Sorghum, Rice, Sugarcane',
-    description: 'Spodoptera frugiperda — the most destructive maize pest in Africa. Larvae bore into plant whorls and ears, causing catastrophic yield losses of 20–73%. Spreads rapidly across large areas.',
+    description: 'Spodoptera frugiperda â€” the most destructive maize pest in Africa. Larvae bore into plant whorls and ears, causing catastrophic yield losses of 20â€“73%. Spreads rapidly across large areas.',
     symptoms: ['Ragged holes in leaves from feeding', 'Frass (droppings) visible in leaf whorls', 'Larvae visible at night or early morning', 'Deformed or dead central shoot (dead heart)', 'Damaged ear tips with entry holes'],
     treatment: 'Apply emamectin benzoate (Escort) or chlorantraniliprole (Coragen). For organic: mix ash + sand into plant whorls. Early morning spray most effective.',
     prevention: ['Scout fields twice weekly', 'Plant early to avoid peak moth flights', 'Intercrop with legumes', 'Use pheromone traps for monitoring', 'Destroy crop residues after harvest'],
     impact: 'Can destroy entire maize crop. Causes $9+ billion losses annually in Africa.'
   },
   'Desert Locust': {
-    icon: '🦗', threat: 'CRITICAL',
-    affected: 'All crops — maize, wheat, sorghum, vegetables',
-    description: 'Schistocerca gregaria — swarms of millions consume every crop in hours. A single swarm can contain 80 million locusts consuming 80+ tonnes of vegetation per day.',
+    icon: 'ðŸ¦—', threat: 'CRITICAL',
+    affected: 'All crops â€” maize, wheat, sorghum, vegetables',
+    description: 'Schistocerca gregaria â€” swarms of millions consume every crop in hours. A single swarm can contain 80 million locusts consuming 80+ tonnes of vegetation per day.',
     symptoms: ['Sudden complete defoliation of crops', 'Large swarms visible in sky', 'Egg pods found in soil', 'Stripped bare fields overnight', 'Hopper bands on ground'],
     treatment: 'Report immediately to National Locust Control (FAO coordinates response). Apply organophosphate insecticides via aerial or ground spray if authorized.',
     prevention: ['Monitor LOCUST FAO early warning alerts', 'Community reporting systems', 'Coordinate with government pest control', 'Barrier treatments around fields'],
     impact: 'A single swarm feeds 35,000 people per day. 2020 outbreak destroyed $8.5B crops in East Africa.'
   },
   'Aphids': {
-    icon: '🦟', threat: 'HIGH',
+    icon: 'ðŸ¦Ÿ', threat: 'HIGH',
     affected: 'Cassava, Beans, Tomatoes, Potatoes, Coffee',
     description: 'Multiple Aphis species that suck plant sap and transmit deadly viruses. Cassava Green Mite and Bean Aphid cause serious losses. Secondary virus transmission is often more damaging than direct feeding.',
     symptoms: ['Yellow curling leaves', 'Sticky honeydew on leaves causing sooty mold', 'Stunted plant growth', 'Colonies visible on undersides of leaves', 'Virus symptoms: mosaic or yellowing patterns'],
     treatment: 'Spray with imidacloprid or acetamiprid. Organic: neem oil solution (5ml/L), soapy water spray. Remove heavily infested shoots.',
     prevention: ['Inspect new planting material', 'Encourage natural enemies (ladybirds)', 'Use reflective mulch to repel aphids', 'Avoid excessive nitrogen fertilizer', 'Plant resistant varieties'],
-    impact: 'Cassava mosaic spread by aphids causes 30–72% yield loss in Uganda and Kenya.'
+    impact: 'Cassava mosaic spread by aphids causes 30â€“72% yield loss in Uganda and Kenya.'
   },
   'Whitefly': {
-    icon: '🦋', threat: 'HIGH',
+    icon: 'ðŸ¦‹', threat: 'HIGH',
     affected: 'Cassava, Tomatoes, Beans, Sweet Potato',
     description: 'Bemisia tabaci and Trialeurodes vaporariorum. Major vector of cassava mosaic and brown streak viruses. Populations explode during dry season causing direct damage and catastrophic virus transmission.',
     symptoms: ['White insects fly up when plant disturbed', 'Yellow stippling on upper leaf surface', 'Sticky honeydew and black sooty mold', 'Leaf curl and chlorosis', 'Plant stunting and death in severe cases'],
     treatment: 'Apply thiamethoxam (Actara) or spirotetramat (Movento) at first sign. Yellow sticky traps help monitor population. Avoid repeated pyrethroids (resistance risk).',
     prevention: ['Use certified virus-free cassava cuttings', 'Intercrop with repellent plants (basil)', 'Install yellow sticky traps', 'Remove virus-infected plants immediately', 'Plant during rainy season when populations are lower'],
-    impact: 'Cassava viruses spread by whitefly cause $1–2 billion losses annually in East Africa.'
+    impact: 'Cassava viruses spread by whitefly cause $1â€“2 billion losses annually in East Africa.'
   },
   'Stalk Borer': {
-    icon: '🐜', threat: 'MEDIUM',
+    icon: 'ðŸœ', threat: 'MEDIUM',
     affected: 'Maize, Sorghum, Sugarcane, Millet',
     description: 'Busseola fusca (maize stalk borer) and Chilo partellus (spotted stalk borer). Larvae tunnel into stems causing dead heart symptom in young plants and stem breakage before harvest.',
     symptoms: ['Dead central leaf ("dead heart") in young plants', 'Pin holes in leaves', 'Frass on leaf surface', 'Stem tunneling visible when split', 'Lodging (stem breakage) in older plants'],
-    treatment: 'Apply granular carbofuran into plant whorls at 3–4 weeks after emergence. Spray with cypermethrin at egg hatching. Biological: release Cotesia flavipes parasitoid.',
+    treatment: 'Apply granular carbofuran into plant whorls at 3â€“4 weeks after emergence. Spray with cypermethrin at egg hatching. Biological: release Cotesia flavipes parasitoid.',
     prevention: ['Plant early (first rains)', 'Remove and destroy old crop stalks', 'Deep plow to kill pupae', 'Use push-pull technology (Desmodium intercrop)', 'Avoid late planting'],
-    impact: 'Causes 20–40% maize yield losses in East Africa. Major constraint in Tanzania and Uganda.'
+    impact: 'Causes 20â€“40% maize yield losses in East Africa. Major constraint in Tanzania and Uganda.'
   },
   'Thrips': {
-    icon: '🦠', threat: 'MEDIUM',
+    icon: 'ðŸ¦ ', threat: 'MEDIUM',
     affected: 'Onions, Tomatoes, Beans, Chilli, Pepper',
     description: 'Thrips tabaci and Frankliniella occidentalis. Tiny insects that rasp plant surfaces causing silvery scarring. Major vectors of Tomato Spotted Wilt Virus (TSWV) which has no cure.',
     symptoms: ['Silver streaks and patches on leaves', 'Distorted and curled young leaves', 'Black faecal spots on leaves', 'Flower damage and abortion', 'Virus symptoms if TSWV transmitted'],
     treatment: 'Apply spinosad (Entrust) or abamectin (Dynamec). Spray during early morning or evening. Alternate chemicals to prevent resistance.',
     prevention: ['Use reflective mulch to repel thrips', 'Install blue sticky traps', 'Avoid planting next to old onion/tomato fields', 'Regular irrigation (thrips prefer dry conditions)', 'Plant resistant varieties'],
-    impact: 'TSWV transmitted by thrips can cause 50–100% losses in tomato and pepper crops.'
+    impact: 'TSWV transmitted by thrips can cause 50â€“100% losses in tomato and pepper crops.'
   }
 };
 
-// ─── SECTION 2: PAGE NAVIGATION ──────────────────────────────────────────────
+// â”€â”€â”€ SECTION 2: PAGE NAVIGATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -105,7 +105,7 @@ function showPage(name) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ─── SECTION 3: HOME PAGE ────────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 3: HOME PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function animateCounters() {
   const counters = document.querySelectorAll('.stat-number[data-target]');
@@ -122,7 +122,7 @@ function animateCounters() {
   });
 }
 
-// ─── SECTION 4: SCAN PAGE ────────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 4: SCAN PAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function selectCrop(btn) {
   document.querySelectorAll('.crop-btn').forEach(b => b.classList.remove('active'));
@@ -355,7 +355,7 @@ function updateScanCount() {
   if (el) el.textContent = totalScans;
 }
 
-// ─── SECTION 5: AI ADVISOR ────────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 5: AI ADVISOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function sendAdvisorMessage(text) {
   if (!text || !text.trim()) return;
@@ -403,8 +403,8 @@ function renderMarkdown(text) {
   html = html.replace(/^(\d+)\.\s+(.+)$/gm, '<li>$2</li>');
   html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ol>$&</ol>');
 
-  // Bullet lists (- or • or *)
-  html = html.replace(/^[-•*]\s+(.+)$/gm, '<li>$1</li>');
+  // Bullet lists (- or â€¢ or *)
+  html = html.replace(/^[-â€¢*]\s+(.+)$/gm, '<li>$1</li>');
   html = html.replace(/(?<!<\/ol>)(<li>.*<\/li>\n?)+/g, m => {
     if (!m.includes('<ol>')) return `<ul>${m}</ul>`;
     return m;
@@ -466,11 +466,11 @@ function clearChat() {
   if (messages) {
     messages.innerHTML = '';
     // Add welcome message back
-    addMessage(renderMarkdown('Hello! I\'m **AgriGuard AI**, your expert agricultural advisor for East Africa. 🌱\n\nAsk me about crop diseases, pest management, soil health, fertilizers, or any farming challenge you face. I\'m here to help!'), 'assistant', true);
+    addMessage(renderMarkdown('Hello! I\'m **AgriGuard AI**, your expert agricultural advisor for East Africa. ðŸŒ±\n\nAsk me about crop diseases, pest management, soil health, fertilizers, or any farming challenge you face. I\'m here to help!'), 'assistant', true);
   }
 }
 
-// ─── SECTION 6: DISEASE MAP ───────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 6: DISEASE MAP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function initMap() {
   if (mapInitialized) return;
@@ -488,7 +488,7 @@ function initMap() {
   });
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
+    attribution: 'Â© OpenStreetMap contributors',
     maxZoom: 18
   }).addTo(mapInstance);
 
@@ -547,9 +547,9 @@ async function loadMapData() {
       marker.bindPopup(`
         <div class="popup-crop">${icon} ${report.crop_type}</div>
         <div class="popup-disease">${report.disease_name}</div>
-        <div class="popup-location">📍 ${report.location_name || 'Unknown location'}</div>
+        <div class="popup-location">ðŸ“ ${report.location_name || 'Unknown location'}</div>
         <span class="popup-score" style="background:${scoreColor}20;color:${scoreColor}">
-          Health: ${report.health_score || '—'}%
+          Health: ${report.health_score || 'â€”'}%
         </span>
       `);
 
@@ -569,7 +569,7 @@ async function loadMapData() {
   }
 }
 
-// ─── SECTION 7: DASHBOARD ─────────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 7: DASHBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function loadDashboard() {
   try {
@@ -623,7 +623,7 @@ function renderScanHistory(reports) {
       <div class="history-icon">${icon}</div>
       <div class="history-info">
         <div class="history-crop">${r.crop_type}</div>
-        <div class="history-disease">${r.disease_name} · ${formatTimeAgo(r.timestamp)}</div>
+        <div class="history-disease">${r.disease_name} Â· ${formatTimeAgo(r.timestamp)}</div>
       </div>
       <div class="history-mini-bar">
         <div class="mini-bar-track">
@@ -643,20 +643,20 @@ function renderAlerts(reports) {
 
   const diseased = reports.filter(r => r.health_score < 40).slice(0, 3);
   if (diseased.length === 0) {
-    container.innerHTML = '<div class="alert-item info"><span class="alert-icon">✅</span><div><div class="alert-title">All crops healthy</div><div class="alert-desc">No critical alerts at this time</div></div></div>';
+    container.innerHTML = '<div class="alert-item info"><span class="alert-icon">âœ…</span><div><div class="alert-title">All crops healthy</div><div class="alert-desc">No critical alerts at this time</div></div></div>';
     return;
   }
 
   diseased.forEach(r => {
     const type = r.health_score < 25 ? 'danger' : 'warning';
-    const icon = r.health_score < 25 ? '🚨' : '⚠️';
+    const icon = r.health_score < 25 ? 'ðŸš¨' : 'âš ï¸';
     const item = document.createElement('div');
     item.className = `alert-item ${type}`;
     item.innerHTML = `
       <span class="alert-icon">${icon}</span>
       <div>
         <div class="alert-title">${r.crop_type}: ${r.disease_name}</div>
-        <div class="alert-desc">${r.location_name || 'Unknown location'} · Score: ${r.health_score}%</div>
+        <div class="alert-desc">${r.location_name || 'Unknown location'} Â· Score: ${r.health_score}%</div>
       </div>
     `;
     container.appendChild(item);
@@ -743,7 +743,7 @@ function renderHealthOverview(reports) {
     item.className = 'health-overview-item';
     item.innerHTML = `
       <div class="health-overview-header">
-        <span class="health-overview-crop">${CROP_ICONS[crop] || '🌱'} ${crop}</span>
+        <span class="health-overview-crop">${CROP_ICONS[crop] || 'ðŸŒ±'} ${crop}</span>
         <span class="health-overview-score">${avg}%</span>
       </div>
       <div class="health-overview-bar">
@@ -754,7 +754,7 @@ function renderHealthOverview(reports) {
   });
 }
 
-// ─── SECTION 8: PEST DETECTION ────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 8: PEST DETECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function selectPest(card, name) {
   document.querySelectorAll('.pest-card').forEach(c => c.classList.remove('selected'));
@@ -806,7 +806,7 @@ async function handlePestImageUpload(file) {
   }
 
   const btn = document.getElementById('analyzePestBtn');
-  if (btn) { btn.disabled = true; btn.textContent = '🔍 Analyzing...'; }
+  if (btn) { btn.disabled = true; btn.textContent = 'ðŸ” Analyzing...'; }
 
   const formData = new FormData();
   formData.append('image', file);
@@ -823,7 +823,7 @@ async function handlePestImageUpload(file) {
     console.error('[pest] Error:', err);
     showError('Pest analysis failed. Check your API key and try again.');
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = '🔍 Analyze for Pests'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'ðŸ” Analyze for Pests'; }
   }
 }
 
@@ -861,7 +861,7 @@ function showPestResult(data) {
   card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ─── SECTION 9: UTILITIES ─────────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 9: UTILITIES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function formatTimeAgo(timestamp) {
   if (!timestamp) return 'Unknown time';
@@ -903,10 +903,10 @@ function showToast(message, type = 'success') {
   }, 3500);
 }
 
-function showError(message) { showToast('⚠️ ' + message, 'error'); }
-function showSuccess(message) { showToast('✓ ' + message, 'success'); }
+function showError(message) { showToast('âš ï¸ ' + message, 'error'); }
+function showSuccess(message) { showToast('âœ“ ' + message, 'success'); }
 
-// ─── SECTION 10: INIT ─────────────────────────────────────────────────────────
+// â”€â”€â”€ SECTION 10: INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 document.addEventListener('DOMContentLoaded', () => {
   // Set dashboard date
@@ -1028,6 +1028,364 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Add welcome message to chat
   setTimeout(() => {
-    addMessage(renderMarkdown('Hello! I\'m **AgriGuard AI**, your expert agricultural advisor for East Africa. 🌱\n\nAsk me about crop diseases, pest management, soil health, fertilizers, or any farming challenge you face. I\'m here to help!'), 'assistant', true);
+    addMessage(renderMarkdown('Hello! I\'m **AgriGuard AI**, your expert agricultural advisor for East Africa. ðŸŒ±\n\nAsk me about crop diseases, pest management, soil health, fertilizers, or any farming challenge you face. I\'m here to help!'), 'assistant', true);
   }, 200);
+});
+
+/* =========================================================
+   SECTION 11: AUTH â€” Slide-in Panel, Advisor Lock
+   ========================================================= */
+
+// â”€â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+let currentUser = null;
+let authToken = null;
+
+// â”€â”€â”€ STORAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function loadAuth() {
+  try {
+    const t = localStorage.getItem('ag_token');
+    const u = localStorage.getItem('ag_user');
+    if (t && u) { authToken = t; currentUser = JSON.parse(u); }
+  } catch { clearAuth(); }
+}
+
+function saveAuth(token, user) {
+  localStorage.setItem('ag_token', token);
+  localStorage.setItem('ag_user', JSON.stringify(user));
+  authToken = token;
+  currentUser = user;
+}
+
+function clearAuth() {
+  localStorage.removeItem('ag_token');
+  localStorage.removeItem('ag_user');
+  authToken = null;
+  currentUser = null;
+}
+
+// â”€â”€â”€ PANEL OPEN/CLOSE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function openAuthPanel(tab) {
+  document.getElementById('authPanel').classList.add('open');
+  document.getElementById('authBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (tab) switchTab(tab);
+  clearErrors();
+}
+
+function closeAuthPanel() {
+  document.getElementById('authPanel').classList.remove('open');
+  document.getElementById('authBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+  clearErrors();
+}
+
+function switchTab(tab) {
+  const loginEl = document.getElementById('panelLogin');
+  const signupEl = document.getElementById('panelSignup');
+  const histEl = document.getElementById('panelHistory');
+  const tLogin = document.getElementById('tabLogin');
+  const tSignup = document.getElementById('tabSignup');
+
+  [loginEl, signupEl, histEl].forEach(el => { if (el) el.style.display = 'none'; });
+  [tLogin, tSignup].forEach(el => { if (el) el.classList.remove('active'); });
+
+  if (tab === 'login') {
+    if (loginEl) loginEl.style.display = 'block';
+    if (tLogin) tLogin.classList.add('active');
+  } else if (tab === 'signup') {
+    if (signupEl) signupEl.style.display = 'block';
+    if (tSignup) tSignup.classList.add('active');
+  } else if (tab === 'history') {
+    if (histEl) histEl.style.display = 'block';
+    loadChatHistoryPanel();
+  }
+  clearErrors();
+}
+
+// Show chat history â€” opens panel to history tab
+function showChatHistory() {
+  openAuthPanel(null);
+  // Hide tabs, show history directly
+  document.getElementById('panelLogin').style.display = 'none';
+  document.getElementById('panelSignup').style.display = 'none';
+  document.getElementById('panelHistory').style.display = 'block';
+  document.getElementById('tabLogin').classList.remove('active');
+  document.getElementById('tabSignup').classList.remove('active');
+  loadChatHistoryPanel();
+}
+
+// â”€â”€â”€ USER DROPDOWN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function toggleUserMenu() {
+  const dd = document.getElementById('userDropdown');
+  const pill = document.getElementById('navUserPill');
+  if (dd) dd.classList.toggle('open');
+  if (pill) pill.classList.toggle('open');
+}
+
+function closeUserMenu() {
+  const dd = document.getElementById('userDropdown');
+  const pill = document.getElementById('navUserPill');
+  if (dd) dd.classList.remove('open');
+  if (pill) pill.classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  const dd = document.getElementById('userDropdown');
+  const pill = document.getElementById('navUserPill');
+  if (dd && pill && !dd.contains(e.target) && !pill.contains(e.target)) closeUserMenu();
+});
+
+// â”€â”€â”€ UI STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function updateAuthUI() {
+  const authBtn = document.getElementById('navAuthBtn');
+  const userPill = document.getElementById('navUserPill');
+  const navAvatar = document.getElementById('navAvatar');
+  const navUserName = document.getElementById('navUserName');
+  const dropAvatar = document.getElementById('dropAvatar');
+  const dropName = document.getElementById('dropName');
+  const dropEmail = document.getElementById('dropEmail');
+  const advisorLock = document.getElementById('advisorLock');
+  const advisorChat = document.getElementById('advisorChat');
+
+  if (currentUser) {
+    if (authBtn) authBtn.style.display = 'none';
+    if (userPill) userPill.style.display = 'flex';
+
+    const initial = (currentUser.name || 'U').charAt(0).toUpperCase();
+    if (navAvatar) navAvatar.textContent = initial;
+    if (navUserName) navUserName.textContent = currentUser.name.split(' ')[0];
+    if (dropAvatar) dropAvatar.textContent = initial;
+    if (dropName) dropName.textContent = currentUser.name;
+    if (dropEmail) dropEmail.textContent = currentUser.email;
+
+    // Show advisor chat, hide lock
+    if (advisorLock) advisorLock.style.display = 'none';
+    if (advisorChat) advisorChat.style.display = 'grid';
+
+  } else {
+    if (authBtn) authBtn.style.display = 'inline-flex';
+    if (userPill) userPill.style.display = 'none';
+
+    // Show lock, hide chat
+    if (advisorLock) advisorLock.style.display = 'flex';
+    if (advisorChat) advisorChat.style.display = 'none';
+  }
+}
+
+// â”€â”€â”€ SIGN UP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+async function handleSignup() {
+  const name = document.getElementById('signupName')?.value?.trim();
+  const email = document.getElementById('signupEmail')?.value?.trim();
+  const password = document.getElementById('signupPassword')?.value;
+
+  if (!name || !email || !password) { showErr('signup', 'Please fill in all fields'); return; }
+
+  setBtnLoading('signupBtn', true, 'Creating account...');
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { showErr('signup', data.error || 'Signup failed'); return; }
+
+    saveAuth(data.token, data.user);
+    updateAuthUI();
+    closeAuthPanel();
+    clearChatAndHistory();
+    showSuccess(`Welcome to AgriGuard AI, ${data.user.name}! ðŸŒ¿`);
+
+    // If on advisor page, welcome message
+    if (document.getElementById('page-advisor').classList.contains('active')) {
+      setTimeout(() => {
+        addMessage(`Hi ${data.user.name}! ðŸ‘‹ I'm your personal AI farming advisor. Ask me anything about crops, pests, soil, or diseases in East Africa.`, 'assistant');
+      }, 400);
+    }
+  } catch { showErr('signup', 'Network error. Please try again.'); }
+  finally { setBtnLoading('signupBtn', false, 'Create Free Account'); }
+}
+
+// â”€â”€â”€ LOG IN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+async function handleLogin() {
+  const email = document.getElementById('loginEmail')?.value?.trim();
+  const password = document.getElementById('loginPassword')?.value;
+
+  if (!email || !password) { showErr('login', 'Please enter your email and password'); return; }
+
+  setBtnLoading('loginBtn', true, 'Signing in...');
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { showErr('login', data.error || 'Login failed'); return; }
+
+    saveAuth(data.token, data.user);
+    updateAuthUI();
+    closeAuthPanel();
+    showSuccess(`Welcome back, ${data.user.name}! ðŸ‘‹`);
+
+    // Add welcome back message to chat
+    if (document.getElementById('page-advisor').classList.contains('active')) {
+      setTimeout(() => {
+        addMessage(`Welcome back, ${data.user.name}! ðŸŒ¿ Ready to help with your crops. What would you like to know today?`, 'assistant');
+      }, 400);
+    }
+  } catch { showErr('login', 'Network error. Please try again.'); }
+  finally { setBtnLoading('loginBtn', false, 'Sign In'); }
+}
+
+// â”€â”€â”€ LOG OUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+async function handleLogout() {
+  closeUserMenu();
+  try {
+    await fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {}
+    });
+  } catch {}
+  clearAuth();
+  conversationHistory = [];
+  clearChatAndHistory();
+  updateAuthUI();
+  showSuccess('Signed out. See you next time! ðŸ‘‹');
+}
+
+function clearChatAndHistory() {
+  conversationHistory = [];
+  const msgs = document.getElementById('chatMessages');
+  if (msgs) msgs.innerHTML = `
+    <div class="typing-indicator" id="typingIndicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>`;
+}
+
+// â”€â”€â”€ CHAT HISTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+async function loadChatHistoryPanel() {
+  const container = document.getElementById('historyList');
+  if (!container || !authToken) return;
+
+  container.innerHTML = '<p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px 0">Loading...</p>';
+
+  try {
+    const res = await fetch('/api/auth/chat-history', {
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+    if (!res.ok) throw new Error('Failed');
+    const history = await res.json();
+
+    if (history.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px 0">No saved chats yet.<br>Start a conversation with the AI Advisor!</p>';
+      return;
+    }
+
+    container.innerHTML = '';
+    history.slice(-40).forEach(msg => {
+      const item = document.createElement('div');
+      item.className = 'chat-history-item';
+      item.innerHTML = `
+        <span class="chi-role ${msg.role}">${msg.role === 'user' ? 'You' : 'AI'}</span>
+        <span class="chi-text">${escapeHtml(msg.content)}</span>
+      `;
+      container.appendChild(item);
+    });
+    // Scroll to bottom
+    container.scrollTop = container.scrollHeight;
+  } catch {
+    container.innerHTML = '<p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px 0">Could not load history.</p>';
+  }
+}
+
+// â”€â”€â”€ OVERRIDE sendAdvisorMessage TO SEND AUTH TOKEN â”€â”€â”€â”€â”€â”€â”€
+const _origSend = sendAdvisorMessage;
+sendAdvisorMessage = async function(text) {
+  if (!text || !text.trim()) return;
+
+  // If not logged in, open auth panel
+  if (!currentUser) {
+    openAuthPanel('login');
+    showToast('âš ï¸ Please sign in to use the AI Advisor', 'error');
+    return;
+  }
+
+  const input = document.getElementById('chatInput');
+  if (input) { input.value = ''; input.style.height = 'auto'; }
+
+  addMessage(escapeHtml(text), 'user');
+  conversationHistory.push({ role: 'user', content: text });
+  showTypingIndicator();
+
+  try {
+    const res = await fetch('/api/advisor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: JSON.stringify({ messages: conversationHistory })
+    });
+
+    if (!res.ok) throw new Error(`${res.status}`);
+    const data = await res.json();
+    const reply = data.response || "Sorry, I couldn't process that.";
+
+    conversationHistory.push({ role: 'assistant', content: reply });
+    hideTypingIndicator();
+    addMessage(renderMarkdown(reply), 'assistant', true);
+
+  } catch (err) {
+    hideTypingIndicator();
+    if (err.message === '401') {
+      addMessage('Your session expired. Please sign in again.', 'assistant');
+      clearAuth();
+      updateAuthUI();
+      setTimeout(() => openAuthPanel('login'), 1000);
+    } else {
+      addMessage("I'm having trouble connecting. Please try again.", 'assistant');
+    }
+  }
+};
+
+// â”€â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function showErr(form, msg) {
+  const el = document.getElementById(form + 'Error');
+  if (el) { el.textContent = msg; el.classList.add('visible'); }
+}
+
+function clearErrors() {
+  ['loginError', 'signupError'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+  });
+}
+
+function setBtnLoading(id, loading, text) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.disabled = loading;
+  if (!loading) { btn.classList.remove('loading'); btn.textContent = text; }
+  else { btn.classList.add('loading'); btn.textContent = text; }
+}
+
+// â”€â”€â”€ KEYBOARD SHORTCUTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeAuthPanel();
+  if (e.key === 'Enter') {
+    const panel = document.getElementById('authPanel');
+    if (!panel || !panel.classList.contains('open')) return;
+    const loginVisible = document.getElementById('panelLogin')?.style.display !== 'none';
+    if (loginVisible) handleLogin();
+    else if (document.getElementById('panelSignup')?.style.display !== 'none') handleSignup();
+  }
+});
+
+// â”€â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+document.addEventListener('DOMContentLoaded', () => {
+  loadAuth();
+  updateAuthUI();
 });

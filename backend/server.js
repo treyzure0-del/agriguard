@@ -39,7 +39,6 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // ─── STATIC FILES ─────────────────────────────────────────────────────────────
  
 app.use(express.static(path.join(__dirname, '../frontend')));
-app.use('/post-images', express.static(path.join(__dirname, '../frontend/post-images')));
  
 // ─── ROUTES ───────────────────────────────────────────────────────────────────
  
@@ -49,10 +48,8 @@ const pestRouter = require('./routes/pest');
 const reportsRouter = require('./routes/reports');
  
 const authRouter = require('./routes/auth');
-const communityRouter = require('./routes/community');
 app.use('/api/advisor', advisorRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/community', communityRouter);
 app.use('/api/scan', scanRouter);
 app.use('/api/pest', pestRouter);
 app.use('/api', reportsRouter);

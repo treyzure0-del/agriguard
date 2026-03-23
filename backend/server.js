@@ -5,55 +5,58 @@ const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-
+ 
 // Ensure uploads directory exists
 if (!fs.existsSync('./uploads')) {
   fs.mkdirSync('./uploads', { recursive: true });
 }
-
+ 
 // Initialize database (runs migrations + seeds)
 const db = require('./database');
-
+ 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const PROVIDER = process.env.AI_PROVIDER || 'gemini';
-
-// â”€â”€â”€ MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── MIDDLEWARE ───────────────────────────────────────────────────────────────
+ 
 app.use(helmet({
   contentSecurityPolicy: false, // Disabled for CDN resources in frontend
   crossOriginEmbedderPolicy: false
 }));
-
+ 
 app.use(morgan('dev'));
-
+ 
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
+ 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// â”€â”€â”€ STATIC FILES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── STATIC FILES ─────────────────────────────────────────────────────────────
+ 
 app.use(express.static(path.join(__dirname, '../frontend')));
-
-// â”€â”€â”€ ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+app.use('/post-images', express.static(path.join(__dirname, '../frontend/post-images')));
+ 
+// ─── ROUTES ───────────────────────────────────────────────────────────────────
+ 
 const advisorRouter = require('./routes/advisor');
 const scanRouter = require('./routes/scan');
 const pestRouter = require('./routes/pest');
 const reportsRouter = require('./routes/reports');
-
+ 
 const authRouter = require('./routes/auth');
+const communityRouter = require('./routes/community');
 app.use('/api/advisor', advisorRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/community', communityRouter);
 app.use('/api/scan', scanRouter);
 app.use('/api/pest', pestRouter);
 app.use('/api', reportsRouter);
-
+ 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
@@ -62,14 +65,14 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
-
+ 
 // Serve frontend for all other routes (SPA fallback)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
-
-// â”€â”€â”€ ERROR HANDLER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── ERROR HANDLER ────────────────────────────────────────────────────────────
+ 
 app.use((err, req, res, next) => {
   console.error('[server] Unhandled error:', err.message);
   if (err.code === 'LIMIT_FILE_SIZE') {
@@ -77,21 +80,21 @@ app.use((err, req, res, next) => {
   }
   res.status(500).json({ error: err.message || 'Internal server error' });
 });
-
-// â”€â”€â”€ START â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── START ────────────────────────────────────────────────────────────────────
+ 
 app.listen(PORT, () => {
   console.log('');
-  console.log('â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—');
-  console.log('â•‘        AgriGuard AI is running!          â•‘');
-  console.log('â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£');
-  console.log(`â•‘  URL:      http://localhost:${PORT}          â•‘`);
-  console.log(`â•‘  Provider: ${PROVIDER.padEnd(30)} â•‘`);
-  console.log('â• â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•£');
-  console.log('â•‘  Press Ctrl+C to stop                    â•‘');
-  console.log('â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+  console.log('╔══════════════════════════════════════════╗');
+  console.log('║        AgriGuard AI is running!          ║');
+  console.log('╠══════════════════════════════════════════╣');
+  console.log(`║  URL:      http://localhost:${PORT}          ║`);
+  console.log(`║  Provider: ${PROVIDER.padEnd(30)} ║`);
+  console.log('╠══════════════════════════════════════════╣');
+  console.log('║  Press Ctrl+C to stop                    ║');
+  console.log('╚══════════════════════════════════════════╝');
   console.log('');
-
+ 
   // Warn if no API key configured
   const keyMap = {
     gemini: process.env.GEMINI_API_KEY,
@@ -100,15 +103,15 @@ app.listen(PORT, () => {
   };
   const activeKey = keyMap[PROVIDER];
   if (!activeKey || activeKey.startsWith('paste_your')) {
-    console.warn(`âš ï¸  WARNING: ${PROVIDER.toUpperCase()} API key not configured in .env`);
+    console.warn(`⚠️  WARNING: ${PROVIDER.toUpperCase()} API key not configured in .env`);
     console.warn('   AI features will not work until you add your key.');
     console.warn('   Get a free Gemini key at: https://aistudio.google.com');
     console.warn('');
   } else {
-    console.log(`âœ… AI Provider: ${PROVIDER} (key configured)`);
+    console.log(`✅ AI Provider: ${PROVIDER} (key configured)`);
   const jwtSecret = process.env.JWT_SECRET;
   if (!jwtSecret) {
-    console.warn('âš ï¸  JWT_SECRET not set in .env â€” using default (set one for production)');
+    console.warn('⚠️  JWT_SECRET not set in .env — using default (set one for production)');
   }
   }
 });

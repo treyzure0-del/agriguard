@@ -69,38 +69,6 @@ db.exec(`
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );
  
-  CREATE TABLE IF NOT EXISTS posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    author_name TEXT NOT NULL,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL,
-    category TEXT DEFAULT 'general',
-    image_url TEXT DEFAULT NULL,
-    likes INTEGER DEFAULT 0,
-    timestamp TEXT DEFAULT (datetime('now')),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-  );
- 
-  CREATE TABLE IF NOT EXISTS post_likes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
-    UNIQUE(post_id, user_id),
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-  );
- 
-  CREATE TABLE IF NOT EXISTS comments (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
-    author_name TEXT NOT NULL,
-    content TEXT NOT NULL,
-    timestamp TEXT DEFAULT (datetime('now')),
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-  );
 `);
  
 // Seed demo data if table is empty
@@ -453,77 +421,10 @@ function getUserChatHistory(userId, limit = 100) {
   ).all(userId, limit);
 }
  
-// ─── COMMUNITY FUNCTIONS ─────────────────────────────────────────────────────
- 
-function createPost(data) {
-  const stmt = db.prepare(
-    'INSERT INTO posts (user_id, author_name, title, content, category, image_url) VALUES (?, ?, ?, ?, ?, ?)'
-  );
-  const result = stmt.run(
-    data.user_id, data.author_name, data.title, data.content,
-    data.category || 'general', data.image_url || null
-  );
-  return getPostById(result.lastInsertRowid);
-}
- 
-function getPostById(id) {
-  const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(id);
-  if (!post) return null;
-  post.comment_count = db.prepare('SELECT COUNT(*) as c FROM comments WHERE post_id = ?').get(id).c;
-  return post;
-}
- 
-function getAllPosts(limit = 50) {
-  const posts = db.prepare('SELECT * FROM posts ORDER BY timestamp DESC LIMIT ?').all(limit);
-  return posts.map(p => ({
-    ...p,
-    comment_count: db.prepare('SELECT COUNT(*) as c FROM comments WHERE post_id = ?').get(p.id).c
-  }));
-}
- 
-function toggleLike(postId, userId) {
-  const existing = db.prepare('SELECT id FROM post_likes WHERE post_id = ? AND user_id = ?').get(postId, userId);
-  if (existing) {
-    db.prepare('DELETE FROM post_likes WHERE post_id = ? AND user_id = ?').run(postId, userId);
-    db.prepare('UPDATE posts SET likes = MAX(0, likes - 1) WHERE id = ?').run(postId);
-    return { liked: false };
-  } else {
-    db.prepare('INSERT INTO post_likes (post_id, user_id) VALUES (?, ?)').run(postId, userId);
-    db.prepare('UPDATE posts SET likes = likes + 1 WHERE id = ?').run(postId);
-    return { liked: true };
-  }
-}
- 
-function hasLiked(postId, userId) {
-  return !!db.prepare('SELECT id FROM post_likes WHERE post_id = ? AND user_id = ?').get(postId, userId);
-}
- 
-function addComment(data) {
-  const stmt = db.prepare(
-    'INSERT INTO comments (post_id, user_id, author_name, content) VALUES (?, ?, ?, ?)'
-  );
-  const result = stmt.run(data.post_id, data.user_id, data.author_name, data.content);
-  return db.prepare('SELECT * FROM comments WHERE id = ?').get(result.lastInsertRowid);
-}
- 
-function getComments(postId) {
-  return db.prepare('SELECT * FROM comments WHERE post_id = ? ORDER BY timestamp ASC').all(postId);
-}
- 
-function deletePost(postId, userId) {
-  const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(postId);
-  if (!post) return false;
-  if (post.user_id !== userId) return false;
-  db.prepare('DELETE FROM posts WHERE id = ?').run(postId);
-  return true;
-}
  
 module.exports = {
   saveReport, getAllReports, checkOutbreak,
   saveHealthLog, getHealthHistory, savePestReport,
   createUser, findUserByEmail, findUserById,
-  saveChatMessage, getUserChatHistory,
-  createPost, getAllPosts, getPostById, toggleLike, hasLiked,
-  addComment, getComments, deletePost
+  saveChatMessage, getUserChatHistory
 };
- 

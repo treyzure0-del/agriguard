@@ -1,12 +1,12 @@
 const Database = require('better-sqlite3');
 const path = require('path');
-
+ 
 const dbPath = process.env.DATABASE_PATH || './agriguard.db';
 const db = new Database(path.resolve(dbPath));
-
+ 
 // Enable WAL mode for better performance
 db.pragma('journal_mode = WAL');
-
+ 
 // Create tables
 db.exec(`
   CREATE TABLE IF NOT EXISTS disease_reports (
@@ -27,7 +27,7 @@ db.exec(`
     timestamp TEXT DEFAULT (datetime('now')),
     is_demo INTEGER DEFAULT 0
   );
-
+ 
   CREATE TABLE IF NOT EXISTS health_logs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     crop_type TEXT NOT NULL,
@@ -35,7 +35,7 @@ db.exec(`
     notes TEXT,
     timestamp TEXT DEFAULT (datetime('now'))
   );
-
+ 
   CREATE TABLE IF NOT EXISTS pest_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     pest_name TEXT NOT NULL,
@@ -51,7 +51,7 @@ db.exec(`
     location_name TEXT,
     timestamp TEXT DEFAULT (datetime('now'))
   );
-
+ 
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -59,7 +59,7 @@ db.exec(`
     password_hash TEXT NOT NULL,
     created_at TEXT DEFAULT (datetime('now'))
   );
-
+ 
   CREATE TABLE IF NOT EXISTS chat_history (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
@@ -68,8 +68,41 @@ db.exec(`
     timestamp TEXT DEFAULT (datetime('now')),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );
+ 
+  CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    author_name TEXT NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    category TEXT DEFAULT 'general',
+    image_url TEXT DEFAULT NULL,
+    likes INTEGER DEFAULT 0,
+    timestamp TEXT DEFAULT (datetime('now')),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+ 
+  CREATE TABLE IF NOT EXISTS post_likes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    UNIQUE(post_id, user_id),
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+ 
+  CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    author_name TEXT NOT NULL,
+    content TEXT NOT NULL,
+    timestamp TEXT DEFAULT (datetime('now')),
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
 `);
-
+ 
 // Seed demo data if table is empty
 const existingCount = db.prepare('SELECT COUNT(*) as count FROM disease_reports').get();
 if (existingCount.count === 0) {
@@ -78,7 +111,7 @@ if (existingCount.count === 0) {
     (crop_type, disease_name, confidence, health_score, severity, explanation, treatment, prevention_tips, issues, latitude, longitude, location_name, is_demo)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
   `);
-
+ 
   const demoReports = [
     {
       crop_type: 'Maize',
@@ -249,7 +282,7 @@ if (existingCount.count === 0) {
       location_name: 'Lira, Uganda'
     }
   ];
-
+ 
   const insertMany = db.transaction((reports) => {
     for (const r of reports) {
       insertDemo.run(
@@ -259,13 +292,13 @@ if (existingCount.count === 0) {
       );
     }
   });
-
+ 
   insertMany(demoReports);
   console.log(`[DB] Seeded ${demoReports.length} demo disease reports`);
 }
-
-// â”€â”€â”€ FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── FUNCTIONS ───────────────────────────────────────────────────────────────
+ 
 function saveReport(data) {
   const stmt = db.prepare(`
     INSERT INTO disease_reports 
@@ -289,7 +322,7 @@ function saveReport(data) {
   );
   return result.lastInsertRowid;
 }
-
+ 
 function getAllReports() {
   const rows = db.prepare('SELECT * FROM disease_reports ORDER BY timestamp DESC').all();
   return rows.map(row => ({
@@ -298,17 +331,17 @@ function getAllReports() {
     issues: safeParseJSON(row.issues, [])
   }));
 }
-
+ 
 function checkOutbreak(lat, lng, disease, radius = 50) {
   const allReports = db.prepare(
     `SELECT * FROM disease_reports WHERE disease_name LIKE ? AND latitude IS NOT NULL AND longitude IS NOT NULL`
   ).all(`%${disease}%`);
-
+ 
   const nearby = allReports.filter(r => {
     const dist = haversine(lat, lng, r.latitude, r.longitude);
     return dist <= radius;
   });
-
+ 
   return {
     outbreak: nearby.length >= 3,
     count: nearby.length,
@@ -319,7 +352,7 @@ function checkOutbreak(lat, lng, disease, radius = 50) {
     }))
   };
 }
-
+ 
 function saveHealthLog(data) {
   const stmt = db.prepare(
     'INSERT INTO health_logs (crop_type, health_score, notes) VALUES (?, ?, ?)'
@@ -327,7 +360,7 @@ function saveHealthLog(data) {
   const result = stmt.run(data.crop_type || 'Unknown', data.health_score || 50, data.notes || '');
   return result.lastInsertRowid;
 }
-
+ 
 function getHealthHistory(cropType, limit = 30) {
   let query = 'SELECT * FROM health_logs ORDER BY timestamp DESC LIMIT ?';
   let params = [limit];
@@ -337,7 +370,7 @@ function getHealthHistory(cropType, limit = 30) {
   }
   return db.prepare(query).all(...params);
 }
-
+ 
 function savePestReport(data) {
   const stmt = db.prepare(`
     INSERT INTO pest_reports
@@ -359,9 +392,9 @@ function savePestReport(data) {
   );
   return result.lastInsertRowid;
 }
-
-// â”€â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+ 
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371; // km
   const dLat = toRad(lat2 - lat1);
@@ -373,11 +406,11 @@ function haversine(lat1, lon1, lat2, lon2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
-
+ 
 function toRad(deg) {
   return deg * (Math.PI / 180);
 }
-
+ 
 function safeParseJSON(str, fallback) {
   try {
     return str ? JSON.parse(str) : fallback;
@@ -385,9 +418,9 @@ function safeParseJSON(str, fallback) {
     return fallback;
   }
 }
-
-// â”€â”€â”€ USER FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── USER FUNCTIONS ──────────────────────────────────────────────────────────
+ 
 function createUser(data) {
   const stmt = db.prepare(
     'INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)'
@@ -395,17 +428,17 @@ function createUser(data) {
   const result = stmt.run(data.name, data.email, data.passwordHash);
   return { id: result.lastInsertRowid, name: data.name, email: data.email };
 }
-
+ 
 function findUserByEmail(email) {
   return db.prepare('SELECT * FROM users WHERE email = ?').get(email) || null;
 }
-
+ 
 function findUserById(id) {
   return db.prepare('SELECT * FROM users WHERE id = ?').get(id) || null;
 }
-
-// â”€â”€â”€ CHAT HISTORY FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
+ 
+// ─── CHAT HISTORY FUNCTIONS ───────────────────────────────────────────────────
+ 
 function saveChatMessage(userId, role, content) {
   const stmt = db.prepare(
     'INSERT INTO chat_history (user_id, role, content) VALUES (?, ?, ?)'
@@ -413,16 +446,84 @@ function saveChatMessage(userId, role, content) {
   const result = stmt.run(userId, role, content);
   return result.lastInsertRowid;
 }
-
+ 
 function getUserChatHistory(userId, limit = 100) {
   return db.prepare(
     'SELECT * FROM chat_history WHERE user_id = ? ORDER BY timestamp ASC LIMIT ?'
   ).all(userId, limit);
 }
-
+ 
+// ─── COMMUNITY FUNCTIONS ─────────────────────────────────────────────────────
+ 
+function createPost(data) {
+  const stmt = db.prepare(
+    'INSERT INTO posts (user_id, author_name, title, content, category, image_url) VALUES (?, ?, ?, ?, ?, ?)'
+  );
+  const result = stmt.run(
+    data.user_id, data.author_name, data.title, data.content,
+    data.category || 'general', data.image_url || null
+  );
+  return getPostById(result.lastInsertRowid);
+}
+ 
+function getPostById(id) {
+  const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(id);
+  if (!post) return null;
+  post.comment_count = db.prepare('SELECT COUNT(*) as c FROM comments WHERE post_id = ?').get(id).c;
+  return post;
+}
+ 
+function getAllPosts(limit = 50) {
+  const posts = db.prepare('SELECT * FROM posts ORDER BY timestamp DESC LIMIT ?').all(limit);
+  return posts.map(p => ({
+    ...p,
+    comment_count: db.prepare('SELECT COUNT(*) as c FROM comments WHERE post_id = ?').get(p.id).c
+  }));
+}
+ 
+function toggleLike(postId, userId) {
+  const existing = db.prepare('SELECT id FROM post_likes WHERE post_id = ? AND user_id = ?').get(postId, userId);
+  if (existing) {
+    db.prepare('DELETE FROM post_likes WHERE post_id = ? AND user_id = ?').run(postId, userId);
+    db.prepare('UPDATE posts SET likes = MAX(0, likes - 1) WHERE id = ?').run(postId);
+    return { liked: false };
+  } else {
+    db.prepare('INSERT INTO post_likes (post_id, user_id) VALUES (?, ?)').run(postId, userId);
+    db.prepare('UPDATE posts SET likes = likes + 1 WHERE id = ?').run(postId);
+    return { liked: true };
+  }
+}
+ 
+function hasLiked(postId, userId) {
+  return !!db.prepare('SELECT id FROM post_likes WHERE post_id = ? AND user_id = ?').get(postId, userId);
+}
+ 
+function addComment(data) {
+  const stmt = db.prepare(
+    'INSERT INTO comments (post_id, user_id, author_name, content) VALUES (?, ?, ?, ?)'
+  );
+  const result = stmt.run(data.post_id, data.user_id, data.author_name, data.content);
+  return db.prepare('SELECT * FROM comments WHERE id = ?').get(result.lastInsertRowid);
+}
+ 
+function getComments(postId) {
+  return db.prepare('SELECT * FROM comments WHERE post_id = ? ORDER BY timestamp ASC').all(postId);
+}
+ 
+function deletePost(postId, userId) {
+  const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(postId);
+  if (!post) return false;
+  if (post.user_id !== userId) return false;
+  db.prepare('DELETE FROM posts WHERE id = ?').run(postId);
+  return true;
+}
+ 
 module.exports = {
   saveReport, getAllReports, checkOutbreak,
   saveHealthLog, getHealthHistory, savePestReport,
   createUser, findUserByEmail, findUserById,
-  saveChatMessage, getUserChatHistory
+  saveChatMessage, getUserChatHistory,
+  createPost, getAllPosts, getPostById, toggleLike, hasLiked,
+  addComment, getComments, deletePost
 };
+ 

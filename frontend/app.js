@@ -1,3 +1,6 @@
+ JS
+Copy
+
 /* =========================================================
    AgriGuard AI — Frontend Application
    ========================================================= */
@@ -6,6 +9,8 @@
  
 // ─── SECTION 1: STATE ────────────────────────────────────────────────────────
  
+let currentUser = null;
+let authToken = null;
 let selectedCrop = 'Maize';
 let conversationHistory = [];
 let scanHistory = [];
@@ -1036,10 +1041,6 @@ document.addEventListener('DOMContentLoaded', () => {
    SECTION 11: AUTH — Slide-in Panel, Advisor Lock
    ========================================================= */
  
-// ─── STATE ────────────────────────────────────────────────
-let currentUser = null;
-let authToken = null;
- 
 // ─── STORAGE ──────────────────────────────────────────────
 function loadAuth() {
   try {
@@ -1388,3 +1389,4 @@ document.addEventListener('keydown', e => {
 document.addEventListener('DOMContentLoaded', () => {
   loadAuth();
   updateAuthUI();
+});

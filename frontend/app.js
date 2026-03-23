@@ -1,3 +1,6 @@
+
+Copy
+
 /* =========================================================
    AgriGuard AI — Frontend Application
    ========================================================= */
@@ -1390,3 +1393,469 @@ document.addEventListener('DOMContentLoaded', () => {
   updateAuthUI();
 });
  
+/* =========================================================
+   SECTION 12: COMMUNITY — Posts, Likes, Comments
+   ========================================================= */
+ 
+// ─── STATE ────────────────────────────────────────────────
+let allPosts = [];
+let activeFilter = 'all';
+let currentPostImage = null;
+ 
+const CATEGORY_ICONS = {
+  general: '💬', disease: '🦠', pest: '🐛',
+  soil: '🌱', harvest: '🌾', weather: '🌦️', market: '💰'
+};
+ 
+// ─── LOAD POSTS ───────────────────────────────────────────
+async function loadCommunityPosts() {
+  const feed = document.getElementById('communityFeed');
+  if (!feed) return;
+ 
+  try {
+    const headers = {};
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+ 
+    const res = await fetch('/api/community/posts', { headers });
+    if (!res.ok) throw new Error('Failed to fetch posts');
+    allPosts = await res.json();
+    renderPosts(allPosts);
+  } catch (err) {
+    console.error('[community] Load posts failed:', err.message);
+    if (feed) feed.innerHTML = `
+      <div class="community-empty">
+        <span class="community-empty-icon">⚠️</span>
+        <h3>Could not load posts</h3>
+        <p>Check your connection and try again.</p>
+      </div>`;
+  }
+}
+ 
+// ─── RENDER POSTS ─────────────────────────────────────────
+function renderPosts(posts) {
+  const feed = document.getElementById('communityFeed');
+  if (!feed) return;
+ 
+  const filtered = activeFilter === 'all'
+    ? posts
+    : posts.filter(p => p.category === activeFilter);
+ 
+  if (filtered.length === 0) {
+    feed.innerHTML = `
+      <div class="community-empty">
+        <span class="community-empty-icon">🌱</span>
+        <h3>${activeFilter === 'all' ? 'No posts yet' : 'No posts in this category'}</h3>
+        <p>${currentUser ? 'Be the first to share something with the community!' : 'Sign in to be the first to post!'}</p>
+        ${currentUser ? '<button class="btn btn-primary" onclick="openNewPostForm()">✏️ Write First Post</button>' : ''}
+      </div>`;
+    return;
+  }
+ 
+  feed.innerHTML = '';
+  filtered.forEach(post => {
+    feed.appendChild(createPostCard(post));
+  });
+}
+ 
+// ─── CREATE POST CARD ─────────────────────────────────────
+function createPostCard(post) {
+  const card = document.createElement('div');
+  card.className = 'post-card';
+  card.id = `post-${post.id}`;
+ 
+  const initial = (post.author_name || 'F').charAt(0).toUpperCase();
+  const catIcon = CATEGORY_ICONS[post.category] || '💬';
+  const isOwner = currentUser && currentUser.id === post.user_id;
+  const liked = post.liked_by_me;
+ 
+  card.innerHTML = `
+    ${post.image_url ? `<img class="post-image" src="${post.image_url}" alt="Post image" onclick="openLightbox('${post.image_url}')"/>` : ''}
+    <div class="post-header">
+      <div class="post-author-info">
+        <div class="post-avatar">${initial}</div>
+        <div>
+          <div class="post-author-name">${escapeHtml(post.author_name)}</div>
+          <div class="post-meta">
+            <span class="post-category-tag">${catIcon} ${post.category}</span>
+            <span>${formatTimeAgo(post.timestamp)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post-title">${escapeHtml(post.title)}</div>
+    <div class="post-content truncated" id="content-${post.id}">${escapeHtml(post.content)}</div>
+    ${post.content.length > 280 ? `
+      <button class="post-action-btn" style="margin-bottom:12px;font-size:12px"
+        onclick="togglePostExpand(${post.id})">
+        <span id="expand-label-${post.id}">Read more ↓</span>
+      </button>` : ''}
+    <div class="post-actions">
+      <button class="post-action-btn ${liked ? 'liked' : ''}" id="like-btn-${post.id}"
+        onclick="handleLike(${post.id})">
+        <span class="like-icon">${liked ? '❤️' : '🤍'}</span>
+        <span id="like-count-${post.id}">${post.likes}</span>
+      </button>
+      <button class="post-action-btn" onclick="toggleComments(${post.id})">
+        💬 <span id="comment-count-${post.id}">${post.comment_count}</span> comments
+      </button>
+      ${isOwner ? `<button class="post-delete-btn" onclick="handleDeletePost(${post.id})">🗑️ Delete</button>` : ''}
+    </div>
+    <div class="comments-section" id="comments-${post.id}">
+      <div class="comment-list" id="comment-list-${post.id}"></div>
+      ${currentUser ? `
+        <div class="comment-input-row">
+          <textarea class="comment-input" id="comment-input-${post.id}"
+            placeholder="Write a comment..." rows="1"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitComment(${post.id})}"></textarea>
+          <button class="comment-submit-btn" onclick="submitComment(${post.id})">➤</button>
+        </div>` : `
+        <p style="font-size:13px;color:var(--text-secondary);text-align:center;padding:8px 0">
+          <a onclick="openAuthPanel('login')" style="color:var(--lime);cursor:pointer;font-weight:600">Sign in</a> to comment
+        </p>`}
+    </div>
+  `;
+ 
+  return card;
+}
+ 
+// ─── TOGGLE EXPAND ────────────────────────────────────────
+function togglePostExpand(postId) {
+  const content = document.getElementById(`content-${postId}`);
+  const label = document.getElementById(`expand-label-${postId}`);
+  if (!content) return;
+  if (content.classList.contains('truncated')) {
+    content.classList.remove('truncated');
+    if (label) label.textContent = 'Show less ↑';
+  } else {
+    content.classList.add('truncated');
+    if (label) label.textContent = 'Read more ↓';
+  }
+}
+ 
+// ─── FILTER POSTS ─────────────────────────────────────────
+function filterPosts(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.community-filter').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderPosts(allPosts);
+}
+ 
+// ─── NEW POST FORM ────────────────────────────────────────
+function openNewPostForm() {
+  if (!currentUser) {
+    const lock = document.getElementById('communityLock');
+    const form = document.getElementById('newPostForm');
+    if (lock) lock.style.display = 'block';
+    if (form) form.style.display = 'none';
+    return;
+  }
+  const form = document.getElementById('newPostForm');
+  const lock = document.getElementById('communityLock');
+  if (form) {
+    form.style.display = 'block';
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  if (lock) lock.style.display = 'none';
+}
+ 
+function closeNewPostForm() {
+  const form = document.getElementById('newPostForm');
+  const lock = document.getElementById('communityLock');
+  if (form) form.style.display = 'none';
+  if (lock) lock.style.display = 'none';
+}
+ 
+function closeCommunityLock() {
+  const lock = document.getElementById('communityLock');
+  if (lock) lock.style.display = 'none';
+}
+ 
+// ─── SUBMIT POST ──────────────────────────────────────────
+async function submitPost() {
+  if (!currentUser) { openAuthPanel('login'); return; }
+ 
+  const title = document.getElementById('postTitle')?.value?.trim();
+  const content = document.getElementById('postContent')?.value?.trim();
+  const category = document.getElementById('postCategory')?.value || 'general';
+ 
+  if (!title) { showPostError('Post title is required'); return; }
+  if (!content) { showPostError('Please write something in your post'); return; }
+ 
+  const btn = document.getElementById('submitPostBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Posting...'; }
+ 
+  try {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('category', category);
+    if (currentPostImage) formData.append('image', currentPostImage);
+ 
+    const res = await fetch('/api/community/posts', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${authToken}` },
+      body: formData
+    });
+ 
+    const data = await res.json();
+    if (!res.ok) { showPostError(data.error || 'Failed to post'); return; }
+ 
+    allPosts.unshift(data);
+    renderPosts(allPosts);
+ 
+    // Clear form and image
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postContent').value = '';
+    document.getElementById('postCharCount').textContent = '0';
+    clearPostImage();
+    closeNewPostForm();
+    showSuccess('Post shared with the community! 🌍');
+ 
+  } catch (err) {
+    showPostError('Network error. Please try again.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🌍 Share Post'; }
+  }
+}
+ 
+// ─── POST IMAGE HANDLING ──────────────────────────────────
+function handlePostImageSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showPostError('Please select an image file'); return; }
+  if (file.size > 8 * 1024 * 1024) { showPostError('Image must be under 8MB'); return; }
+ 
+  currentPostImage = file;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const area = document.getElementById('postImagePreviewArea');
+    const uploadZone = document.getElementById('postImageUpload');
+    if (area) {
+      area.innerHTML = `
+        <img class="post-image-preview-img" src="${e.target.result}" alt="Preview"/>
+        <button class="post-image-remove" onclick="clearPostImage();event.stopPropagation()">✕ Remove photo</button>
+      `;
+    }
+    if (uploadZone) uploadZone.classList.add('has-image');
+  };
+  reader.readAsDataURL(file);
+}
+ 
+function clearPostImage() {
+  currentPostImage = null;
+  const area = document.getElementById('postImagePreviewArea');
+  const uploadZone = document.getElementById('postImageUpload');
+  const input = document.getElementById('postImageInput');
+  if (area) area.innerHTML = `<span style="font-size:28px">📸</span><span style="font-size:13px;color:var(--text-secondary);margin-top:6px">Click to add a photo</span>`;
+  if (uploadZone) uploadZone.classList.remove('has-image');
+  if (input) input.value = '';
+}
+ 
+// ─── LIGHTBOX ─────────────────────────────────────────────
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  if (lb && img) { img.src = src; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+ 
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (lb) { lb.classList.remove('open'); document.body.style.overflow = ''; }
+}
+ 
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+ 
+function showPostError(msg) {
+  const el = document.getElementById('postError');
+  if (el) { el.textContent = msg; el.classList.add('visible'); }
+}
+ 
+// ─── LIKE ─────────────────────────────────────────────────
+async function handleLike(postId) {
+  if (!currentUser) { openAuthPanel('login'); showToast('⚠️ Sign in to like posts', 'error'); return; }
+ 
+  const btn = document.getElementById(`like-btn-${postId}`);
+  const countEl = document.getElementById(`like-count-${postId}`);
+  const isLiked = btn?.classList.contains('liked');
+ 
+  // Optimistic UI update
+  if (btn) {
+    btn.classList.toggle('liked');
+    btn.querySelector('.like-icon').textContent = isLiked ? '🤍' : '❤️';
+  }
+  if (countEl) countEl.textContent = parseInt(countEl.textContent) + (isLiked ? -1 : 1);
+ 
+  try {
+    const res = await fetch(`/api/community/posts/${postId}/like`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    // Sync with server count
+    if (countEl) countEl.textContent = data.likes;
+    if (btn) btn.querySelector('.like-icon').textContent = data.liked ? '❤️' : '🤍';
+    // Update local state
+    const post = allPosts.find(p => p.id === postId);
+    if (post) { post.likes = data.likes; post.liked_by_me = data.liked; }
+  } catch {
+    // Revert optimistic update on failure
+    if (btn) {
+      btn.classList.toggle('liked');
+      btn.querySelector('.like-icon').textContent = isLiked ? '❤️' : '🤍';
+    }
+    if (countEl) countEl.textContent = parseInt(countEl.textContent) + (isLiked ? 1 : -1);
+  }
+}
+ 
+// ─── COMMENTS ─────────────────────────────────────────────
+async function toggleComments(postId) {
+  const section = document.getElementById(`comments-${postId}`);
+  if (!section) return;
+ 
+  const isOpen = section.classList.contains('open');
+  if (isOpen) {
+    section.classList.remove('open');
+    return;
+  }
+ 
+  section.classList.add('open');
+  await loadComments(postId);
+}
+ 
+async function loadComments(postId) {
+  const list = document.getElementById(`comment-list-${postId}`);
+  if (!list) return;
+ 
+  list.innerHTML = '<p style="color:var(--text-secondary);font-size:13px;padding:8px 0">Loading comments...</p>';
+ 
+  try {
+    const res = await fetch(`/api/community/posts/${postId}/comments`);
+    const comments = await res.json();
+ 
+    if (comments.length === 0) {
+      list.innerHTML = '<p style="color:var(--text-secondary);font-size:13px;text-align:center;padding:10px 0">No comments yet. Be the first!</p>';
+      return;
+    }
+ 
+    list.innerHTML = '';
+    comments.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'comment-item';
+      item.innerHTML = `
+        <div class="comment-avatar">${(c.author_name || 'F').charAt(0).toUpperCase()}</div>
+        <div class="comment-body">
+          <div class="comment-author">${escapeHtml(c.author_name)}</div>
+          <div class="comment-text">${escapeHtml(c.content)}</div>
+          <div class="comment-time">${formatTimeAgo(c.timestamp)}</div>
+        </div>
+      `;
+      list.appendChild(item);
+    });
+    list.scrollTop = list.scrollHeight;
+  } catch {
+    list.innerHTML = '<p style="color:var(--text-secondary);font-size:13px;padding:8px 0">Could not load comments.</p>';
+  }
+}
+ 
+async function submitComment(postId) {
+  if (!currentUser) { openAuthPanel('login'); return; }
+ 
+  const input = document.getElementById(`comment-input-${postId}`);
+  const content = input?.value?.trim();
+  if (!content) return;
+ 
+  input.value = '';
+  input.style.height = 'auto';
+ 
+  try {
+    const res = await fetch(`/api/community/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: JSON.stringify({ content })
+    });
+ 
+    if (!res.ok) return;
+    const comment = await res.json();
+ 
+    // Add comment to list
+    const list = document.getElementById(`comment-list-${postId}`);
+    if (list) {
+      const noComments = list.querySelector('p');
+      if (noComments) list.innerHTML = '';
+ 
+      const item = document.createElement('div');
+      item.className = 'comment-item';
+      item.innerHTML = `
+        <div class="comment-avatar">${(comment.author_name || 'F').charAt(0).toUpperCase()}</div>
+        <div class="comment-body">
+          <div class="comment-author">${escapeHtml(comment.author_name)}</div>
+          <div class="comment-text">${escapeHtml(comment.content)}</div>
+          <div class="comment-time">Just now</div>
+        </div>
+      `;
+      list.appendChild(item);
+      list.scrollTop = list.scrollHeight;
+    }
+ 
+    // Update comment count
+    const countEl = document.getElementById(`comment-count-${postId}`);
+    if (countEl) countEl.textContent = parseInt(countEl.textContent) + 1;
+    const post = allPosts.find(p => p.id === postId);
+    if (post) post.comment_count = (post.comment_count || 0) + 1;
+ 
+  } catch (err) {
+    console.error('[community] Submit comment failed:', err.message);
+  }
+}
+ 
+// ─── DELETE POST ──────────────────────────────────────────
+async function handleDeletePost(postId) {
+  if (!currentUser) return;
+  if (!confirm('Delete this post? This cannot be undone.')) return;
+ 
+  try {
+    const res = await fetch(`/api/community/posts/${postId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+ 
+    if (!res.ok) { showError('Could not delete post'); return; }
+ 
+    allPosts = allPosts.filter(p => p.id !== postId);
+    const card = document.getElementById(`post-${postId}`);
+    if (card) {
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.95)';
+      card.style.transition = 'all 0.3s ease';
+      setTimeout(() => card.remove(), 300);
+    }
+    showSuccess('Post deleted');
+  } catch {
+    showError('Failed to delete post');
+  }
+}
+ 
+// ─── CHAR COUNT ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const postContent = document.getElementById('postContent');
+  const charCount = document.getElementById('postCharCount');
+  if (postContent && charCount) {
+    postContent.addEventListener('input', () => {
+      charCount.textContent = postContent.value.length;
+      charCount.style.color = postContent.value.length > 1800 ? 'var(--amber)' : 'var(--text-secondary)';
+    });
+  }
+});
+ 
+// ─── LOAD WHEN PAGE SHOWN ─────────────────────────────────
+const _originalShowPage = showPage;
+showPage = function(name) {
+  _originalShowPage(name);
+  if (name === 'community') {
+    loadCommunityPosts();
+  }
+};

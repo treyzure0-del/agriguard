@@ -36,6 +36,7 @@
     <li><a href="#" data-page="pest">🐛 Pests</a></li>
     <li><a href="#" data-page="map">🗺️ Map</a></li>
     <li><a href="#" data-page="dashboard">📊 Dashboard</a></li>
+    <li><a href="#" data-page="community">🌍 Community</a></li>
   </ul>
   <div class="navbar-right">
     <div class="navbar-badge">AI Online</div>
@@ -73,6 +74,7 @@
     <button class="mobile-nav-item" data-page="pest"><span class="nav-icon">🐛</span>Pests</button>
     <button class="mobile-nav-item" data-page="map"><span class="nav-icon">🗺️</span>Map</button>
     <button class="mobile-nav-item" data-page="dashboard"><span class="nav-icon">📊</span>Stats</button>
+    <button class="mobile-nav-item" data-page="community"><span class="nav-icon">🌍</span>Community</button>
   </div>
 </div>
  
@@ -756,6 +758,97 @@
   </div>
 </div>
  
+<!-- ═══════════════════════════════════════════════════
+     PAGE: COMMUNITY
+═══════════════════════════════════════════════════ -->
+<div id="page-community" class="page">
+  <div class="container">
+    <div class="page-hero">
+      <div class="flex-between">
+        <div>
+          <h1>🌍 Farmer Community</h1>
+          <p>Share tips, ask questions, and connect with East African farmers</p>
+        </div>
+        <button class="btn btn-primary" id="newPostBtn" onclick="openNewPostForm()">✏️ New Post</button>
+      </div>
+    </div>
+ 
+    <!-- Category Filter -->
+    <div class="community-filters" id="communityFilters">
+      <button class="community-filter active" data-cat="all" onclick="filterPosts('all', this)">All Posts</button>
+      <button class="community-filter" data-cat="disease" onclick="filterPosts('disease', this)">🦠 Disease</button>
+      <button class="community-filter" data-cat="pest" onclick="filterPosts('pest', this)">🐛 Pests</button>
+      <button class="community-filter" data-cat="soil" onclick="filterPosts('soil', this)">🌱 Soil</button>
+      <button class="community-filter" data-cat="harvest" onclick="filterPosts('harvest', this)">🌾 Harvest</button>
+      <button class="community-filter" data-cat="weather" onclick="filterPosts('weather', this)">🌦️ Weather</button>
+      <button class="community-filter" data-cat="market" onclick="filterPosts('market', this)">💰 Market</button>
+    </div>
+ 
+    <!-- New Post Form (hidden by default) -->
+    <div class="new-post-form card" id="newPostForm" style="display:none">
+      <div class="flex-between mb-16">
+        <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">✏️ Share with the Community</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeNewPostForm()">✕ Cancel</button>
+      </div>
+      <div class="auth-field">
+        <label>Post Title</label>
+        <input type="text" id="postTitle" placeholder="e.g. How I beat Fall Armyworm organically..." maxlength="150"/>
+      </div>
+      <div class="auth-field">
+        <label>Category</label>
+        <select id="postCategory" class="post-category-select">
+          <option value="general">💬 General</option>
+          <option value="disease">🦠 Disease</option>
+          <option value="pest">🐛 Pest</option>
+          <option value="soil">🌱 Soil</option>
+          <option value="harvest">🌾 Harvest</option>
+          <option value="weather">🌦️ Weather</option>
+          <option value="market">💰 Market</option>
+        </select>
+      </div>
+      <div class="auth-field">
+        <label>Your Message <span style="font-size:11px;opacity:0.6">(max 2000 characters)</span></label>
+        <textarea id="postContent" class="post-textarea" placeholder="Share your farming experience, ask a question, or give advice to fellow farmers..." maxlength="2000" rows="5"></textarea>
+        <div class="post-char-count"><span id="postCharCount">0</span>/2000</div>
+      </div>
+      <div class="auth-field">
+        <label>📷 Add a Photo <span style="font-size:11px;opacity:0.6">(optional · max 8MB)</span></label>
+        <div class="post-image-upload" id="postImageUpload" onclick="document.getElementById('postImageInput').click()">
+          <input type="file" id="postImageInput" accept="image/*" style="display:none" onchange="handlePostImageSelect(event)"/>
+          <div id="postImagePreviewArea">
+            <span style="font-size:28px">📸</span>
+            <span style="font-size:13px;color:var(--text-secondary);margin-top:6px">Click to add a photo</span>
+          </div>
+        </div>
+      </div>
+      <div class="auth-error" id="postError"></div>
+      <button class="btn btn-primary" id="submitPostBtn" onclick="submitPost()">🌍 Share Post</button>
+    </div>
+ 
+    <!-- Lock screen for logged-out users trying to post -->
+    <div class="community-lock" id="communityLock" style="display:none">
+      <div class="community-lock-inner">
+        <div style="font-size:40px;margin-bottom:14px">🌍</div>
+        <h3>Sign in to post</h3>
+        <p>Create a free account to share tips and ask questions with the farming community.</p>
+        <button class="btn btn-primary" onclick="openAuthPanel('signup');closeCommunityLock()">Create Free Account</button>
+      </div>
+    </div>
+ 
+    <!-- Posts Feed -->
+    <div id="communityFeed">
+      <div class="community-loading">
+        <div class="scan-rings" style="width:60px;height:60px">
+          <div class="scan-ring ring-1" style="width:60px;height:60px"></div>
+          <div class="scan-ring ring-2" style="width:44px;height:44px"></div>
+        </div>
+        <p style="color:var(--text-secondary);margin-top:16px">Loading posts...</p>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
 <!-- ═══ SLIDE-IN AUTH PANEL ═══ -->
 <div class="auth-panel-backdrop" id="authBackdrop" onclick="closeAuthPanel()"></div>
  
@@ -823,6 +916,12 @@
       <p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px 0">Loading...</p>
     </div>
   </div>
+</div>
+ 
+<!-- Image Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="Post image" onclick="event.stopPropagation()"/>
 </div>
  
 <!-- App JS -->

@@ -3,39 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AgriGuard AI â€” Smart Crop Protection Platform for East African Farmers" />
+  <meta name="description" content="AgriGuard AI — Smart Crop Protection Platform for East African Farmers" />
   <title>AgriGuard AI</title>
-
+ 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
-
+ 
   <!-- Leaflet Map -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-
+ 
   <!-- Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
+ 
   <!-- App Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<!-- â”€â”€â”€ NAVBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+ 
+<!-- ─── NAVBAR ─────────────────────────────────────── -->
 <nav class="navbar">
   <div class="navbar-brand" data-page="home">
-    <div class="navbar-logo">ðŸŒ¿</div>
+    <div class="navbar-logo">🌿</div>
     <span class="navbar-title">Agri<span>Guard</span> AI</span>
   </div>
   <ul class="navbar-links">
-    <li><a href="#" data-page="home">ðŸ  Home</a></li>
-    <li><a href="#" data-page="scan">ðŸ”¬ Scan</a></li>
-    <li><a href="#" data-page="advisor">ðŸ¤– Advisor</a></li>
-    <li><a href="#" data-page="pest">ðŸ› Pests</a></li>
-    <li><a href="#" data-page="map">ðŸ—ºï¸ Map</a></li>
-    <li><a href="#" data-page="dashboard">ðŸ“Š Dashboard</a></li>
+    <li><a href="#" data-page="home">🏠 Home</a></li>
+    <li><a href="#" data-page="scan">🔬 Scan</a></li>
+    <li><a href="#" data-page="advisor">🤖 Advisor</a></li>
+    <li><a href="#" data-page="pest">🐛 Pests</a></li>
+    <li><a href="#" data-page="map">🗺️ Map</a></li>
+    <li><a href="#" data-page="dashboard">📊 Dashboard</a></li>
   </ul>
   <div class="navbar-right">
     <div class="navbar-badge">AI Online</div>
@@ -43,98 +43,98 @@
     <div class="nav-user-pill" id="navUserPill" style="display:none" onclick="toggleUserMenu()">
       <div class="nav-avatar" id="navAvatar">U</div>
       <span id="navUserName">User</span>
-      <span class="nav-chevron">â–¾</span>
+      <span class="nav-chevron">▾</span>
     </div>
   </div>
 </nav>
-
-<!-- â”€â”€â”€ USER DROPDOWN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+ 
+<!-- ─── USER DROPDOWN ──────────────────────────────── -->
 <div class="user-dropdown" id="userDropdown">
   <div class="user-dropdown-head">
     <div class="user-dropdown-avatar" id="dropAvatar">U</div>
     <div>
-      <div class="user-dropdown-name" id="dropName">â€”</div>
-      <div class="user-dropdown-email" id="dropEmail">â€”</div>
+      <div class="user-dropdown-name" id="dropName">—</div>
+      <div class="user-dropdown-email" id="dropEmail">—</div>
     </div>
   </div>
   <div class="user-dropdown-divider"></div>
-  <button class="user-dropdown-item" onclick="showPage('advisor');closeUserMenu()">ðŸ¤– AI Advisor</button>
-  <button class="user-dropdown-item" onclick="showChatHistory();closeUserMenu()">ðŸ’¬ Chat History</button>
+  <button class="user-dropdown-item" onclick="showPage('advisor');closeUserMenu()">🤖 AI Advisor</button>
+  <button class="user-dropdown-item" onclick="showChatHistory();closeUserMenu()">💬 Chat History</button>
   <div class="user-dropdown-divider"></div>
-  <button class="user-dropdown-item danger" onclick="handleLogout()">ðŸšª Sign Out</button>
+  <button class="user-dropdown-item danger" onclick="handleLogout()">🚪 Sign Out</button>
 </div>
-
-<!-- â”€â”€â”€ MOBILE NAV â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+ 
+<!-- ─── MOBILE NAV ──────────────────────────────────── -->
 <div class="mobile-nav">
   <div class="mobile-nav-inner">
-    <button class="mobile-nav-item" data-page="home"><span class="nav-icon">ðŸ </span>Home</button>
-    <button class="mobile-nav-item" data-page="scan"><span class="nav-icon">ðŸ”¬</span>Scan</button>
-    <button class="mobile-nav-item" data-page="advisor"><span class="nav-icon">ðŸ¤–</span>AI Chat</button>
-    <button class="mobile-nav-item" data-page="pest"><span class="nav-icon">ðŸ›</span>Pests</button>
-    <button class="mobile-nav-item" data-page="map"><span class="nav-icon">ðŸ—ºï¸</span>Map</button>
-    <button class="mobile-nav-item" data-page="dashboard"><span class="nav-icon">ðŸ“Š</span>Stats</button>
+    <button class="mobile-nav-item" data-page="home"><span class="nav-icon">🏠</span>Home</button>
+    <button class="mobile-nav-item" data-page="scan"><span class="nav-icon">🔬</span>Scan</button>
+    <button class="mobile-nav-item" data-page="advisor"><span class="nav-icon">🤖</span>AI Chat</button>
+    <button class="mobile-nav-item" data-page="pest"><span class="nav-icon">🐛</span>Pests</button>
+    <button class="mobile-nav-item" data-page="map"><span class="nav-icon">🗺️</span>Map</button>
+    <button class="mobile-nav-item" data-page="dashboard"><span class="nav-icon">📊</span>Stats</button>
   </div>
 </div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ 
+<!-- ═══════════════════════════════════════════════════
      PAGE: HOME
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════════════════ -->
 <div id="page-home" class="page active">
   <div class="container">
-
+ 
     <!-- Hero with full-width farm background -->
     <div class="hero">
       <div class="hero-bg"></div>
       <div class="hero-overlay"></div>
       <canvas id="heroCanvas"></canvas>
       <div class="hero-inner">
-        <div class="hero-badge">ðŸŒ East Africa's Crop Protection Platform</div>
+        <div class="hero-badge">🌍 East Africa's Crop Protection Platform</div>
         <h1>Protect Your Crops<br>with AI Intelligence</h1>
-        <p>Scan diseased leaves, get instant diagnosis, track outbreaks across East Africa, and consult your AI agricultural advisor â€” all in one platform.</p>
+        <p>Scan diseased leaves, get instant diagnosis, track outbreaks across East Africa, and consult your AI agricultural advisor — all in one platform.</p>
         <div class="hero-btns">
-          <button class="btn btn-primary btn-hero" data-page="scan">ðŸ”¬ Scan a Crop</button>
-          <button class="btn btn-outline-hero" data-page="advisor">ðŸ¤– Ask AI Advisor</button>
+          <button class="btn btn-primary btn-hero" data-page="scan">🔬 Scan a Crop</button>
+          <button class="btn btn-outline-hero" data-page="advisor">🤖 Ask AI Advisor</button>
         </div>
         <div class="hero-scroll">
           <span>Scroll to explore</span>
-          <div class="scroll-arrow">â†“</div>
+          <div class="scroll-arrow">↓</div>
         </div>
       </div>
     </div>
-
+ 
     <!-- Trust bar -->
     <div class="trust-bar">
-      <div class="trust-item"><span class="trust-icon">ðŸŒ¾</span><span>Uganda</span></div>
+      <div class="trust-item"><span class="trust-icon">🌾</span><span>Uganda</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item"><span class="trust-icon">ðŸŒ¿</span><span>Kenya</span></div>
+      <div class="trust-item"><span class="trust-icon">🌿</span><span>Kenya</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item"><span class="trust-icon">ðŸƒ</span><span>Tanzania</span></div>
+      <div class="trust-item"><span class="trust-icon">🍃</span><span>Tanzania</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item"><span class="trust-icon">ðŸ¤–</span><span>AI-Powered</span></div>
+      <div class="trust-item"><span class="trust-icon">🤖</span><span>AI-Powered</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item"><span class="trust-icon">âš¡</span><span>Real-time Results</span></div>
+      <div class="trust-item"><span class="trust-icon">⚡</span><span>Real-time Results</span></div>
     </div>
-
+ 
     <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-number" data-target="1240" data-suffix="">0</div>
-        <div class="stat-label">ðŸŒ¾ Crops Analyzed</div>
+        <div class="stat-label">🌾 Crops Analyzed</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" data-target="52" data-suffix="">0</div>
-        <div class="stat-label">ðŸ¦  Diseases Detected</div>
+        <div class="stat-label">🦠 Diseases Detected</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" data-target="98" data-suffix="%">0%</div>
-        <div class="stat-label">ðŸŽ¯ Accuracy Rate</div>
+        <div class="stat-label">🎯 Accuracy Rate</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" data-target="3" data-suffix=" Countries">0 Countries</div>
-        <div class="stat-label">ðŸŒ Countries Covered</div>
+        <div class="stat-label">🌍 Countries Covered</div>
       </div>
     </div>
-
+ 
     <!-- Features -->
     <div class="section-header mt-24">
       <h2>Everything You Need</h2>
@@ -142,43 +142,43 @@
     </div>
     <div class="features-grid">
       <div class="feature-card" data-page="scan">
-        <span class="feature-icon">ðŸ”¬</span>
+        <span class="feature-icon">🔬</span>
         <h3>AI Disease Scanner</h3>
         <p>Upload or capture a photo of your crop leaf. Get instant diagnosis with confidence score, disease name, and full treatment plan.</p>
-        <span class="feature-arrow">Try now â†’</span>
+        <span class="feature-arrow">Try now →</span>
       </div>
       <div class="feature-card" data-page="advisor">
-        <span class="feature-icon">ðŸ¤–</span>
+        <span class="feature-icon">🤖</span>
         <h3>AI Farming Advisor</h3>
         <p>Chat with your personal AI agronomist 24/7. Ask about diseases, pests, fertilizers, soil health, weather, or any farming challenge.</p>
-        <span class="feature-arrow">Start chatting â†’</span>
+        <span class="feature-arrow">Start chatting →</span>
       </div>
       <div class="feature-card" data-page="pest">
-        <span class="feature-icon">ðŸ›</span>
+        <span class="feature-icon">🐛</span>
         <h3>Pest Detection</h3>
         <p>Identify Fall Armyworm, Desert Locust, Aphids and 50+ pests. Get emergency response protocols and economic impact assessment.</p>
-        <span class="feature-arrow">Check pests â†’</span>
+        <span class="feature-arrow">Check pests →</span>
       </div>
       <div class="feature-card" data-page="map">
-        <span class="feature-icon">ðŸ—ºï¸</span>
+        <span class="feature-icon">🗺️</span>
         <h3>Disease Outbreak Map</h3>
         <p>Live map of disease reports across Uganda, Kenya, and Tanzania. See outbreaks in your region before they reach your farm.</p>
-        <span class="feature-arrow">View map â†’</span>
+        <span class="feature-arrow">View map →</span>
       </div>
       <div class="feature-card" data-page="dashboard">
-        <span class="feature-icon">ðŸ“Š</span>
+        <span class="feature-icon">📊</span>
         <h3>Farm Dashboard</h3>
         <p>Track your scan history, crop health trends over time, and receive AI-generated alerts for high-risk disease conditions.</p>
-        <span class="feature-arrow">Open dashboard â†’</span>
+        <span class="feature-arrow">Open dashboard →</span>
       </div>
       <div class="feature-card" data-page="scan">
-        <span class="feature-icon">ðŸ“·</span>
+        <span class="feature-icon">📷</span>
         <h3>Camera Capture</h3>
         <p>Use your phone camera directly in the app. No need to download photos. Point at affected leaves and scan instantly in the field.</p>
-        <span class="feature-arrow">Open camera â†’</span>
+        <span class="feature-arrow">Open camera →</span>
       </div>
     </div>
-
+ 
     <!-- How it works -->
     <div class="section-header mt-24">
       <h2>How It Works</h2>
@@ -187,26 +187,26 @@
     <div class="how-it-works">
       <div class="how-step">
         <div class="how-step-number">01</div>
-        <div class="how-step-icon">ðŸ“¸</div>
+        <div class="how-step-icon">📸</div>
         <h3>Take a Photo</h3>
         <p>Use your phone camera or upload an existing photo of any affected crop leaf directly in the field.</p>
       </div>
-      <div class="how-step-arrow">â†’</div>
+      <div class="how-step-arrow">→</div>
       <div class="how-step">
         <div class="how-step-number">02</div>
-        <div class="how-step-icon">ðŸ¤–</div>
+        <div class="how-step-icon">🤖</div>
         <h3>AI Analysis</h3>
         <p>Our AI instantly analyzes the image, identifies the disease, and calculates a confidence score in seconds.</p>
       </div>
-      <div class="how-step-arrow">â†’</div>
+      <div class="how-step-arrow">→</div>
       <div class="how-step">
         <div class="how-step-number">03</div>
-        <div class="how-step-icon">ðŸ’Š</div>
+        <div class="how-step-icon">💊</div>
         <h3>Get Treatment</h3>
         <p>Receive a complete treatment plan with local product names, dosages, and prevention tips for your crops.</p>
       </div>
     </div>
-
+ 
     <!-- Quick Questions -->
     <div class="section-header mt-24">
       <h2>Ask AgriGuard AI</h2>
@@ -219,14 +219,14 @@
       <button class="quick-q-btn" data-question="What are the signs of cassava mosaic disease and how do I manage it?">Cassava mosaic disease signs</button>
       <button class="quick-q-btn" data-question="How do I improve soil health for better crop yields?">How to improve soil health</button>
     </div>
-
+ 
     <!-- Impact strip -->
     <div class="impact-strip">
       <div class="impact-strip-inner">
         <div class="impact-quote">
           <div class="impact-quote-mark">"</div>
           <p>AgriGuard AI helped me identify cassava mosaic disease before it spread to my entire farm. The treatment plan saved my harvest.</p>
-          <div class="impact-author">â€” James Okello, Farmer Â· Gulu, Uganda</div>
+          <div class="impact-author">— James Okello, Farmer · Gulu, Uganda</div>
         </div>
         <div class="impact-divider"></div>
         <div class="impact-stats">
@@ -245,88 +245,88 @@
         </div>
       </div>
     </div>
-
+ 
   </div>
 </div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ 
+<!-- ═══════════════════════════════════════════════════
      PAGE: SCAN
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════════════════ -->
 <div id="page-scan" class="page">
   <div class="container">
     <div class="page-hero">
-      <h1>ðŸ”¬ Crop Disease Scanner</h1>
+      <h1>🔬 Crop Disease Scanner</h1>
       <p>Upload a leaf photo for instant AI diagnosis and treatment recommendations</p>
     </div>
-
+ 
     <!-- Crop Selector -->
     <div class="mb-24">
       <div class="section-header" style="margin-bottom:12px">
         <h2 style="font-size:18px">Select Crop Type</h2>
       </div>
       <div class="crop-selector">
-        <button class="crop-btn active" data-crop="Maize" onclick="selectCrop(this)">ðŸŒ½ Maize</button>
-        <button class="crop-btn" data-crop="Cassava" onclick="selectCrop(this)">ðŸŒ¿ Cassava</button>
-        <button class="crop-btn" data-crop="Tomato" onclick="selectCrop(this)">ðŸ… Tomato</button>
-        <button class="crop-btn" data-crop="Bean" onclick="selectCrop(this)">ðŸ«˜ Bean</button>
-        <button class="crop-btn" data-crop="Potato" onclick="selectCrop(this)">ðŸ¥” Potato</button>
-        <button class="crop-btn" data-crop="Banana" onclick="selectCrop(this)">ðŸŒ Banana</button>
-        <button class="crop-btn" data-crop="Coffee" onclick="selectCrop(this)">â˜• Coffee</button>
-        <button class="crop-btn" data-crop="Sorghum" onclick="selectCrop(this)">ðŸŒ¾ Sorghum</button>
+        <button class="crop-btn active" data-crop="Maize" onclick="selectCrop(this)">🌽 Maize</button>
+        <button class="crop-btn" data-crop="Cassava" onclick="selectCrop(this)">🌿 Cassava</button>
+        <button class="crop-btn" data-crop="Tomato" onclick="selectCrop(this)">🍅 Tomato</button>
+        <button class="crop-btn" data-crop="Bean" onclick="selectCrop(this)">🫘 Bean</button>
+        <button class="crop-btn" data-crop="Potato" onclick="selectCrop(this)">🥔 Potato</button>
+        <button class="crop-btn" data-crop="Banana" onclick="selectCrop(this)">🍌 Banana</button>
+        <button class="crop-btn" data-crop="Coffee" onclick="selectCrop(this)">☕ Coffee</button>
+        <button class="crop-btn" data-crop="Sorghum" onclick="selectCrop(this)">🌾 Sorghum</button>
       </div>
     </div>
-
+ 
     <div id="uploadArea" class="scan-layout">
       <!-- Upload Zone -->
       <div>
         <div class="upload-zone" id="uploadZone">
           <input type="file" id="fileInput" accept="image/*" />
-          <span class="upload-icon">ðŸ“¸</span>
+          <span class="upload-icon">📸</span>
           <h3>Drop your crop image here</h3>
-          <p>or click to browse Â· PNG, JPG, WEBP Â· max 10MB</p>
+          <p>or click to browse · PNG, JPG, WEBP · max 10MB</p>
         </div>
         <div class="image-preview" id="imagePreview">
           <img id="previewImg" src="" alt="Preview" />
         </div>
       </div>
-
+ 
       <!-- Camera Card -->
       <div>
         <div class="camera-card mb-16">
-          <h3>ðŸ“· Camera Capture</h3>
+          <h3>📷 Camera Capture</h3>
           <p>Use your phone or webcam to photograph diseased leaves directly in the field</p>
           <video id="cameraView" autoplay playsinline></video>
           <canvas id="captureCanvas"></canvas>
           <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-            <button class="btn btn-secondary btn-sm" id="startCameraBtn">ðŸ“· Open Camera</button>
-            <button class="btn btn-primary btn-sm" id="captureBtn" style="display:none">ðŸ“¸ Capture</button>
-            <button class="btn btn-danger btn-sm" id="stopCameraBtn" style="display:none">âœ• Stop</button>
+            <button class="btn btn-secondary btn-sm" id="startCameraBtn">📷 Open Camera</button>
+            <button class="btn btn-primary btn-sm" id="captureBtn" style="display:none">📸 Capture</button>
+            <button class="btn btn-danger btn-sm" id="stopCameraBtn" style="display:none">✕ Stop</button>
           </div>
         </div>
-
+ 
         <div style="padding:20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:16px">
-          <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:10px">ðŸ“‹ Tips for best results:</h4>
+          <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:10px">📋 Tips for best results:</h4>
           <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
-            <li style="font-size:13px;color:var(--text-secondary)">âœ“ Focus on affected leaves, not the whole plant</li>
-            <li style="font-size:13px;color:var(--text-secondary)">âœ“ Use natural light, avoid shadows</li>
-            <li style="font-size:13px;color:var(--text-secondary)">âœ“ Include both healthy and diseased areas</li>
-            <li style="font-size:13px;color:var(--text-secondary)">âœ“ Keep the camera steady for a clear image</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Focus on affected leaves, not the whole plant</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Use natural light, avoid shadows</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Include both healthy and diseased areas</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Keep the camera steady for a clear image</li>
           </ul>
         </div>
-
+ 
         <button class="btn btn-primary" id="scanBtn" style="width:100%" disabled>
-          ðŸ”¬ Analyze Crop
+          🔬 Analyze Crop
         </button>
       </div>
     </div>
-
+ 
     <!-- Scan Animation -->
     <div class="scan-animation" id="scanAnimation">
       <div class="scan-rings">
         <div class="scan-ring ring-1"></div>
         <div class="scan-ring ring-2"></div>
         <div class="scan-ring ring-3"></div>
-        <span class="scan-icon">ðŸ”¬</span>
+        <span class="scan-icon">🔬</span>
       </div>
       <div class="scan-status" id="scanStatus">Uploading image...</div>
       <div class="scan-sub" id="scanSub">Preparing for analysis</div>
@@ -334,98 +334,98 @@
         <div class="scan-progress-bar" id="scanProgressBar"></div>
       </div>
     </div>
-
+ 
     <!-- Results Section -->
     <div class="results-card mt-24" id="resultsSection">
       <div class="results-header">
         <div>
-          <div class="results-crop" id="resultCrop">â€”</div>
-          <div class="results-disease" id="resultDisease">â€”</div>
+          <div class="results-crop" id="resultCrop">—</div>
+          <div class="results-disease" id="resultDisease">—</div>
           <div style="margin-top:8px">
             <span class="severity-tag medium" id="resultSeverity">Medium Severity</span>
           </div>
         </div>
-        <div class="confidence-badge" id="resultConfidence">â€”%</div>
+        <div class="confidence-badge" id="resultConfidence">—%</div>
       </div>
-
+ 
       <!-- Health Score -->
       <div class="health-score-section">
         <div class="health-score-label">
-          <span class="health-score-text">ðŸŒ¿ Crop Health Score</span>
-          <span class="health-score-value" id="resultHealthScore">â€”%</span>
+          <span class="health-score-text">🌿 Crop Health Score</span>
+          <span class="health-score-value" id="resultHealthScore">—%</span>
         </div>
         <div class="health-bar">
           <div class="health-bar-fill medium" id="resultHealthFill" style="width:0%"></div>
         </div>
       </div>
-
+ 
       <!-- Explanation -->
       <div class="results-section">
-        <div class="results-section-title">ðŸ” Analysis</div>
-        <div class="results-text" id="resultExplanation">â€”</div>
+        <div class="results-section-title">🔍 Analysis</div>
+        <div class="results-text" id="resultExplanation">—</div>
       </div>
-
+ 
       <div class="divider"></div>
-
+ 
       <!-- Treatment -->
       <div class="results-section">
-        <div class="results-section-title">ðŸ’Š Treatment Plan</div>
-        <div class="results-text" id="resultTreatment">â€”</div>
+        <div class="results-section-title">💊 Treatment Plan</div>
+        <div class="results-text" id="resultTreatment">—</div>
       </div>
-
+ 
       <div class="divider"></div>
-
+ 
       <!-- Prevention Tips -->
       <div class="results-section">
-        <div class="results-section-title">ðŸ›¡ï¸ Prevention Tips</div>
+        <div class="results-section-title">🛡️ Prevention Tips</div>
         <ul class="tips-list" id="resultTips"></ul>
       </div>
-
+ 
       <!-- Issues -->
       <div class="results-section mt-16" id="issuesSection">
-        <div class="results-section-title">âš ï¸ Identified Issues</div>
+        <div class="results-section-title">⚠️ Identified Issues</div>
         <div class="issues-list" id="resultIssues"></div>
       </div>
-
+ 
       <!-- Action Buttons -->
       <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">ðŸ¤– Ask AI for More Help</button>
-        <button class="btn btn-secondary btn-sm" onclick="showPage('map')">ðŸ—ºï¸ View Disease Map</button>
-        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('resultsSection').classList.remove('visible');document.getElementById('imagePreview').classList.remove('visible');currentImageFile=null;document.getElementById('scanBtn').disabled=true">ðŸ”„ Scan Another</button>
+        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">🤖 Ask AI for More Help</button>
+        <button class="btn btn-secondary btn-sm" onclick="showPage('map')">🗺️ View Disease Map</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('resultsSection').classList.remove('visible');document.getElementById('imagePreview').classList.remove('visible');currentImageFile=null;document.getElementById('scanBtn').disabled=true">🔄 Scan Another</button>
       </div>
     </div>
-
+ 
   </div>
 </div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ 
+<!-- ═══════════════════════════════════════════════════
      PAGE: AI ADVISOR
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════════════════ -->
 <div id="page-advisor" class="page">
   <div class="container">
     <div class="page-hero">
-      <h1>ðŸ¤– AI Farming Advisor</h1>
-      <p>Your personal agronomist â€” available 24/7 for East African farmers</p>
+      <h1>🤖 AI Farming Advisor</h1>
+      <p>Your personal agronomist — available 24/7 for East African farmers</p>
     </div>
-
+ 
     <!-- Shown when NOT logged in -->
     <div class="advisor-lock" id="advisorLock">
       <div class="advisor-lock-inner">
-        <div class="advisor-lock-icon">ðŸ”’</div>
+        <div class="advisor-lock-icon">🔒</div>
         <h2>Sign in to use the AI Advisor</h2>
         <p>Create a free account to chat with your personal AI agronomist, get instant crop disease advice, and have all your conversations saved automatically.</p>
         <div class="advisor-lock-btns">
-          <button class="btn btn-primary" onclick="openAuthPanel('signup')">ðŸŒ± Create Free Account</button>
+          <button class="btn btn-primary" onclick="openAuthPanel('signup')">🌱 Create Free Account</button>
           <button class="btn btn-secondary" onclick="openAuthPanel('login')">Sign In</button>
         </div>
         <div class="advisor-lock-features">
-          <span>âœ“ Chat history saved</span>
-          <span>âœ“ Access anytime</span>
-          <span>âœ“ 100% free</span>
+          <span>✓ Chat history saved</span>
+          <span>✓ Access anytime</span>
+          <span>✓ 100% free</span>
         </div>
       </div>
     </div>
-
+ 
     <!-- Shown when logged in -->
     <div class="advisor-layout" id="advisorChat" style="display:none">
       <div>
@@ -433,21 +433,21 @@
           <h2 style="font-size:16px">Quick Questions</h2>
         </div>
         <div class="quick-questions">
-          <button class="quick-q-btn" data-question="My maize leaves are turning yellow from the bottom up. What is causing this and what should I do?">ðŸŒ½ Why are my maize leaves yellowing?</button>
-          <button class="quick-q-btn" data-question="How do I identify and treat Fall Armyworm on maize in Uganda?">ðŸ› Fall Armyworm emergency!</button>
-          <button class="quick-q-btn" data-question="What organic fertilizers work best for beans in East Africa?">ðŸŒ¿ Best organic fertilizers?</button>
-          <button class="quick-q-btn" data-question="How do I irrigate tomatoes during the dry season in East Africa?">ðŸ’§ Tomato irrigation help</button>
-          <button class="quick-q-btn" data-question="My cassava has mosaic patterns on the leaves. Is it cassava mosaic disease and how do I treat it?">ðŸŒ± Cassava mosaic disease?</button>
-          <button class="quick-q-btn" data-question="How do I test and improve my soil for better crop yields in Uganda?">ðŸ”ï¸ Soil health improvement</button>
-          <button class="quick-q-btn" data-question="What is the best crop rotation plan for a small farm in East Africa?">ðŸ”„ Crop rotation planning</button>
-          <button class="quick-q-btn" data-question="How do I store maize after harvest to prevent aflatoxin and weevils?">ðŸ“¦ Post-harvest storage tips</button>
+          <button class="quick-q-btn" data-question="My maize leaves are turning yellow from the bottom up. What is causing this and what should I do?">🌽 Why are my maize leaves yellowing?</button>
+          <button class="quick-q-btn" data-question="How do I identify and treat Fall Armyworm on maize in Uganda?">🐛 Fall Armyworm emergency!</button>
+          <button class="quick-q-btn" data-question="What organic fertilizers work best for beans in East Africa?">🌿 Best organic fertilizers?</button>
+          <button class="quick-q-btn" data-question="How do I irrigate tomatoes during the dry season in East Africa?">💧 Tomato irrigation help</button>
+          <button class="quick-q-btn" data-question="My cassava has mosaic patterns on the leaves. Is it cassava mosaic disease and how do I treat it?">🌱 Cassava mosaic disease?</button>
+          <button class="quick-q-btn" data-question="How do I test and improve my soil for better crop yields in Uganda?">🏔️ Soil health improvement</button>
+          <button class="quick-q-btn" data-question="What is the best crop rotation plan for a small farm in East Africa?">🔄 Crop rotation planning</button>
+          <button class="quick-q-btn" data-question="How do I store maize after harvest to prevent aflatoxin and weevils?">📦 Post-harvest storage tips</button>
         </div>
       </div>
-
+ 
       <div>
         <div class="chat-container">
           <div class="chat-header">
-            <h3>ðŸŒ¿ AgriGuard AI Advisor</h3>
+            <h3>🌿 AgriGuard AI Advisor</h3>
             <button class="btn btn-secondary btn-sm" id="clearChatBtn">Clear chat</button>
           </div>
           <div class="chat-messages" id="chatMessages">
@@ -461,25 +461,25 @@
             <textarea class="chat-input" id="chatInput"
               placeholder="Ask about crop diseases, pests, soil, or any farming challenge..."
               rows="1" maxlength="1000"></textarea>
-            <button class="btn btn-primary" id="sendBtn" style="min-width:48px;height:48px;padding:0">âž¤</button>
+            <button class="btn btn-primary" id="sendBtn" style="min-width:48px;height:48px;padding:0">➤</button>
           </div>
         </div>
       </div>
     </div><!-- end advisor-layout / advisorChat -->
-
+ 
   </div>
 </div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ 
+<!-- ═══════════════════════════════════════════════════
      PAGE: PEST DETECTION
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════════════════ -->
 <div id="page-pest" class="page">
   <div class="container">
     <div class="page-hero">
-      <h1>ðŸ› Pest Detection</h1>
+      <h1>🐛 Pest Detection</h1>
       <p>Identify crop pests, assess threat levels, and get emergency response protocols</p>
     </div>
-
+ 
     <!-- Known Pests Grid -->
     <div class="section-header">
       <h2>Common East African Crop Pests</h2>
@@ -487,369 +487,290 @@
     </div>
     <div class="pest-grid">
       <div class="pest-card" onclick="selectPest(this, 'Fall Armyworm')">
-        <span class="pest-card-icon">ðŸ›</span>
+        <span class="pest-card-icon">🐛</span>
         <h4>Fall Armyworm</h4>
         <p>Maize, Sorghum</p>
         <div class="threat-badge CRITICAL">CRITICAL</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Desert Locust')">
-        <span class="pest-card-icon">ðŸ¦—</span>
+        <span class="pest-card-icon">🦗</span>
         <h4>Desert Locust</h4>
         <p>All crops</p>
         <div class="threat-badge CRITICAL">CRITICAL</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Aphids')">
-        <span class="pest-card-icon">ðŸ¦Ÿ</span>
+        <span class="pest-card-icon">🦟</span>
         <h4>Aphids</h4>
         <p>Cassava, Beans, Tomato</p>
         <div class="threat-badge HIGH">HIGH</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Whitefly')">
-        <span class="pest-card-icon">ðŸ¦‹</span>
+        <span class="pest-card-icon">🦋</span>
         <h4>Whitefly</h4>
         <p>Cassava, Tomatoes</p>
         <div class="threat-badge HIGH">HIGH</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Stalk Borer')">
-        <span class="pest-card-icon">ðŸœ</span>
+        <span class="pest-card-icon">🐜</span>
         <h4>Stalk Borer</h4>
         <p>Maize, Sorghum</p>
         <div class="threat-badge MEDIUM">MEDIUM</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Thrips')">
-        <span class="pest-card-icon">ðŸ¦ </span>
+        <span class="pest-card-icon">🦠</span>
         <h4>Thrips</h4>
         <p>Onions, Tomatoes</p>
         <div class="threat-badge MEDIUM">MEDIUM</div>
       </div>
     </div>
-
+ 
     <!-- Pest Info Card (populated by JS) -->
     <div class="pest-info-card" id="pestInfoCard">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
         <div>
-          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestInfoName">â€”</div>
-          <div id="pestInfoCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">â€”</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestInfoName">—</div>
+          <div id="pestInfoCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
         </div>
         <div id="pestInfoThreat" class="threat-badge MEDIUM">MEDIUM</div>
       </div>
-
+ 
       <div class="results-section">
-        <div class="results-section-title">ðŸ“‹ Description</div>
-        <div class="results-text" id="pestInfoDesc">â€”</div>
+        <div class="results-section-title">📋 Description</div>
+        <div class="results-text" id="pestInfoDesc">—</div>
       </div>
-
+ 
       <div class="two-col mt-16">
         <div class="results-section">
-          <div class="results-section-title">âš ï¸ Symptoms</div>
+          <div class="results-section-title">⚠️ Symptoms</div>
           <ul class="tips-list" id="pestInfoSymptoms"></ul>
         </div>
         <div class="results-section">
-          <div class="results-section-title">ðŸ›¡ï¸ Prevention</div>
+          <div class="results-section-title">🛡️ Prevention</div>
           <ul class="tips-list" id="pestInfoPrevention"></ul>
         </div>
       </div>
-
+ 
       <div class="divider"></div>
-
+ 
       <div class="results-section">
-        <div class="results-section-title">ðŸ’Š Treatment</div>
-        <div class="results-text" id="pestInfoTreatment">â€”</div>
+        <div class="results-section-title">💊 Treatment</div>
+        <div class="results-text" id="pestInfoTreatment">—</div>
       </div>
-
+ 
       <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
-        <div class="results-section-title" style="color:var(--gold)">ðŸ’° Economic Impact</div>
-        <div class="results-text" style="font-size:14px" id="pestInfoImpact">â€”</div>
+        <div class="results-section-title" style="color:var(--gold)">💰 Economic Impact</div>
+        <div class="results-text" style="font-size:14px" id="pestInfoImpact">—</div>
       </div>
     </div>
-
+ 
     <!-- AI Pest Scanner -->
     <div class="card mb-24">
       <div class="section-header" style="margin-bottom:16px">
-        <h2 style="font-size:20px">ðŸ¤– AI Pest Scanner</h2>
+        <h2 style="font-size:20px">🤖 AI Pest Scanner</h2>
         <p>Upload a photo of a pest or damaged crop for instant AI identification</p>
       </div>
-
+ 
       <input type="file" id="pestFileInput" accept="image/*" style="display:none" />
-
+ 
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <button class="btn btn-primary" id="analyzePestBtn">
-          ðŸ” Upload Image to Analyze Pest
+          🔍 Upload Image to Analyze Pest
         </button>
-        <span style="font-size:13px;color:var(--text-secondary)">Supports JPG, PNG, WEBP Â· max 10MB</span>
+        <span style="font-size:13px;color:var(--text-secondary)">Supports JPG, PNG, WEBP · max 10MB</span>
       </div>
     </div>
-
+ 
     <!-- Pest AI Result Card -->
     <div class="pest-result-card" id="pestResultCard">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
         <div>
           <div style="font-size:13px;color:var(--sage);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">AI Detection Result</div>
-          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestResultName">â€”</div>
-          <div id="pestResultCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">â€”</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestResultName">—</div>
+          <div id="pestResultCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
         </div>
         <div id="pestResultThreat" class="threat-badge MEDIUM">MEDIUM</div>
       </div>
-
+ 
       <div class="results-section">
-        <div class="results-section-title">ðŸ“‹ Description</div>
-        <div class="results-text" id="pestResultDesc">â€”</div>
+        <div class="results-section-title">📋 Description</div>
+        <div class="results-text" id="pestResultDesc">—</div>
       </div>
-
+ 
       <div class="two-col mt-16">
         <div class="results-section">
-          <div class="results-section-title">âš ï¸ Symptoms</div>
+          <div class="results-section-title">⚠️ Symptoms</div>
           <ul class="tips-list" id="pestResultSymptoms"></ul>
         </div>
         <div class="results-section">
-          <div class="results-section-title">ðŸ›¡ï¸ Prevention</div>
+          <div class="results-section-title">🛡️ Prevention</div>
           <ul class="tips-list" id="pestResultPrevention"></ul>
         </div>
       </div>
-
+ 
       <div class="divider"></div>
-
+ 
       <div class="results-section">
-        <div class="results-section-title">ðŸ’Š Treatment</div>
-        <div class="results-text" id="pestResultTreatment">â€”</div>
+        <div class="results-section-title">💊 Treatment</div>
+        <div class="results-text" id="pestResultTreatment">—</div>
       </div>
-
+ 
       <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
-        <div class="results-section-title" style="color:var(--gold)">ðŸ’° Economic Impact</div>
-        <div class="results-text" style="font-size:14px" id="pestResultImpact">â€”</div>
+        <div class="results-section-title" style="color:var(--gold)">💰 Economic Impact</div>
+        <div class="results-text" style="font-size:14px" id="pestResultImpact">—</div>
       </div>
-
+ 
       <div style="margin-top:20px">
-        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">ðŸ¤– Ask AI for Help</button>
+        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">🤖 Ask AI for Help</button>
       </div>
     </div>
-
+ 
   </div>
 </div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ 
+<!-- ═══════════════════════════════════════════════════
      PAGE: DISEASE MAP
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════════════════ -->
 <div id="page-map" class="page">
   <div class="container">
     <div class="page-hero">
-      <h1>ðŸ—ºï¸ Disease Outbreak Map</h1>
-      <p>Live disease reports across Uganda, Kenya, and Tanzania â€” updated automatically</p>
+      <h1>🗺️ Disease Outbreak Map</h1>
+      <p>Live disease reports across Uganda, Kenya, and Tanzania — updated automatically</p>
     </div>
-
+ 
     <!-- Map Stats -->
     <div class="map-stats">
       <div class="map-stat">
-        <div class="map-stat-number" id="mapTotalReports">â€”</div>
+        <div class="map-stat-number" id="mapTotalReports">—</div>
         <div class="map-stat-label">Total Reports</div>
       </div>
       <div class="map-stat">
-        <div class="map-stat-number" id="mapOutbreaks" style="color:var(--crimson)">â€”</div>
-        <div class="map-stat-label">âš ï¸ Outbreaks</div>
+        <div class="map-stat-number" id="mapOutbreaks" style="color:var(--crimson)">—</div>
+        <div class="map-stat-label">⚠️ Outbreaks</div>
       </div>
       <div class="map-stat">
         <div class="map-stat-number" id="mapCountries">3+</div>
         <div class="map-stat-label">Countries</div>
       </div>
     </div>
-
+ 
     <!-- Map -->
     <div id="diseaseMap"></div>
-
+ 
     <!-- Legend -->
     <div class="map-legend">
       <strong style="font-size:13px;color:var(--text-primary)">Legend:</strong>
       <div class="legend-item"><div class="legend-dot outbreak"></div> Critical / Outbreak (&lt;30% health)</div>
-      <div class="legend-item"><div class="legend-dot high"></div> High Risk (30â€“50%)</div>
-      <div class="legend-item"><div class="legend-dot medium"></div> Medium Risk (50â€“70%)</div>
+      <div class="legend-item"><div class="legend-dot high"></div> High Risk (30–50%)</div>
+      <div class="legend-item"><div class="legend-dot medium"></div> Medium Risk (50–70%)</div>
       <div class="legend-item"><div class="legend-dot low"></div> Healthy (70%+)</div>
-      <button class="btn btn-secondary btn-sm" id="refreshMapBtn" style="margin-left:auto">ðŸ”„ Refresh</button>
+      <button class="btn btn-secondary btn-sm" id="refreshMapBtn" style="margin-left:auto">🔄 Refresh</button>
     </div>
-
+ 
   </div>
 </div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ 
+<!-- ═══════════════════════════════════════════════════
      PAGE: DASHBOARD
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════════════════ -->
 <div id="page-dashboard" class="page">
   <div class="container">
     <div class="page-hero">
       <div class="flex-between">
         <div>
-          <h1>ðŸ“Š Farm Dashboard</h1>
+          <h1>📊 Farm Dashboard</h1>
           <p id="dashDate">Loading date...</p>
         </div>
-        <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">ðŸ”„ Refresh</button>
+        <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">🔄 Refresh</button>
       </div>
     </div>
-
+ 
     <!-- KPI Cards -->
     <div class="dashboard-grid">
       <div class="kpi-card">
-        <span class="kpi-icon">ðŸ”¬</span>
-        <div class="kpi-number" id="dashTotalScans">â€”</div>
+        <span class="kpi-icon">🔬</span>
+        <div class="kpi-number" id="dashTotalScans">—</div>
         <div class="kpi-label">Total Scans</div>
       </div>
       <div class="kpi-card">
-        <span class="kpi-icon">âœ…</span>
-        <div class="kpi-number" id="dashHealthy" style="color:var(--lime)">â€”</div>
+        <span class="kpi-icon">✅</span>
+        <div class="kpi-number" id="dashHealthy" style="color:var(--lime)">—</div>
         <div class="kpi-label">Healthy Reports</div>
       </div>
       <div class="kpi-card">
-        <span class="kpi-icon">ðŸ¦ </span>
-        <div class="kpi-number" id="dashDiseased" style="color:var(--crimson)">â€”</div>
+        <span class="kpi-icon">🦠</span>
+        <div class="kpi-number" id="dashDiseased" style="color:var(--crimson)">—</div>
         <div class="kpi-label">Diseased Reports</div>
       </div>
       <div class="kpi-card">
-        <span class="kpi-icon">ðŸ“ˆ</span>
-        <div class="kpi-number" id="dashAvgHealth" style="color:var(--gold)">â€”</div>
+        <span class="kpi-icon">📈</span>
+        <div class="kpi-number" id="dashAvgHealth" style="color:var(--gold)">—</div>
         <div class="kpi-label">Avg Health Score</div>
       </div>
     </div>
-
+ 
     <!-- Dashboard Bottom -->
     <div class="dashboard-bottom">
-
+ 
       <!-- Scan History -->
       <div class="card">
         <div class="flex-between mb-16">
-          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">ðŸ• Recent Scans</h3>
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">🕐 Recent Scans</h3>
           <button class="btn btn-secondary btn-sm" onclick="showPage('scan')">+ New Scan</button>
         </div>
         <div id="scanHistoryList">
           <p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px">Loading scan history...</p>
         </div>
       </div>
-
+ 
       <!-- Right Column -->
       <div style="display:flex;flex-direction:column;gap:24px">
-
+ 
         <!-- Alerts -->
         <div class="card">
-          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">ðŸš¨ Alerts</h3>
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">🚨 Alerts</h3>
           <div id="alertsList">
             <p style="color:var(--text-secondary);font-size:14px">Loading alerts...</p>
           </div>
         </div>
-
+ 
         <!-- Crop Health Overview -->
         <div class="card">
-          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">ðŸŒ¿ Crop Health Overview</h3>
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">🌿 Crop Health Overview</h3>
           <div id="healthOverview">
             <p style="color:var(--text-secondary);font-size:14px">Loading...</p>
           </div>
         </div>
       </div>
     </div>
-
+ 
     <!-- Health Trend Chart -->
     <div class="card mt-24">
       <div class="flex-between mb-16">
-        <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">ðŸ“ˆ Crop Health Trend</h3>
+        <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">📈 Crop Health Trend</h3>
       </div>
       <div class="chart-container">
         <canvas id="healthChart"></canvas>
       </div>
     </div>
-
+ 
   </div>
 </div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     AUTH MODAL
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
-<div class="auth-modal-overlay" id="authModalOverlay">
-  <div class="auth-modal" id="authModal">
-    <button class="auth-modal-close" id="authModalClose">âœ•</button>
-
-    <!-- Tabs -->
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="loginTab" onclick="switchAuthTab('login')">Sign In</button>
-      <button class="auth-tab" id="signupTab" onclick="switchAuthTab('signup')">Create Account</button>
-    </div>
-
-    <!-- Login Form -->
-    <div class="auth-form" id="loginForm">
-      <div class="auth-header">
-        <div class="auth-logo">ðŸŒ¿</div>
-        <h2>Welcome back</h2>
-        <p>Sign in to save your chat history and access your farm data</p>
-      </div>
-      <div class="auth-field">
-        <label>Email address</label>
-        <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" />
-      </div>
-      <div class="auth-field">
-        <label>Password</label>
-        <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" />
-      </div>
-      <div class="auth-error" id="loginError"></div>
-      <button class="btn btn-primary auth-submit" id="loginSubmitBtn" onclick="handleLogin()">
-        Sign In
-      </button>
-      <p class="auth-switch">Don't have an account? <a onclick="switchAuthTab('signup')">Create one free</a></p>
-    </div>
-
-    <!-- Signup Form -->
-    <div class="auth-form" id="signupForm" style="display:none">
-      <div class="auth-header">
-        <div class="auth-logo">ðŸŒ±</div>
-        <h2>Join AgriGuard AI</h2>
-        <p>Free forever â€” save your chats, track your farm health over time</p>
-      </div>
-      <div class="auth-field">
-        <label>Full name</label>
-        <input type="text" id="signupName" placeholder="Your name" autocomplete="name" />
-      </div>
-      <div class="auth-field">
-        <label>Email address</label>
-        <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email" />
-      </div>
-      <div class="auth-field">
-        <label>Password <span style="font-size:11px;color:var(--text-secondary)">(min 6 characters)</span></label>
-        <input type="password" id="signupPassword" placeholder="Create a password" autocomplete="new-password" />
-      </div>
-      <div class="auth-error" id="signupError"></div>
-      <button class="btn btn-primary auth-submit" id="signupSubmitBtn" onclick="handleSignup()">
-        Create Free Account
-      </button>
-      <p class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Sign in</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- â”€â”€â”€ USER MENU DROPDOWN â”€â”€â”€ -->
-<div class="user-menu-dropdown" id="userMenuDropdown">
-  <div class="user-menu-header">
-    <div class="user-menu-avatar" id="dropdownAvatar">J</div>
-    <div>
-      <div class="user-menu-name" id="dropdownName">â€”</div>
-      <div class="user-menu-email" id="dropdownEmail">â€”</div>
-    </div>
-  </div>
-  <div class="user-menu-divider"></div>
-  <button class="user-menu-item" onclick="showPage('advisor');closeUserMenu()">ðŸ¤– AI Advisor</button>
-  <button class="user-menu-item" onclick="loadChatHistoryPage();closeUserMenu()">ðŸ’¬ Chat History</button>
-  <div class="user-menu-divider"></div>
-  <button class="user-menu-item user-menu-item-danger" onclick="handleLogout()">ðŸšª Sign Out</button>
-</div>
-
-<!-- â•â•â• SLIDE-IN AUTH PANEL â•â•â• -->
+ 
+<!-- ═══ SLIDE-IN AUTH PANEL ═══ -->
 <div class="auth-panel-backdrop" id="authBackdrop" onclick="closeAuthPanel()"></div>
-
+ 
 <div class="auth-panel" id="authPanel">
   <div class="auth-panel-header">
-    <div class="auth-panel-logo">ðŸŒ¿</div>
-    <button class="auth-panel-close" onclick="closeAuthPanel()">âœ•</button>
+    <div class="auth-panel-logo">🌿</div>
+    <button class="auth-panel-close" onclick="closeAuthPanel()">✕</button>
   </div>
-
+ 
   <!-- Tab switcher -->
   <div class="auth-panel-tabs">
     <button class="auth-panel-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
     <button class="auth-panel-tab" id="tabSignup" onclick="switchTab('signup')">Create Account</button>
   </div>
-
+ 
   <!-- LOGIN -->
   <div id="panelLogin">
     <div class="auth-panel-title">
@@ -866,14 +787,14 @@
     </div>
     <div class="auth-error" id="loginError"></div>
     <button class="btn btn-primary auth-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
-    <p class="auth-switch-text">No account? <a onclick="switchTab('signup')">Create one free â†’</a></p>
+    <p class="auth-switch-text">No account? <a onclick="switchTab('signup')">Create one free →</a></p>
   </div>
-
+ 
   <!-- SIGNUP -->
   <div id="panelSignup" style="display:none">
     <div class="auth-panel-title">
       <h2>Join AgriGuard AI</h2>
-      <p>Free forever â€” get AI crop advice and save all your conversations</p>
+      <p>Free forever — get AI crop advice and save all your conversations</p>
     </div>
     <div class="auth-field">
       <label>Full name</label>
@@ -889,9 +810,9 @@
     </div>
     <div class="auth-error" id="signupError"></div>
     <button class="btn btn-primary auth-btn" id="signupBtn" onclick="handleSignup()">Create Free Account</button>
-    <p class="auth-switch-text">Already have an account? <a onclick="switchTab('login')">Sign in â†’</a></p>
+    <p class="auth-switch-text">Already have an account? <a onclick="switchTab('login')">Sign in →</a></p>
   </div>
-
+ 
   <!-- CHAT HISTORY (shown when logged in) -->
   <div id="panelHistory" style="display:none">
     <div class="auth-panel-title">
@@ -903,10 +824,10 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- App JS -->
 <script src="app.js"></script>
-
+ 
 <!-- Hero particles + scroll fade -->
 <script>
 (function() {
@@ -914,12 +835,12 @@
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
   var particles = [];
-
+ 
   function resize() {
     canvas.width = canvas.offsetWidth || window.innerWidth;
     canvas.height = canvas.offsetHeight || window.innerHeight;
   }
-
+ 
   function mkParticle() {
     return {
       x: Math.random() * canvas.width,
@@ -931,13 +852,13 @@
       col: Math.random() > 0.5 ? '94,217,126' : '168,255,110'
     };
   }
-
+ 
   function init() {
     particles = [];
     var n = Math.floor((canvas.width * canvas.height) / 12000);
     for (var i = 0; i < n; i++) particles.push(mkParticle());
   }
-
+ 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < particles.length; i++) {
@@ -951,10 +872,10 @@
     }
     requestAnimationFrame(draw);
   }
-
+ 
   resize(); init(); draw();
   window.addEventListener('resize', function() { resize(); init(); });
-
+ 
   // Scroll indicator fade
   var si = document.querySelector('.hero-scroll');
   if (si) {

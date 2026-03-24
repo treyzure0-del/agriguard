@@ -36,6 +36,7 @@
     <li><a href="#" data-page="pest">🐛 Pests</a></li>
     <li><a href="#" data-page="map">🗺️ Map</a></li>
     <li><a href="#" data-page="dashboard">📊 Dashboard</a></li>
+    <li><a href="#" data-page="weather">🌤️ Weather</a></li>
   </ul>
   <div class="navbar-right">
     <div class="navbar-badge">AI Online</div>
@@ -73,6 +74,7 @@
     <button class="mobile-nav-item" data-page="pest"><span class="nav-icon">🐛</span>Pests</button>
     <button class="mobile-nav-item" data-page="map"><span class="nav-icon">🗺️</span>Map</button>
     <button class="mobile-nav-item" data-page="dashboard"><span class="nav-icon">📊</span>Stats</button>
+    <button class="mobile-nav-item" data-page="weather"><span class="nav-icon">🌤️</span>Weather</button>
   </div>
 </div>
  
@@ -113,6 +115,30 @@
       <div class="trust-item"><span class="trust-icon">🤖</span><span>AI-Powered</span></div>
       <div class="trust-divider"></div>
       <div class="trust-item"><span class="trust-icon">⚡</span><span>Real-time Results</span></div>
+    </div>
+ 
+    <!-- Weather Widget (home page) -->
+    <div class="home-weather-widget" id="homeWeatherWidget">
+      <div class="home-weather-loading" id="homeWeatherLoading">
+        <span style="font-size:24px">🌤️</span>
+        <span style="font-size:13px;color:var(--text-secondary)">Loading weather...</span>
+      </div>
+      <div class="home-weather-content" id="homeWeatherContent" style="display:none">
+        <div class="home-weather-left">
+          <div class="home-weather-icon" id="homeWeatherIcon">🌤️</div>
+          <div>
+            <div class="home-weather-temp" id="homeWeatherTemp">--°C</div>
+            <div class="home-weather-city" id="homeWeatherCity">Kampala, Uganda</div>
+          </div>
+        </div>
+        <div class="home-weather-right">
+          <div class="home-weather-stat"><span>💧</span><span id="homeWeatherHumidity">--%</span></div>
+          <div class="home-weather-stat"><span>🌬️</span><span id="homeWeatherWind">-- km/h</span></div>
+          <div class="home-weather-stat"><span>🌧️</span><span id="homeWeatherRain">-- mm</span></div>
+        </div>
+        <div class="home-weather-advice" id="homeWeatherAdvice"></div>
+        <button class="home-weather-more" onclick="showPage('weather')">Full Forecast →</button>
+      </div>
     </div>
  
     <!-- Stats -->
@@ -756,6 +782,127 @@
   </div>
 </div>
  
+<!-- ═══════════════════════════════════════════════════
+     PAGE: WEATHER
+═══════════════════════════════════════════════════ -->
+<div id="page-weather" class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>🌤️ Weather Forecast</h1>
+      <p>Real-time weather for East African farming regions — powered by Open-Meteo</p>
+    </div>
+ 
+    <!-- City quick-select -->
+    <div class="weather-cities">
+      <button class="weather-city-btn active" onclick="selectWeatherCity(this,'Kampala',0.3136,32.5811)">📍 Kampala</button>
+      <button class="weather-city-btn" onclick="selectWeatherCity(this,'Nairobi',-1.2921,36.8219)">📍 Nairobi</button>
+      <button class="weather-city-btn" onclick="selectWeatherCity(this,'Dar es Salaam',-6.7924,39.2083)">📍 Dar es Salaam</button>
+      <button class="weather-city-btn" onclick="selectWeatherCity(this,'Mombasa',-4.0435,39.6682)">📍 Mombasa</button>
+      <button class="weather-city-btn" onclick="selectWeatherCity(this,'Gulu',2.7748,32.2988)">📍 Gulu</button>
+      <button class="weather-city-btn" onclick="selectWeatherCity(this,'Mwanza',-2.5167,32.9000)">📍 Mwanza</button>
+    </div>
+ 
+    <!-- Search bar -->
+    <div class="weather-search">
+      <input type="text" id="weatherSearchInput" class="weather-search-input"
+        placeholder="Search any African city..."
+        onkeydown="if(event.key==='Enter') searchWeatherCity()"/>
+      <button class="btn btn-primary btn-sm" onclick="searchWeatherCity()">🔍 Search</button>
+    </div>
+ 
+    <!-- Loading state -->
+    <div class="weather-loading" id="weatherLoading">
+      <div class="scan-rings" style="width:80px;height:80px">
+        <div class="scan-ring ring-1" style="width:80px;height:80px"></div>
+        <div class="scan-ring ring-2" style="width:58px;height:58px"></div>
+        <div class="scan-ring ring-3" style="width:36px;height:36px"></div>
+      </div>
+      <p style="color:var(--text-secondary);margin-top:20px;font-size:15px">Fetching weather data...</p>
+    </div>
+ 
+    <!-- Error state -->
+    <div class="weather-error" id="weatherError" style="display:none">
+      <span style="font-size:48px">⚠️</span>
+      <h3>Could not load weather</h3>
+      <p id="weatherErrorMsg">Please check your connection and try again.</p>
+      <button class="btn btn-secondary btn-sm" onclick="loadWeather()">Try Again</button>
+    </div>
+ 
+    <!-- Current weather card -->
+    <div class="weather-main-card" id="weatherMainCard" style="display:none">
+      <div class="weather-main-top">
+        <div class="weather-main-left">
+          <div class="weather-big-icon" id="weatherBigIcon">🌤️</div>
+          <div>
+            <div class="weather-big-temp" id="weatherBigTemp">--°C</div>
+            <div class="weather-big-desc" id="weatherBigDesc">--</div>
+            <div class="weather-big-city" id="weatherBigCity">--</div>
+          </div>
+        </div>
+        <div class="weather-main-stats">
+          <div class="weather-stat-card">
+            <span class="weather-stat-icon">💧</span>
+            <span class="weather-stat-value" id="wHumidity">--%</span>
+            <span class="weather-stat-label">Humidity</span>
+          </div>
+          <div class="weather-stat-card">
+            <span class="weather-stat-icon">🌬️</span>
+            <span class="weather-stat-value" id="wWind">-- km/h</span>
+            <span class="weather-stat-label">Wind</span>
+          </div>
+          <div class="weather-stat-card">
+            <span class="weather-stat-icon">🌧️</span>
+            <span class="weather-stat-value" id="wRain">-- mm</span>
+            <span class="weather-stat-label">Rainfall</span>
+          </div>
+          <div class="weather-stat-card">
+            <span class="weather-stat-icon">👁️</span>
+            <span class="weather-stat-value" id="wUV">--</span>
+            <span class="weather-stat-label">UV Index</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Farming advice banner -->
+      <div class="weather-farming-advice" id="weatherFarmingAdvice">
+        <div class="weather-advice-icon" id="wAdviceIcon">🌱</div>
+        <div>
+          <div class="weather-advice-title" id="wAdviceTitle">Loading farming advice...</div>
+          <div class="weather-advice-text" id="wAdviceText"></div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- 7-day forecast -->
+    <div id="weatherForecastSection" style="display:none">
+      <div class="section-header mt-24" style="margin-bottom:16px">
+        <h2 style="font-size:20px">📅 7-Day Forecast</h2>
+      </div>
+      <div class="weather-forecast-grid" id="weatherForecastGrid"></div>
+    </div>
+ 
+    <!-- Hourly forecast -->
+    <div id="weatherHourlySection" style="display:none">
+      <div class="section-header mt-24" style="margin-bottom:16px">
+        <h2 style="font-size:20px">⏱️ Today by Hour</h2>
+      </div>
+      <div class="weather-hourly-scroll">
+        <div class="weather-hourly-grid" id="weatherHourlyGrid"></div>
+      </div>
+    </div>
+ 
+    <!-- Farming calendar -->
+    <div id="weatherFarmingSection" style="display:none">
+      <div class="section-header mt-24" style="margin-bottom:16px">
+        <h2 style="font-size:20px">🌾 Farming Conditions This Week</h2>
+        <p>Based on forecast data for your selected region</p>
+      </div>
+      <div class="weather-farming-grid" id="weatherFarmingGrid"></div>
+    </div>
+ 
+  </div>
+</div>
+ 
 <!-- ═══ SLIDE-IN AUTH PANEL ═══ -->
 <div class="auth-panel-backdrop" id="authBackdrop" onclick="closeAuthPanel()"></div>
  
@@ -887,5 +1034,6 @@
 </script>
 <script src="app.js"></script>
 <script src="auth.js"></script>
+<script src="weather.js"></script>
 </body>
 </html>

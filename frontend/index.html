@@ -5,24 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="AgriGuard AI — Smart Crop Protection Platform for East African Farmers" />
   <title>AgriGuard AI</title>
- 
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
- 
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
   <!-- Leaflet Map -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
- 
+
   <!-- Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
- 
+
   <!-- App Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
- 
+
 <!-- ─── NAVBAR ─────────────────────────────────────── -->
 <nav class="navbar">
   <div class="navbar-brand" data-page="home">
@@ -30,13 +30,13 @@
     <span class="navbar-title">Agri<span>Guard</span> AI</span>
   </div>
   <ul class="navbar-links">
-    <li><a href="#" data-page="home">🏠 Home</a></li>
-    <li><a href="#" data-page="scan">🔬 Scan</a></li>
-    <li><a href="#" data-page="advisor">🤖 Advisor</a></li>
-    <li><a href="#" data-page="pest">🐛 Pests</a></li>
-    <li><a href="#" data-page="map">🗺️ Map</a></li>
-    <li><a href="#" data-page="dashboard">📊 Dashboard</a></li>
-    <li><a href="#" data-page="weather">🌤️ Weather</a></li>
+    <li><a href="#" data-page="home">Home</a></li>
+    <li><a href="#" data-page="scan">Scan</a></li>
+    <li><a href="#" data-page="advisor">Advisor</a></li>
+    <li><a href="#" data-page="pest">Pests</a></li>
+    <li><a href="#" data-page="map">Map</a></li>
+    <li><a href="#" data-page="dashboard">Dashboard</a></li>
+    <li><a href="#" data-page="weather">Weather</a></li>
   </ul>
   <div class="navbar-right">
     <div class="navbar-badge">AI Online</div>
@@ -48,7 +48,7 @@
     </div>
   </div>
 </nav>
- 
+
 <!-- ─── USER DROPDOWN ──────────────────────────────── -->
 <div class="user-dropdown" id="userDropdown">
   <div class="user-dropdown-head">
@@ -64,7 +64,7 @@
   <div class="user-dropdown-divider"></div>
   <button class="user-dropdown-item danger" onclick="handleLogout()">🚪 Sign Out</button>
 </div>
- 
+
 <!-- ─── MOBILE NAV ──────────────────────────────────── -->
 <div class="mobile-nav">
   <div class="mobile-nav-inner">
@@ -77,13 +77,13 @@
     <button class="mobile-nav-item" data-page="weather"><span class="nav-icon">🌤️</span>Weather</button>
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════
      PAGE: HOME
 ═══════════════════════════════════════════════════ -->
 <div id="page-home" class="page active">
   <div class="container">
- 
+
     <!-- Hero with full-width farm background -->
     <div class="hero">
       <div class="hero-bg"></div>
@@ -103,7 +103,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- Trust bar -->
     <div class="trust-bar">
       <div class="trust-item"><span class="trust-icon">🌾</span><span>Uganda</span></div>
@@ -116,12 +116,12 @@
       <div class="trust-divider"></div>
       <div class="trust-item"><span class="trust-icon">⚡</span><span>Real-time Results</span></div>
     </div>
- 
+
     <!-- Weather Widget (home page) -->
     <div class="home-weather-widget" id="homeWeatherWidget">
       <div class="home-weather-loading" id="homeWeatherLoading">
-        <span style="font-size:24px">🌤️</span>
-        <span style="font-size:13px;color:var(--text-secondary)">Loading weather...</span>
+        <span style="font-size:22px">🌤️</span>
+        <span style="font-size:12px;color:var(--text-secondary)">Loading weather...</span>
       </div>
       <div class="home-weather-content" id="homeWeatherContent" style="display:none">
         <div class="home-weather-left">
@@ -140,7 +140,7 @@
         <button class="home-weather-more" onclick="showPage('weather')">Full Forecast →</button>
       </div>
     </div>
- 
+
     <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card">
@@ -160,7 +160,7 @@
         <div class="stat-label">🌍 Countries Covered</div>
       </div>
     </div>
- 
+
     <!-- Features -->
     <div class="section-header mt-24">
       <h2>Everything You Need</h2>
@@ -204,7 +204,7 @@
         <span class="feature-arrow">Open camera →</span>
       </div>
     </div>
- 
+
     <!-- How it works -->
     <div class="section-header mt-24">
       <h2>How It Works</h2>
@@ -232,20 +232,20 @@
         <p>Receive a complete treatment plan with local product names, dosages, and prevention tips for your crops.</p>
       </div>
     </div>
- 
+
     <!-- Quick Questions -->
     <div class="section-header mt-24">
       <h2>Ask AgriGuard AI</h2>
       <p>Common questions from East African farmers</p>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px">
       <button class="quick-q-btn" data-question="How do I treat maize lethal necrosis in Uganda?">How do I treat maize lethal necrosis?</button>
       <button class="quick-q-btn" data-question="What fertilizer should I use for tomatoes in East Africa?">Best fertilizer for tomatoes</button>
       <button class="quick-q-btn" data-question="How do I control Fall Armyworm on maize organically?">Control Fall Armyworm organically</button>
       <button class="quick-q-btn" data-question="What are the signs of cassava mosaic disease and how do I manage it?">Cassava mosaic disease signs</button>
       <button class="quick-q-btn" data-question="How do I improve soil health for better crop yields?">How to improve soil health</button>
     </div>
- 
+
     <!-- Impact strip -->
     <div class="impact-strip">
       <div class="impact-strip-inner">
@@ -271,10 +271,10 @@
         </div>
       </div>
     </div>
- 
+
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════
      PAGE: SCAN
 ═══════════════════════════════════════════════════ -->
@@ -284,11 +284,11 @@
       <h1>🔬 Crop Disease Scanner</h1>
       <p>Upload a leaf photo for instant AI diagnosis and treatment recommendations</p>
     </div>
- 
+
     <!-- Crop Selector -->
     <div class="mb-24">
-      <div class="section-header" style="margin-bottom:12px">
-        <h2 style="font-size:18px">Select Crop Type</h2>
+      <div class="section-header" style="margin-bottom:10px">
+        <h2 style="font-size:17px">Select Crop Type</h2>
       </div>
       <div class="crop-selector">
         <button class="crop-btn active" data-crop="Maize" onclick="selectCrop(this)">🌽 Maize</button>
@@ -301,7 +301,7 @@
         <button class="crop-btn" data-crop="Sorghum" onclick="selectCrop(this)">🌾 Sorghum</button>
       </div>
     </div>
- 
+
     <div id="uploadArea" class="scan-layout">
       <!-- Upload Zone -->
       <div>
@@ -315,7 +315,7 @@
           <img id="previewImg" src="" alt="Preview" />
         </div>
       </div>
- 
+
       <!-- Camera Card -->
       <div>
         <div class="camera-card mb-16">
@@ -323,29 +323,29 @@
           <p>Use your phone or webcam to photograph diseased leaves directly in the field</p>
           <video id="cameraView" autoplay playsinline></video>
           <canvas id="captureCanvas"></canvas>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">
             <button class="btn btn-secondary btn-sm" id="startCameraBtn">📷 Open Camera</button>
             <button class="btn btn-primary btn-sm" id="captureBtn" style="display:none">📸 Capture</button>
             <button class="btn btn-danger btn-sm" id="stopCameraBtn" style="display:none">✕ Stop</button>
           </div>
         </div>
- 
-        <div style="padding:20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:16px">
-          <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:10px">📋 Tips for best results:</h4>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
-            <li style="font-size:13px;color:var(--text-secondary)">✓ Focus on affected leaves, not the whole plant</li>
-            <li style="font-size:13px;color:var(--text-secondary)">✓ Use natural light, avoid shadows</li>
-            <li style="font-size:13px;color:var(--text-secondary)">✓ Include both healthy and diseased areas</li>
-            <li style="font-size:13px;color:var(--text-secondary)">✓ Keep the camera steady for a clear image</li>
+
+        <div style="padding:18px;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--r-lg);margin-bottom:14px">
+          <h4 style="font-size:14px;font-weight:700;margin-bottom:9px;color:var(--text-primary)">📋 Tips for best results:</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:5px">
+            <li style="font-size:12px;color:var(--text-secondary)">✓ Focus on affected leaves, not the whole plant</li>
+            <li style="font-size:12px;color:var(--text-secondary)">✓ Use natural light, avoid shadows</li>
+            <li style="font-size:12px;color:var(--text-secondary)">✓ Include both healthy and diseased areas</li>
+            <li style="font-size:12px;color:var(--text-secondary)">✓ Keep the camera steady for a clear image</li>
           </ul>
         </div>
- 
+
         <button class="btn btn-primary" id="scanBtn" style="width:100%" disabled>
           🔬 Analyze Crop
         </button>
       </div>
     </div>
- 
+
     <!-- Scan Animation -->
     <div class="scan-animation" id="scanAnimation">
       <div class="scan-rings">
@@ -360,20 +360,20 @@
         <div class="scan-progress-bar" id="scanProgressBar"></div>
       </div>
     </div>
- 
+
     <!-- Results Section -->
     <div class="results-card mt-24" id="resultsSection">
       <div class="results-header">
         <div>
           <div class="results-crop" id="resultCrop">—</div>
           <div class="results-disease" id="resultDisease">—</div>
-          <div style="margin-top:8px">
+          <div style="margin-top:7px">
             <span class="severity-tag medium" id="resultSeverity">Medium Severity</span>
           </div>
         </div>
         <div class="confidence-badge" id="resultConfidence">—%</div>
       </div>
- 
+
       <!-- Health Score -->
       <div class="health-score-section">
         <div class="health-score-label">
@@ -384,46 +384,46 @@
           <div class="health-bar-fill medium" id="resultHealthFill" style="width:0%"></div>
         </div>
       </div>
- 
+
       <!-- Explanation -->
       <div class="results-section">
         <div class="results-section-title">🔍 Analysis</div>
         <div class="results-text" id="resultExplanation">—</div>
       </div>
- 
+
       <div class="divider"></div>
- 
+
       <!-- Treatment -->
       <div class="results-section">
         <div class="results-section-title">💊 Treatment Plan</div>
         <div class="results-text" id="resultTreatment">—</div>
       </div>
- 
+
       <div class="divider"></div>
- 
+
       <!-- Prevention Tips -->
       <div class="results-section">
         <div class="results-section-title">🛡️ Prevention Tips</div>
         <ul class="tips-list" id="resultTips"></ul>
       </div>
- 
+
       <!-- Issues -->
       <div class="results-section mt-16" id="issuesSection">
         <div class="results-section-title">⚠️ Identified Issues</div>
         <div class="issues-list" id="resultIssues"></div>
       </div>
- 
+
       <!-- Action Buttons -->
-      <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap">
+      <div style="display:flex;gap:9px;margin-top:20px;flex-wrap:wrap">
         <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">🤖 Ask AI for More Help</button>
         <button class="btn btn-secondary btn-sm" onclick="showPage('map')">🗺️ View Disease Map</button>
         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('resultsSection').classList.remove('visible');document.getElementById('imagePreview').classList.remove('visible');currentImageFile=null;document.getElementById('scanBtn').disabled=true">🔄 Scan Another</button>
       </div>
     </div>
- 
+
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════
      PAGE: AI ADVISOR
 ═══════════════════════════════════════════════════ -->
@@ -433,7 +433,7 @@
       <h1>🤖 AI Farming Advisor</h1>
       <p>Your personal agronomist — available 24/7 for East African farmers</p>
     </div>
- 
+
     <!-- Shown when NOT logged in -->
     <div class="advisor-lock" id="advisorLock">
       <div class="advisor-lock-inner">
@@ -451,12 +451,12 @@
         </div>
       </div>
     </div>
- 
+
     <!-- Shown when logged in -->
     <div class="advisor-layout" id="advisorChat" style="display:none">
       <div>
-        <div class="section-header" style="margin-bottom:14px">
-          <h2 style="font-size:16px">Quick Questions</h2>
+        <div class="section-header" style="margin-bottom:12px">
+          <h2 style="font-size:15px">Quick Questions</h2>
         </div>
         <div class="quick-questions">
           <button class="quick-q-btn" data-question="My maize leaves are turning yellow from the bottom up. What is causing this and what should I do?">🌽 Why are my maize leaves yellowing?</button>
@@ -469,7 +469,7 @@
           <button class="quick-q-btn" data-question="How do I store maize after harvest to prevent aflatoxin and weevils?">📦 Post-harvest storage tips</button>
         </div>
       </div>
- 
+
       <div>
         <div class="chat-container">
           <div class="chat-header">
@@ -487,15 +487,15 @@
             <textarea class="chat-input" id="chatInput"
               placeholder="Ask about crop diseases, pests, soil, or any farming challenge..."
               rows="1" maxlength="1000"></textarea>
-            <button class="btn btn-primary" id="sendBtn" style="min-width:48px;height:48px;padding:0">➤</button>
+            <button class="btn btn-primary" id="sendBtn" style="min-width:46px;height:46px;padding:0">➤</button>
           </div>
         </div>
       </div>
     </div><!-- end advisor-layout / advisorChat -->
- 
+
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════
      PAGE: PEST DETECTION
 ═══════════════════════════════════════════════════ -->
@@ -505,7 +505,7 @@
       <h1>🐛 Pest Detection</h1>
       <p>Identify crop pests, assess threat levels, and get emergency response protocols</p>
     </div>
- 
+
     <!-- Known Pests Grid -->
     <div class="section-header">
       <h2>Common East African Crop Pests</h2>
@@ -549,22 +549,22 @@
         <div class="threat-badge MEDIUM">MEDIUM</div>
       </div>
     </div>
- 
+
     <!-- Pest Info Card (populated by JS) -->
     <div class="pest-info-card" id="pestInfoCard">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
         <div>
-          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestInfoName">—</div>
-          <div id="pestInfoCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
+          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em" id="pestInfoName">—</div>
+          <div id="pestInfoCrops" style="font-size:13px;color:var(--text-secondary);margin-top:3px">—</div>
         </div>
         <div id="pestInfoThreat" class="threat-badge MEDIUM">MEDIUM</div>
       </div>
- 
+
       <div class="results-section">
         <div class="results-section-title">📋 Description</div>
         <div class="results-text" id="pestInfoDesc">—</div>
       </div>
- 
+
       <div class="two-col mt-16">
         <div class="results-section">
           <div class="results-section-title">⚠️ Symptoms</div>
@@ -575,53 +575,53 @@
           <ul class="tips-list" id="pestInfoPrevention"></ul>
         </div>
       </div>
- 
+
       <div class="divider"></div>
- 
+
       <div class="results-section">
         <div class="results-section-title">💊 Treatment</div>
         <div class="results-text" id="pestInfoTreatment">—</div>
       </div>
- 
-      <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
+
+      <div class="results-section mt-16" style="padding:12px 16px;background:rgba(212,146,43,0.06);border:1px solid rgba(212,146,43,0.18);border-radius:var(--r-md)">
         <div class="results-section-title" style="color:var(--gold)">💰 Economic Impact</div>
-        <div class="results-text" style="font-size:14px" id="pestInfoImpact">—</div>
+        <div class="results-text" style="font-size:13px" id="pestInfoImpact">—</div>
       </div>
     </div>
- 
+
     <!-- AI Pest Scanner -->
     <div class="card mb-24">
-      <div class="section-header" style="margin-bottom:16px">
-        <h2 style="font-size:20px">🤖 AI Pest Scanner</h2>
+      <div class="section-header" style="margin-bottom:14px">
+        <h2 style="font-size:19px">🤖 AI Pest Scanner</h2>
         <p>Upload a photo of a pest or damaged crop for instant AI identification</p>
       </div>
- 
+
       <input type="file" id="pestFileInput" accept="image/*" style="display:none" />
- 
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <button class="btn btn-primary" id="analyzePestBtn">
           🔍 Upload Image to Analyze Pest
         </button>
-        <span style="font-size:13px;color:var(--text-secondary)">Supports JPG, PNG, WEBP · max 10MB</span>
+        <span style="font-size:12px;color:var(--text-secondary)">Supports JPG, PNG, WEBP · max 10MB</span>
       </div>
     </div>
- 
+
     <!-- Pest AI Result Card -->
     <div class="pest-result-card" id="pestResultCard">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
         <div>
-          <div style="font-size:13px;color:var(--sage);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">AI Detection Result</div>
-          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestResultName">—</div>
-          <div id="pestResultCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
+          <div style="font-size:11px;color:var(--green-400);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:3px">AI Detection Result</div>
+          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em" id="pestResultName">—</div>
+          <div id="pestResultCrops" style="font-size:13px;color:var(--text-secondary);margin-top:3px">—</div>
         </div>
         <div id="pestResultThreat" class="threat-badge MEDIUM">MEDIUM</div>
       </div>
- 
+
       <div class="results-section">
         <div class="results-section-title">📋 Description</div>
         <div class="results-text" id="pestResultDesc">—</div>
       </div>
- 
+
       <div class="two-col mt-16">
         <div class="results-section">
           <div class="results-section-title">⚠️ Symptoms</div>
@@ -632,27 +632,27 @@
           <ul class="tips-list" id="pestResultPrevention"></ul>
         </div>
       </div>
- 
+
       <div class="divider"></div>
- 
+
       <div class="results-section">
         <div class="results-section-title">💊 Treatment</div>
         <div class="results-text" id="pestResultTreatment">—</div>
       </div>
- 
-      <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
+
+      <div class="results-section mt-16" style="padding:12px 16px;background:rgba(212,146,43,0.06);border:1px solid rgba(212,146,43,0.18);border-radius:var(--r-md)">
         <div class="results-section-title" style="color:var(--gold)">💰 Economic Impact</div>
-        <div class="results-text" style="font-size:14px" id="pestResultImpact">—</div>
+        <div class="results-text" style="font-size:13px" id="pestResultImpact">—</div>
       </div>
- 
-      <div style="margin-top:20px">
+
+      <div style="margin-top:18px">
         <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">🤖 Ask AI for Help</button>
       </div>
     </div>
- 
+
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════
      PAGE: DISEASE MAP
 ═══════════════════════════════════════════════════ -->
@@ -662,7 +662,7 @@
       <h1>🗺️ Disease Outbreak Map</h1>
       <p>Live disease reports across Uganda, Kenya, and Tanzania — updated automatically</p>
     </div>
- 
+
     <!-- Map Stats -->
     <div class="map-stats">
       <div class="map-stat">
@@ -670,7 +670,7 @@
         <div class="map-stat-label">Total Reports</div>
       </div>
       <div class="map-stat">
-        <div class="map-stat-number" id="mapOutbreaks" style="color:var(--crimson)">—</div>
+        <div class="map-stat-number" id="mapOutbreaks" style="color:var(--danger)">—</div>
         <div class="map-stat-label">⚠️ Outbreaks</div>
       </div>
       <div class="map-stat">
@@ -678,23 +678,23 @@
         <div class="map-stat-label">Countries</div>
       </div>
     </div>
- 
+
     <!-- Map -->
     <div id="diseaseMap"></div>
- 
+
     <!-- Legend -->
     <div class="map-legend">
-      <strong style="font-size:13px;color:var(--text-primary)">Legend:</strong>
+      <strong style="font-size:12px;color:var(--text-primary)">Legend:</strong>
       <div class="legend-item"><div class="legend-dot outbreak"></div> Critical / Outbreak (&lt;30% health)</div>
       <div class="legend-item"><div class="legend-dot high"></div> High Risk (30–50%)</div>
       <div class="legend-item"><div class="legend-dot medium"></div> Medium Risk (50–70%)</div>
       <div class="legend-item"><div class="legend-dot low"></div> Healthy (70%+)</div>
       <button class="btn btn-secondary btn-sm" id="refreshMapBtn" style="margin-left:auto">🔄 Refresh</button>
     </div>
- 
+
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════
      PAGE: DASHBOARD
 ═══════════════════════════════════════════════════ -->
@@ -709,7 +709,7 @@
         <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">🔄 Refresh</button>
       </div>
     </div>
- 
+
     <!-- KPI Cards -->
     <div class="dashboard-grid">
       <div class="kpi-card">
@@ -719,12 +719,12 @@
       </div>
       <div class="kpi-card">
         <span class="kpi-icon">✅</span>
-        <div class="kpi-number" id="dashHealthy" style="color:var(--lime)">—</div>
+        <div class="kpi-number" id="dashHealthy" style="color:var(--accent)">—</div>
         <div class="kpi-label">Healthy Reports</div>
       </div>
       <div class="kpi-card">
         <span class="kpi-icon">🦠</span>
-        <div class="kpi-number" id="dashDiseased" style="color:var(--crimson)">—</div>
+        <div class="kpi-number" id="dashDiseased" style="color:var(--danger)">—</div>
         <div class="kpi-label">Diseased Reports</div>
       </div>
       <div class="kpi-card">
@@ -733,55 +733,55 @@
         <div class="kpi-label">Avg Health Score</div>
       </div>
     </div>
- 
+
     <!-- Dashboard Bottom -->
     <div class="dashboard-bottom">
- 
+
       <!-- Scan History -->
       <div class="card">
         <div class="flex-between mb-16">
-          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">🕐 Recent Scans</h3>
+          <h3 style="font-size:16px;font-weight:700">🕐 Recent Scans</h3>
           <button class="btn btn-secondary btn-sm" onclick="showPage('scan')">+ New Scan</button>
         </div>
         <div id="scanHistoryList">
-          <p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px">Loading scan history...</p>
+          <p style="color:var(--text-secondary);font-size:13px;text-align:center;padding:18px">Loading scan history...</p>
         </div>
       </div>
- 
+
       <!-- Right Column -->
-      <div style="display:flex;flex-direction:column;gap:24px">
- 
+      <div style="display:flex;flex-direction:column;gap:20px">
+
         <!-- Alerts -->
         <div class="card">
-          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">🚨 Alerts</h3>
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">🚨 Alerts</h3>
           <div id="alertsList">
-            <p style="color:var(--text-secondary);font-size:14px">Loading alerts...</p>
+            <p style="color:var(--text-secondary);font-size:13px">Loading alerts...</p>
           </div>
         </div>
- 
+
         <!-- Crop Health Overview -->
         <div class="card">
-          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">🌿 Crop Health Overview</h3>
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">🌿 Crop Health Overview</h3>
           <div id="healthOverview">
-            <p style="color:var(--text-secondary);font-size:14px">Loading...</p>
+            <p style="color:var(--text-secondary);font-size:13px">Loading...</p>
           </div>
         </div>
       </div>
     </div>
- 
+
     <!-- Health Trend Chart -->
     <div class="card mt-24">
       <div class="flex-between mb-16">
-        <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">📈 Crop Health Trend</h3>
+        <h3 style="font-size:16px;font-weight:700">📈 Crop Health Trend</h3>
       </div>
       <div class="chart-container">
         <canvas id="healthChart"></canvas>
       </div>
     </div>
- 
+
   </div>
 </div>
- 
+
 <!-- ═══════════════════════════════════════════════════
      PAGE: WEATHER
 ═══════════════════════════════════════════════════ -->
@@ -791,7 +791,7 @@
       <h1>🌤️ Weather Forecast</h1>
       <p>Real-time weather for East African farming regions — powered by Open-Meteo</p>
     </div>
- 
+
     <!-- City quick-select -->
     <div class="weather-cities">
       <button class="weather-city-btn active" onclick="selectWeatherCity(this,'Kampala',0.3136,32.5811)">📍 Kampala</button>
@@ -801,7 +801,7 @@
       <button class="weather-city-btn" onclick="selectWeatherCity(this,'Gulu',2.7748,32.2988)">📍 Gulu</button>
       <button class="weather-city-btn" onclick="selectWeatherCity(this,'Mwanza',-2.5167,32.9000)">📍 Mwanza</button>
     </div>
- 
+
     <!-- Search bar -->
     <div class="weather-search">
       <input type="text" id="weatherSearchInput" class="weather-search-input"
@@ -809,25 +809,25 @@
         onkeydown="if(event.key==='Enter') searchWeatherCity()"/>
       <button class="btn btn-primary btn-sm" onclick="searchWeatherCity()">🔍 Search</button>
     </div>
- 
+
     <!-- Loading state -->
     <div class="weather-loading" id="weatherLoading">
-      <div class="scan-rings" style="width:80px;height:80px">
-        <div class="scan-ring ring-1" style="width:80px;height:80px"></div>
-        <div class="scan-ring ring-2" style="width:58px;height:58px"></div>
-        <div class="scan-ring ring-3" style="width:36px;height:36px"></div>
+      <div class="scan-rings" style="width:76px;height:76px">
+        <div class="scan-ring ring-1" style="width:76px;height:76px"></div>
+        <div class="scan-ring ring-2" style="width:55px;height:55px"></div>
+        <div class="scan-ring ring-3" style="width:34px;height:34px"></div>
       </div>
-      <p style="color:var(--text-secondary);margin-top:20px;font-size:15px">Fetching weather data...</p>
+      <p style="color:var(--text-secondary);margin-top:18px;font-size:14px">Fetching weather data...</p>
     </div>
- 
+
     <!-- Error state -->
     <div class="weather-error" id="weatherError" style="display:none">
-      <span style="font-size:48px">⚠️</span>
+      <span style="font-size:44px">⚠️</span>
       <h3>Could not load weather</h3>
       <p id="weatherErrorMsg">Please check your connection and try again.</p>
       <button class="btn btn-secondary btn-sm" onclick="loadWeather()">Try Again</button>
     </div>
- 
+
     <!-- Current weather card -->
     <div class="weather-main-card" id="weatherMainCard" style="display:none">
       <div class="weather-main-top">
@@ -862,7 +862,7 @@
           </div>
         </div>
       </div>
- 
+
       <!-- Farming advice banner -->
       <div class="weather-farming-advice" id="weatherFarmingAdvice">
         <div class="weather-advice-icon" id="wAdviceIcon">🌱</div>
@@ -872,52 +872,52 @@
         </div>
       </div>
     </div>
- 
+
     <!-- 7-day forecast -->
     <div id="weatherForecastSection" style="display:none">
-      <div class="section-header mt-24" style="margin-bottom:16px">
-        <h2 style="font-size:20px">📅 7-Day Forecast</h2>
+      <div class="section-header mt-24" style="margin-bottom:14px">
+        <h2 style="font-size:19px">📅 7-Day Forecast</h2>
       </div>
       <div class="weather-forecast-grid" id="weatherForecastGrid"></div>
     </div>
- 
+
     <!-- Hourly forecast -->
     <div id="weatherHourlySection" style="display:none">
-      <div class="section-header mt-24" style="margin-bottom:16px">
-        <h2 style="font-size:20px">⏱️ Today by Hour</h2>
+      <div class="section-header mt-24" style="margin-bottom:14px">
+        <h2 style="font-size:19px">⏱️ Today by Hour</h2>
       </div>
       <div class="weather-hourly-scroll">
         <div class="weather-hourly-grid" id="weatherHourlyGrid"></div>
       </div>
     </div>
- 
+
     <!-- Farming calendar -->
     <div id="weatherFarmingSection" style="display:none">
-      <div class="section-header mt-24" style="margin-bottom:16px">
-        <h2 style="font-size:20px">🌾 Farming Conditions This Week</h2>
+      <div class="section-header mt-24" style="margin-bottom:14px">
+        <h2 style="font-size:19px">🌾 Farming Conditions This Week</h2>
         <p>Based on forecast data for your selected region</p>
       </div>
       <div class="weather-farming-grid" id="weatherFarmingGrid"></div>
     </div>
- 
+
   </div>
 </div>
- 
+
 <!-- ═══ SLIDE-IN AUTH PANEL ═══ -->
 <div class="auth-panel-backdrop" id="authBackdrop" onclick="closeAuthPanel()"></div>
- 
+
 <div class="auth-panel" id="authPanel">
   <div class="auth-panel-header">
     <div class="auth-panel-logo">🌿</div>
     <button class="auth-panel-close" onclick="closeAuthPanel()">✕</button>
   </div>
- 
+
   <!-- Tab switcher -->
   <div class="auth-panel-tabs">
     <button class="auth-panel-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
     <button class="auth-panel-tab" id="tabSignup" onclick="switchTab('signup')">Create Account</button>
   </div>
- 
+
   <!-- LOGIN -->
   <div id="panelLogin">
     <div class="auth-panel-title">
@@ -936,7 +936,7 @@
     <button class="btn btn-primary auth-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
     <p class="auth-switch-text">No account? <a onclick="switchTab('signup')">Create one free →</a></p>
   </div>
- 
+
   <!-- SIGNUP -->
   <div id="panelSignup" style="display:none">
     <div class="auth-panel-title">
@@ -952,14 +952,14 @@
       <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email"/>
     </div>
     <div class="auth-field">
-      <label>Password <span style="font-size:11px;opacity:0.6">(min. 6 characters)</span></label>
+      <label>Password <span style="font-size:10px;opacity:0.55">(min. 6 characters)</span></label>
       <input type="password" id="signupPassword" placeholder="Create a password" autocomplete="new-password"/>
     </div>
     <div class="auth-error" id="signupError"></div>
     <button class="btn btn-primary auth-btn" id="signupBtn" onclick="handleSignup()">Create Free Account</button>
     <p class="auth-switch-text">Already have an account? <a onclick="switchTab('login')">Sign in →</a></p>
   </div>
- 
+
   <!-- CHAT HISTORY (shown when logged in) -->
   <div id="panelHistory" style="display:none">
     <div class="auth-panel-title">
@@ -967,14 +967,12 @@
       <p>Your saved conversations with the AI Advisor</p>
     </div>
     <div class="chat-history-list" id="historyList">
-      <p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px 0">Loading...</p>
+      <p style="color:var(--text-secondary);font-size:13px;text-align:center;padding:18px 0">Loading...</p>
     </div>
   </div>
 </div>
- 
- 
-<!-- App JS -->
- 
+
+
 <!-- Hero particles + scroll fade -->
 <script>
 (function() {
@@ -982,35 +980,35 @@
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
   var particles = [];
- 
+
   function resize() {
     canvas.width = canvas.offsetWidth || window.innerWidth;
     canvas.height = canvas.offsetHeight || window.innerHeight;
   }
- 
+
   function mkParticle() {
     return {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      size: Math.random() * 2.5 + 0.5,
-      sx: (Math.random() - 0.5) * 0.35,
-      sy: -Math.random() * 0.5 - 0.15,
-      op: Math.random() * 0.45 + 0.08,
-      col: Math.random() > 0.5 ? '94,217,126' : '168,255,110'
+      size: Math.random() * 2.2 + 0.4,
+      sx: (Math.random() - 0.5) * 0.32,
+      sy: -Math.random() * 0.45 - 0.12,
+      op: Math.random() * 0.38 + 0.06,
+      col: Math.random() > 0.5 ? '100,196,132' : '145,217,168'
     };
   }
- 
+
   function init() {
     particles = [];
-    var n = Math.floor((canvas.width * canvas.height) / 12000);
+    var n = Math.floor((canvas.width * canvas.height) / 13000);
     for (var i = 0; i < n; i++) particles.push(mkParticle());
   }
- 
+
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
-      p.x += p.sx; p.y += p.sy; p.op -= 0.0008;
+      p.x += p.sx; p.y += p.sy; p.op -= 0.0007;
       if (p.y < -10 || p.op <= 0) particles[i] = mkParticle();
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -1019,15 +1017,15 @@
     }
     requestAnimationFrame(draw);
   }
- 
+
   resize(); init(); draw();
   window.addEventListener('resize', function() { resize(); init(); });
- 
+
   // Scroll indicator fade
   var si = document.querySelector('.hero-scroll');
   if (si) {
     window.addEventListener('scroll', function() {
-      si.style.opacity = Math.max(0, 1 - window.scrollY / 180);
+      si.style.opacity = Math.max(0, 1 - window.scrollY / 160);
     });
   }
 })();

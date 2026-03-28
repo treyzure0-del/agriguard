@@ -5,111 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="AgriGuard AI — Smart Crop Protection Platform for East African Farmers" />
   <title>AgriGuard AI</title>
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet Map -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <!-- Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <!-- App Styles -->
   <link rel="stylesheet" href="style.css" />
-  <style>
-/* ── SVG icon system ── */
-.ico{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.ico svg{display:block;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
-
-/* Feature card icon container */
-.feature-icon{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:13px;background:rgba(100,196,132,0.07);border:1px solid rgba(100,196,132,0.13);margin-bottom:16px;transition:all 0.22s ease;flex-shrink:0}
-.feature-card:hover .feature-icon{background:rgba(100,196,132,0.13);border-color:rgba(100,196,132,0.26)}
-.feature-icon svg{width:26px;height:26px;stroke:var(--accent);stroke-width:1.6}
-
-/* How-step icon circle */
-.how-step-icon{display:flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:50%;background:rgba(100,196,132,0.07);border:1px solid rgba(100,196,132,0.15);margin:0 auto 16px}
-.how-step-icon svg{width:30px;height:30px;stroke:var(--accent);stroke-width:1.6}
-
-/* Pest card icon circle */
-.pest-card-icon{display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:rgba(100,196,132,0.07);border:1px solid rgba(100,196,132,0.13);margin:0 auto 11px;transition:all 0.22s ease}
-.pest-card:hover .pest-card-icon{background:rgba(100,196,132,0.13);transform:scale(1.07)}
-.pest-card-icon svg{width:26px;height:26px;stroke:var(--accent);stroke-width:1.6}
-
-/* Upload icon */
-.upload-icon{display:flex;align-items:center;justify-content:center;width:68px;height:68px;border-radius:50%;background:rgba(100,196,132,0.06);border:1px solid rgba(100,196,132,0.14);margin:0 auto 16px}
-.upload-icon svg{width:34px;height:34px;stroke:var(--green-400);stroke-width:1.5}
-
-/* Scan icon (inside rings) */
-.scan-icon{display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
-.scan-icon svg{width:26px;height:26px;stroke:var(--accent);stroke-width:1.75}
-
-/* KPI icon box */
-.kpi-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:rgba(100,196,132,0.06);border:1px solid rgba(100,196,132,0.10);margin-bottom:12px}
-.kpi-icon svg{width:17px;height:17px;stroke-width:1.75}
-
-/* Advisor lock icon */
-.advisor-lock-icon{display:flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:50%;background:rgba(100,196,132,0.07);border:1px solid rgba(100,196,132,0.15);margin:0 auto 18px}
-.advisor-lock-icon svg{width:34px;height:34px;stroke:var(--accent);stroke-width:1.5}
-
-/* Auth panel logo */
-.auth-panel-logo{display:flex;align-items:center;justify-content:center}
-.auth-panel-logo svg{width:24px;height:24px;stroke:var(--accent);stroke-width:1.75}
-
-/* Navbar logo */
-.navbar-logo svg{width:18px;height:18px;stroke:#041008;stroke-width:2}
-
-/* Trust icons */
-.trust-icon{display:inline-flex;align-items:center}
-.trust-icon svg{width:14px;height:14px;stroke:var(--green-400);stroke-width:2}
-
-/* Mobile nav icons */
-.nav-icon{display:flex;align-items:center;justify-content:center}
-.nav-icon svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.75}
-.mobile-nav-item.active .nav-icon svg{stroke:var(--accent)}
-
-/* Dropdown item icons */
-.user-dropdown-item svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;flex-shrink:0}
-
-/* Weather icons */
-.home-weather-icon{display:flex;align-items:center}
-.home-weather-icon svg{width:40px;height:40px;stroke:var(--accent);stroke-width:1.5}
-.home-weather-stat svg{width:13px;height:13px;stroke:var(--text-secondary);stroke-width:2}
-.weather-big-icon{display:flex;align-items:center;animation:weatherFloat 4s ease-in-out infinite}
-.weather-big-icon svg{width:68px;height:68px;stroke:var(--accent);stroke-width:1.4}
-.weather-stat-icon svg{width:20px;height:20px;stroke:var(--accent);stroke-width:1.75}
-.weather-advice-icon svg{width:22px;height:22px;stroke:var(--accent);stroke-width:1.75}
-.farming-condition-icon svg{width:20px;height:20px;stroke:var(--accent);stroke-width:1.75}
-.forecast-icon{display:flex;align-items:center;justify-content:center;margin-bottom:8px}
-.forecast-icon svg{width:26px;height:26px;stroke:var(--accent);stroke-width:1.6}
-.hourly-icon{display:flex;align-items:center;justify-content:center;margin-bottom:7px}
-.hourly-icon svg{width:20px;height:20px;stroke:var(--accent);stroke-width:1.75}
-
-/* Btn icons */
-.btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.2;flex-shrink:0}
-.btn-primary svg{stroke:#041008}
-.btn-outline-hero svg{stroke:var(--text-primary)}
-
-/* Alert icons */
-.alert-icon svg{width:18px;height:18px;stroke-width:2}
-.alert-item.danger .alert-icon svg{stroke:var(--danger)}
-.alert-item.warning .alert-icon svg{stroke:var(--warning)}
-.alert-item.info .alert-icon svg{stroke:var(--accent)}
-
-/* History icon */
-.history-icon svg{width:17px;height:17px;stroke:var(--accent);stroke-width:2}
-
-/* Tips checkmark */
-.tip-check{display:inline-flex;align-items:center;flex-shrink:0;margin-top:2px}
-.tip-check svg{width:12px;height:12px;stroke:var(--accent);stroke-width:2.5}
-
-/* Outbreak alert */
-.outbreak-icon svg{width:20px;height:20px;stroke:var(--danger);stroke-width:2}
-  </style>
 </head>
 <body>
 
 <!-- ─── NAVBAR ─────────────────────────────────────── -->
 <nav class="navbar">
   <div class="navbar-brand" data-page="home">
-    <div class="navbar-logo">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    </div>
+    <div class="navbar-logo">AG</div>
     <span class="navbar-title">Agri<span>Guard</span> AI</span>
   </div>
   <ul class="navbar-links">
@@ -142,67 +59,43 @@
     </div>
   </div>
   <div class="user-dropdown-divider"></div>
-  <button class="user-dropdown-item" onclick="showPage('advisor');closeUserMenu()">
-    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> AI Advisor
-  </button>
-  <button class="user-dropdown-item" onclick="showChatHistory();closeUserMenu()">
-    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="13" y2="13"/></svg> Chat History
-  </button>
+  <button class="user-dropdown-item" onclick="showPage('advisor');closeUserMenu()">AI Advisor</button>
+  <button class="user-dropdown-item" onclick="showChatHistory();closeUserMenu()">Chat History</button>
   <div class="user-dropdown-divider"></div>
-  <button class="user-dropdown-item danger" onclick="handleLogout()">
-    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Sign Out
-  </button>
+  <button class="user-dropdown-item danger" onclick="handleLogout()">Sign Out</button>
 </div>
 
 <!-- ─── MOBILE NAV ──────────────────────────────────── -->
 <div class="mobile-nav">
   <div class="mobile-nav-inner">
-    <button class="mobile-nav-item" data-page="home">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home
-    </button>
-    <button class="mobile-nav-item" data-page="scan">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Scan
-    </button>
-    <button class="mobile-nav-item" data-page="advisor">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>AI Chat
-    </button>
-    <button class="mobile-nav-item" data-page="pest">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Pests
-    </button>
-    <button class="mobile-nav-item" data-page="map">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span>Map
-    </button>
-    <button class="mobile-nav-item" data-page="dashboard">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>Stats
-    </button>
-    <button class="mobile-nav-item" data-page="weather">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg></span>Weather
-    </button>
+    <button class="mobile-nav-item" data-page="home"><span class="nav-icon-text">⌂</span>Home</button>
+    <button class="mobile-nav-item" data-page="scan"><span class="nav-icon-text">◎</span>Scan</button>
+    <button class="mobile-nav-item" data-page="advisor"><span class="nav-icon-text">AI</span>Chat</button>
+    <button class="mobile-nav-item" data-page="pest"><span class="nav-icon-text">!</span>Pests</button>
+    <button class="mobile-nav-item" data-page="map"><span class="nav-icon-text">◈</span>Map</button>
+    <button class="mobile-nav-item" data-page="dashboard"><span class="nav-icon-text">▤</span>Stats</button>
+    <button class="mobile-nav-item" data-page="weather"><span class="nav-icon-text">〜</span>Weather</button>
   </div>
 </div>
 
-<!-- ═══════════ PAGE: HOME ═══════════ -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: HOME
+═══════════════════════════════════════════════════ -->
 <div id="page-home" class="page active">
   <div class="container">
 
+    <!-- Hero with full-width farm background -->
     <div class="hero">
       <div class="hero-bg"></div>
       <div class="hero-overlay"></div>
       <canvas id="heroCanvas"></canvas>
       <div class="hero-inner">
-        <div class="hero-badge">
-          <span class="ico" style="display:inline-flex;margin-right:2px"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
-          East Africa's Crop Protection Platform
-        </div>
+        <div class="hero-badge">East Africa's Crop Protection Platform</div>
         <h1>Protect Your Crops<br>with AI Intelligence</h1>
         <p>Scan diseased leaves, get instant diagnosis, track outbreaks across East Africa, and consult your AI agricultural advisor — all in one platform.</p>
         <div class="hero-btns">
-          <button class="btn btn-primary btn-hero" data-page="scan">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Scan a Crop
-          </button>
-          <button class="btn btn-outline-hero" data-page="advisor">
-            <svg viewBox="0 0 24 24" style="stroke:var(--text-primary)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Ask AI Advisor
-          </button>
+          <button class="btn btn-primary btn-hero" data-page="scan">Scan a Crop</button>
+          <button class="btn btn-outline-hero" data-page="advisor">Ask AI Advisor</button>
         </div>
         <div class="hero-scroll">
           <span>Scroll to explore</span>
@@ -213,56 +106,35 @@
 
     <!-- Trust bar -->
     <div class="trust-bar">
-      <div class="trust-item">
-        <span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span>Uganda</span>
-      </div>
+      <div class="trust-item"><span class="trust-country">Uganda</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item">
-        <span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span>Kenya</span>
-      </div>
+      <div class="trust-item"><span class="trust-country">Kenya</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item">
-        <span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span>Tanzania</span>
-      </div>
+      <div class="trust-item"><span class="trust-country">Tanzania</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item">
-        <span class="trust-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span><span>AI-Powered</span>
-      </div>
+      <div class="trust-item"><span class="trust-country">AI-Powered</span></div>
       <div class="trust-divider"></div>
-      <div class="trust-item">
-        <span class="trust-icon"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span>Real-time Results</span>
-      </div>
+      <div class="trust-item"><span class="trust-country">Real-time Results</span></div>
     </div>
 
-    <!-- Home Weather Widget -->
+    <!-- Weather Widget (home page) -->
     <div class="home-weather-widget" id="homeWeatherWidget">
       <div class="home-weather-loading" id="homeWeatherLoading">
-        <span class="ico" style="color:var(--accent)"><svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg></span>
-        <span style="font-size:12px;color:var(--text-secondary)">Loading weather...</span>
+        <span class="weather-load-icon">—</span>
+        <span style="font-size:13px;color:var(--text-secondary)">Loading weather...</span>
       </div>
       <div class="home-weather-content" id="homeWeatherContent" style="display:none">
         <div class="home-weather-left">
-          <div class="home-weather-icon" id="homeWeatherIcon">
-            <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
-          </div>
+          <div class="home-weather-icon" id="homeWeatherIcon">—</div>
           <div>
             <div class="home-weather-temp" id="homeWeatherTemp">--°C</div>
             <div class="home-weather-city" id="homeWeatherCity">Kampala, Uganda</div>
           </div>
         </div>
         <div class="home-weather-right">
-          <div class="home-weather-stat">
-            <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
-            <span id="homeWeatherHumidity">--%</span>
-          </div>
-          <div class="home-weather-stat">
-            <span class="ico"><svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span>
-            <span id="homeWeatherWind">-- km/h</span>
-          </div>
-          <div class="home-weather-stat">
-            <span class="ico"><svg viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></span>
-            <span id="homeWeatherRain">-- mm</span>
-          </div>
+          <div class="home-weather-stat"><span class="hw-label">HUM</span><span id="homeWeatherHumidity">--%</span></div>
+          <div class="home-weather-stat"><span class="hw-label">WIND</span><span id="homeWeatherWind">-- km/h</span></div>
+          <div class="home-weather-stat"><span class="hw-label">RAIN</span><span id="homeWeatherRain">-- mm</span></div>
         </div>
         <div class="home-weather-advice" id="homeWeatherAdvice"></div>
         <button class="home-weather-more" onclick="showPage('weather')">Full Forecast →</button>
@@ -296,49 +168,37 @@
     </div>
     <div class="features-grid">
       <div class="feature-card" data-page="scan">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-        </div>
+        <span class="feature-icon-text">SCAN</span>
         <h3>AI Disease Scanner</h3>
         <p>Upload or capture a photo of your crop leaf. Get instant diagnosis with confidence score, disease name, and full treatment plan.</p>
         <span class="feature-arrow">Try now →</span>
       </div>
       <div class="feature-card" data-page="advisor">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="12" y2="13"/></svg>
-        </div>
+        <span class="feature-icon-text">AI</span>
         <h3>AI Farming Advisor</h3>
         <p>Chat with your personal AI agronomist 24/7. Ask about diseases, pests, fertilizers, soil health, weather, or any farming challenge.</p>
         <span class="feature-arrow">Start chatting →</span>
       </div>
       <div class="feature-card" data-page="pest">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        </div>
+        <span class="feature-icon-text">PEST</span>
         <h3>Pest Detection</h3>
         <p>Identify Fall Armyworm, Desert Locust, Aphids and 50+ pests. Get emergency response protocols and economic impact assessment.</p>
         <span class="feature-arrow">Check pests →</span>
       </div>
       <div class="feature-card" data-page="map">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-        </div>
+        <span class="feature-icon-text">MAP</span>
         <h3>Disease Outbreak Map</h3>
         <p>Live map of disease reports across Uganda, Kenya, and Tanzania. See outbreaks in your region before they reach your farm.</p>
         <span class="feature-arrow">View map →</span>
       </div>
       <div class="feature-card" data-page="dashboard">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
+        <span class="feature-icon-text">DATA</span>
         <h3>Farm Dashboard</h3>
         <p>Track your scan history, crop health trends over time, and receive AI-generated alerts for high-risk disease conditions.</p>
         <span class="feature-arrow">Open dashboard →</span>
       </div>
       <div class="feature-card" data-page="scan">
-        <div class="feature-icon">
-          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </div>
+        <span class="feature-icon-text">CAM</span>
         <h3>Camera Capture</h3>
         <p>Use your phone camera directly in the app. No need to download photos. Point at affected leaves and scan instantly in the field.</p>
         <span class="feature-arrow">Open camera →</span>
@@ -353,27 +213,21 @@
     <div class="how-it-works">
       <div class="how-step">
         <div class="how-step-number">01</div>
-        <div class="how-step-icon">
-          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </div>
+        <div class="how-step-num-icon">01</div>
         <h3>Take a Photo</h3>
         <p>Use your phone camera or upload an existing photo of any affected crop leaf directly in the field.</p>
       </div>
       <div class="how-step-arrow">→</div>
       <div class="how-step">
         <div class="how-step-number">02</div>
-        <div class="how-step-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        </div>
+        <div class="how-step-num-icon">02</div>
         <h3>AI Analysis</h3>
         <p>Our AI instantly analyzes the image, identifies the disease, and calculates a confidence score in seconds.</p>
       </div>
       <div class="how-step-arrow">→</div>
       <div class="how-step">
         <div class="how-step-number">03</div>
-        <div class="how-step-icon">
-          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
+        <div class="how-step-num-icon">03</div>
         <h3>Get Treatment</h3>
         <p>Receive a complete treatment plan with local product names, dosages, and prevention tips for your crops.</p>
       </div>
@@ -384,12 +238,12 @@
       <h2>Ask AgriGuard AI</h2>
       <p>Common questions from East African farmers</p>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px">
-      <button class="quick-q-btn" data-question="How do I treat maize lethal necrosis in Uganda?">How do I treat maize lethal necrosis?</button>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px">
+      <button class="quick-q-btn" data-question="How do I treat maize lethal necrosis in Uganda?">Treat maize lethal necrosis</button>
       <button class="quick-q-btn" data-question="What fertilizer should I use for tomatoes in East Africa?">Best fertilizer for tomatoes</button>
       <button class="quick-q-btn" data-question="How do I control Fall Armyworm on maize organically?">Control Fall Armyworm organically</button>
       <button class="quick-q-btn" data-question="What are the signs of cassava mosaic disease and how do I manage it?">Cassava mosaic disease signs</button>
-      <button class="quick-q-btn" data-question="How do I improve soil health for better crop yields?">How to improve soil health</button>
+      <button class="quick-q-btn" data-question="How do I improve soil health for better crop yields?">Improve soil health</button>
     </div>
 
     <!-- Impact strip -->
@@ -421,7 +275,9 @@
   </div>
 </div>
 
-<!-- ═══════════ PAGE: SCAN ═══════════ -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: SCAN
+═══════════════════════════════════════════════════ -->
 <div id="page-scan" class="page">
   <div class="container">
     <div class="page-hero">
@@ -429,9 +285,10 @@
       <p>Upload a leaf photo for instant AI diagnosis and treatment recommendations</p>
     </div>
 
+    <!-- Crop Selector -->
     <div class="mb-24">
-      <div class="section-header" style="margin-bottom:10px">
-        <h2 style="font-size:17px">Select Crop Type</h2>
+      <div class="section-header" style="margin-bottom:12px">
+        <h2 style="font-size:18px">Select Crop Type</h2>
       </div>
       <div class="crop-selector">
         <button class="crop-btn active" data-crop="Maize" onclick="selectCrop(this)">Maize</button>
@@ -446,12 +303,11 @@
     </div>
 
     <div id="uploadArea" class="scan-layout">
+      <!-- Upload Zone -->
       <div>
         <div class="upload-zone" id="uploadZone">
           <input type="file" id="fileInput" accept="image/*" />
-          <div class="upload-icon">
-            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          </div>
+          <span class="upload-icon-text">+</span>
           <h3>Drop your crop image here</h3>
           <p>or click to browse · PNG, JPG, WEBP · max 10MB</p>
         </div>
@@ -460,31 +316,32 @@
         </div>
       </div>
 
+      <!-- Camera Card -->
       <div>
         <div class="camera-card mb-16">
           <h3>Camera Capture</h3>
           <p>Use your phone or webcam to photograph diseased leaves directly in the field</p>
           <video id="cameraView" autoplay playsinline></video>
           <canvas id="captureCanvas"></canvas>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
             <button class="btn btn-secondary btn-sm" id="startCameraBtn">Open Camera</button>
             <button class="btn btn-primary btn-sm" id="captureBtn" style="display:none">Capture</button>
-            <button class="btn btn-danger btn-sm" id="stopCameraBtn" style="display:none">Stop</button>
+            <button class="btn btn-danger btn-sm" id="stopCameraBtn" style="display:none">✕ Stop</button>
           </div>
         </div>
 
-        <div style="padding:18px;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--r-lg);margin-bottom:14px">
-          <h4 style="font-size:14px;font-weight:700;margin-bottom:9px;color:var(--text-primary)">Tips for best results</h4>
+        <div style="padding:20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:16px">
+          <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:10px">Tips for best results:</h4>
           <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
-            <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span class="tip-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Focus on affected leaves, not the whole plant</li>
-            <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span class="tip-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Use natural light, avoid shadows</li>
-            <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span class="tip-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Include both healthy and diseased areas</li>
-            <li style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span class="tip-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Keep the camera steady for a clear image</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Focus on affected leaves, not the whole plant</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Use natural light, avoid shadows</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Include both healthy and diseased areas</li>
+            <li style="font-size:13px;color:var(--text-secondary)">✓ Keep the camera steady for a clear image</li>
           </ul>
         </div>
 
         <button class="btn btn-primary" id="scanBtn" style="width:100%" disabled>
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Analyze Crop
+          Analyze Crop
         </button>
       </div>
     </div>
@@ -495,9 +352,7 @@
         <div class="scan-ring ring-1"></div>
         <div class="scan-ring ring-2"></div>
         <div class="scan-ring ring-3"></div>
-        <div class="scan-icon">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </div>
+        <span class="scan-icon-text">AI</span>
       </div>
       <div class="scan-status" id="scanStatus">Uploading image...</div>
       <div class="scan-sub" id="scanSub">Preparing for analysis</div>
@@ -506,51 +361,72 @@
       </div>
     </div>
 
-    <!-- Results -->
+    <!-- Results Section -->
     <div class="results-card mt-24" id="resultsSection">
       <div class="results-header">
         <div>
           <div class="results-crop" id="resultCrop">—</div>
           <div class="results-disease" id="resultDisease">—</div>
-          <div style="margin-top:7px"><span class="severity-tag medium" id="resultSeverity">Medium Severity</span></div>
+          <div style="margin-top:8px">
+            <span class="severity-tag medium" id="resultSeverity">Medium Severity</span>
+          </div>
         </div>
         <div class="confidence-badge" id="resultConfidence">—%</div>
       </div>
+
+      <!-- Health Score -->
       <div class="health-score-section">
         <div class="health-score-label">
           <span class="health-score-text">Crop Health Score</span>
           <span class="health-score-value" id="resultHealthScore">—%</span>
         </div>
-        <div class="health-bar"><div class="health-bar-fill medium" id="resultHealthFill" style="width:0%"></div></div>
+        <div class="health-bar">
+          <div class="health-bar-fill medium" id="resultHealthFill" style="width:0%"></div>
+        </div>
       </div>
+
+      <!-- Explanation -->
       <div class="results-section">
         <div class="results-section-title">Analysis</div>
         <div class="results-text" id="resultExplanation">—</div>
       </div>
+
       <div class="divider"></div>
+
+      <!-- Treatment -->
       <div class="results-section">
         <div class="results-section-title">Treatment Plan</div>
         <div class="results-text" id="resultTreatment">—</div>
       </div>
+
       <div class="divider"></div>
+
+      <!-- Prevention Tips -->
       <div class="results-section">
         <div class="results-section-title">Prevention Tips</div>
         <ul class="tips-list" id="resultTips"></ul>
       </div>
+
+      <!-- Issues -->
       <div class="results-section mt-16" id="issuesSection">
         <div class="results-section-title">Identified Issues</div>
         <div class="issues-list" id="resultIssues"></div>
       </div>
-      <div style="display:flex;gap:9px;margin-top:20px;flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">Ask AI for More Help</button>
+
+      <!-- Action Buttons -->
+      <div style="display:flex;gap:10px;margin-top:24px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">Ask AI for Help</button>
         <button class="btn btn-secondary btn-sm" onclick="showPage('map')">View Disease Map</button>
         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('resultsSection').classList.remove('visible');document.getElementById('imagePreview').classList.remove('visible');currentImageFile=null;document.getElementById('scanBtn').disabled=true">Scan Another</button>
       </div>
     </div>
+
   </div>
 </div>
 
-<!-- ═══════════ PAGE: AI ADVISOR ═══════════ -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: AI ADVISOR
+═══════════════════════════════════════════════════ -->
 <div id="page-advisor" class="page">
   <div class="container">
     <div class="page-hero">
@@ -558,11 +434,10 @@
       <p>Your personal agronomist — available 24/7 for East African farmers</p>
     </div>
 
+    <!-- Shown when NOT logged in -->
     <div class="advisor-lock" id="advisorLock">
       <div class="advisor-lock-inner">
-        <div class="advisor-lock-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
+        <div class="advisor-lock-icon-text">LOCKED</div>
         <h2>Sign in to use the AI Advisor</h2>
         <p>Create a free account to chat with your personal AI agronomist, get instant crop disease advice, and have all your conversations saved automatically.</p>
         <div class="advisor-lock-btns">
@@ -577,20 +452,24 @@
       </div>
     </div>
 
+    <!-- Shown when logged in -->
     <div class="advisor-layout" id="advisorChat" style="display:none">
       <div>
-        <div class="section-header" style="margin-bottom:12px"><h2 style="font-size:15px">Quick Questions</h2></div>
+        <div class="section-header" style="margin-bottom:14px">
+          <h2 style="font-size:16px">Quick Questions</h2>
+        </div>
         <div class="quick-questions">
           <button class="quick-q-btn" data-question="My maize leaves are turning yellow from the bottom up. What is causing this and what should I do?">Why are my maize leaves yellowing?</button>
-          <button class="quick-q-btn" data-question="How do I identify and treat Fall Armyworm on maize in Uganda?">Fall Armyworm emergency!</button>
-          <button class="quick-q-btn" data-question="What organic fertilizers work best for beans in East Africa?">Best organic fertilizers?</button>
+          <button class="quick-q-btn" data-question="How do I identify and treat Fall Armyworm on maize in Uganda?">Fall Armyworm emergency</button>
+          <button class="quick-q-btn" data-question="What organic fertilizers work best for beans in East Africa?">Best organic fertilizers</button>
           <button class="quick-q-btn" data-question="How do I irrigate tomatoes during the dry season in East Africa?">Tomato irrigation help</button>
-          <button class="quick-q-btn" data-question="My cassava has mosaic patterns on the leaves. Is it cassava mosaic disease and how do I treat it?">Cassava mosaic disease?</button>
+          <button class="quick-q-btn" data-question="My cassava has mosaic patterns on the leaves. Is it cassava mosaic disease and how do I treat it?">Cassava mosaic disease</button>
           <button class="quick-q-btn" data-question="How do I test and improve my soil for better crop yields in Uganda?">Soil health improvement</button>
           <button class="quick-q-btn" data-question="What is the best crop rotation plan for a small farm in East Africa?">Crop rotation planning</button>
           <button class="quick-q-btn" data-question="How do I store maize after harvest to prevent aflatoxin and weevils?">Post-harvest storage tips</button>
         </div>
       </div>
+
       <div>
         <div class="chat-container">
           <div class="chat-header">
@@ -599,213 +478,321 @@
           </div>
           <div class="chat-messages" id="chatMessages">
             <div class="typing-indicator" id="typingIndicator">
-              <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
             </div>
           </div>
           <div class="chat-input-area">
-            <textarea class="chat-input" id="chatInput" placeholder="Ask about crop diseases, pests, soil, or any farming challenge..." rows="1" maxlength="1000"></textarea>
-            <button class="btn btn-primary" id="sendBtn" style="min-width:46px;height:46px;padding:0">
-              <svg viewBox="0 0 24 24" style="stroke:#041008"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
+            <textarea class="chat-input" id="chatInput"
+              placeholder="Ask about crop diseases, pests, soil, or any farming challenge..."
+              rows="1" maxlength="1000"></textarea>
+            <button class="btn btn-primary" id="sendBtn" style="min-width:48px;height:48px;padding:0">Send</button>
           </div>
         </div>
       </div>
-    </div>
+    </div><!-- end advisor-layout / advisorChat -->
+
   </div>
 </div>
 
-<!-- ═══════════ PAGE: PEST DETECTION ═══════════ -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: PEST DETECTION
+═══════════════════════════════════════════════════ -->
 <div id="page-pest" class="page">
   <div class="container">
     <div class="page-hero">
       <h1>Pest Detection</h1>
       <p>Identify crop pests, assess threat levels, and get emergency response protocols</p>
     </div>
+
+    <!-- Known Pests Grid -->
     <div class="section-header">
       <h2>Common East African Crop Pests</h2>
       <p>Click a pest to see detailed information and control measures</p>
     </div>
     <div class="pest-grid">
       <div class="pest-card" onclick="selectPest(this, 'Fall Armyworm')">
-        <div class="pest-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v1H6a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h1v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-5h1a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3V5a3 3 0 0 0-3-3z"/></svg></div>
-        <h4>Fall Armyworm</h4><p>Maize, Sorghum</p>
+        <span class="pest-card-icon-text">FAW</span>
+        <h4>Fall Armyworm</h4>
+        <p>Maize, Sorghum</p>
         <div class="threat-badge CRITICAL">CRITICAL</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Desert Locust')">
-        <div class="pest-card-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <h4>Desert Locust</h4><p>All crops</p>
+        <span class="pest-card-icon-text">DL</span>
+        <h4>Desert Locust</h4>
+        <p>All crops</p>
         <div class="threat-badge CRITICAL">CRITICAL</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Aphids')">
-        <div class="pest-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div>
-        <h4>Aphids</h4><p>Cassava, Beans, Tomato</p>
+        <span class="pest-card-icon-text">APH</span>
+        <h4>Aphids</h4>
+        <p>Cassava, Beans, Tomato</p>
         <div class="threat-badge HIGH">HIGH</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Whitefly')">
-        <div class="pest-card-icon"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg></div>
-        <h4>Whitefly</h4><p>Cassava, Tomatoes</p>
+        <span class="pest-card-icon-text">WFY</span>
+        <h4>Whitefly</h4>
+        <p>Cassava, Tomatoes</p>
         <div class="threat-badge HIGH">HIGH</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Stalk Borer')">
-        <div class="pest-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-        <h4>Stalk Borer</h4><p>Maize, Sorghum</p>
+        <span class="pest-card-icon-text">SB</span>
+        <h4>Stalk Borer</h4>
+        <p>Maize, Sorghum</p>
         <div class="threat-badge MEDIUM">MEDIUM</div>
       </div>
       <div class="pest-card" onclick="selectPest(this, 'Thrips')">
-        <div class="pest-card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h4>Thrips</h4><p>Onions, Tomatoes</p>
+        <span class="pest-card-icon-text">THR</span>
+        <h4>Thrips</h4>
+        <p>Onions, Tomatoes</p>
         <div class="threat-badge MEDIUM">MEDIUM</div>
       </div>
     </div>
 
+    <!-- Pest Info Card (populated by JS) -->
     <div class="pest-info-card" id="pestInfoCard">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
         <div>
-          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em" id="pestInfoName">—</div>
-          <div id="pestInfoCrops" style="font-size:13px;color:var(--text-secondary);margin-top:3px">—</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestInfoName">—</div>
+          <div id="pestInfoCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
         </div>
         <div id="pestInfoThreat" class="threat-badge MEDIUM">MEDIUM</div>
       </div>
-      <div class="results-section"><div class="results-section-title">Description</div><div class="results-text" id="pestInfoDesc">—</div></div>
-      <div class="two-col mt-16">
-        <div class="results-section"><div class="results-section-title">Symptoms</div><ul class="tips-list" id="pestInfoSymptoms"></ul></div>
-        <div class="results-section"><div class="results-section-title">Prevention</div><ul class="tips-list" id="pestInfoPrevention"></ul></div>
+
+      <div class="results-section">
+        <div class="results-section-title">Description</div>
+        <div class="results-text" id="pestInfoDesc">—</div>
       </div>
+
+      <div class="two-col mt-16">
+        <div class="results-section">
+          <div class="results-section-title">Symptoms</div>
+          <ul class="tips-list" id="pestInfoSymptoms"></ul>
+        </div>
+        <div class="results-section">
+          <div class="results-section-title">Prevention</div>
+          <ul class="tips-list" id="pestInfoPrevention"></ul>
+        </div>
+      </div>
+
       <div class="divider"></div>
-      <div class="results-section"><div class="results-section-title">Treatment</div><div class="results-text" id="pestInfoTreatment">—</div></div>
-      <div class="results-section mt-16" style="padding:12px 16px;background:rgba(212,146,43,0.06);border:1px solid rgba(212,146,43,0.18);border-radius:var(--r-md)">
+
+      <div class="results-section">
+        <div class="results-section-title">Treatment</div>
+        <div class="results-text" id="pestInfoTreatment">—</div>
+      </div>
+
+      <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
         <div class="results-section-title" style="color:var(--gold)">Economic Impact</div>
-        <div class="results-text" style="font-size:13px" id="pestInfoImpact">—</div>
+        <div class="results-text" style="font-size:14px" id="pestInfoImpact">—</div>
       </div>
     </div>
 
+    <!-- AI Pest Scanner -->
     <div class="card mb-24">
-      <div class="section-header" style="margin-bottom:14px">
-        <h2 style="font-size:19px">AI Pest Scanner</h2>
+      <div class="section-header" style="margin-bottom:16px">
+        <h2 style="font-size:20px">AI Pest Scanner</h2>
         <p>Upload a photo of a pest or damaged crop for instant AI identification</p>
       </div>
+
       <input type="file" id="pestFileInput" accept="image/*" style="display:none" />
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <button class="btn btn-primary" id="analyzePestBtn">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Upload Image to Analyze Pest
+          Analyze Pest with AI
         </button>
-        <span style="font-size:12px;color:var(--text-secondary)">Supports JPG, PNG, WEBP · max 10MB</span>
+        <span style="font-size:13px;color:var(--text-secondary)">Supports JPG, PNG, WEBP · max 10MB</span>
       </div>
     </div>
 
+    <!-- Pest AI Result Card -->
     <div class="pest-result-card" id="pestResultCard">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
         <div>
-          <div style="font-size:11px;color:var(--green-400);font-weight:600;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:3px">AI Detection Result</div>
-          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em" id="pestResultName">—</div>
-          <div id="pestResultCrops" style="font-size:13px;color:var(--text-secondary);margin-top:3px">—</div>
+          <div style="font-size:13px;color:var(--sage);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">AI Detection Result</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800" id="pestResultName">—</div>
+          <div id="pestResultCrops" style="font-size:14px;color:var(--text-secondary);margin-top:4px">—</div>
         </div>
         <div id="pestResultThreat" class="threat-badge MEDIUM">MEDIUM</div>
       </div>
-      <div class="results-section"><div class="results-section-title">Description</div><div class="results-text" id="pestResultDesc">—</div></div>
+
+      <div class="results-section">
+        <div class="results-section-title">Description</div>
+        <div class="results-text" id="pestResultDesc">—</div>
+      </div>
+
       <div class="two-col mt-16">
-        <div class="results-section"><div class="results-section-title">Symptoms</div><ul class="tips-list" id="pestResultSymptoms"></ul></div>
-        <div class="results-section"><div class="results-section-title">Prevention</div><ul class="tips-list" id="pestResultPrevention"></ul></div>
+        <div class="results-section">
+          <div class="results-section-title">Symptoms</div>
+          <ul class="tips-list" id="pestResultSymptoms"></ul>
+        </div>
+        <div class="results-section">
+          <div class="results-section-title">Prevention</div>
+          <ul class="tips-list" id="pestResultPrevention"></ul>
+        </div>
       </div>
+
       <div class="divider"></div>
-      <div class="results-section"><div class="results-section-title">Treatment</div><div class="results-text" id="pestResultTreatment">—</div></div>
-      <div class="results-section mt-16" style="padding:12px 16px;background:rgba(212,146,43,0.06);border:1px solid rgba(212,146,43,0.18);border-radius:var(--r-md)">
-        <div class="results-section-title" style="color:var(--gold)">Economic Impact</div>
-        <div class="results-text" style="font-size:13px" id="pestResultImpact">—</div>
+
+      <div class="results-section">
+        <div class="results-section-title">Treatment</div>
+        <div class="results-text" id="pestResultTreatment">—</div>
       </div>
-      <div style="margin-top:18px"><button class="btn btn-primary btn-sm" onclick="showPage('advisor')">Ask AI for Help</button></div>
+
+      <div class="results-section mt-16" style="padding:14px;background:rgba(245,200,66,0.08);border:1px solid rgba(245,200,66,0.20);border-radius:var(--radius)">
+        <div class="results-section-title" style="color:var(--gold)">Economic Impact</div>
+        <div class="results-text" style="font-size:14px" id="pestResultImpact">—</div>
+      </div>
+
+      <div style="margin-top:20px">
+        <button class="btn btn-primary btn-sm" onclick="showPage('advisor')">Ask AI for Help</button>
+      </div>
     </div>
+
   </div>
 </div>
 
-<!-- ═══════════ PAGE: DISEASE MAP ═══════════ -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: DISEASE MAP
+═══════════════════════════════════════════════════ -->
 <div id="page-map" class="page">
   <div class="container">
     <div class="page-hero">
       <h1>Disease Outbreak Map</h1>
       <p>Live disease reports across Uganda, Kenya, and Tanzania — updated automatically</p>
     </div>
+
+    <!-- Map Stats -->
     <div class="map-stats">
-      <div class="map-stat"><div class="map-stat-number" id="mapTotalReports">—</div><div class="map-stat-label">Total Reports</div></div>
-      <div class="map-stat"><div class="map-stat-number" id="mapOutbreaks" style="color:var(--danger)">—</div><div class="map-stat-label">Active Outbreaks</div></div>
-      <div class="map-stat"><div class="map-stat-number" id="mapCountries">3+</div><div class="map-stat-label">Countries</div></div>
+      <div class="map-stat">
+        <div class="map-stat-number" id="mapTotalReports">—</div>
+        <div class="map-stat-label">Total Reports</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-number" id="mapOutbreaks" style="color:var(--crimson)">—</div>
+        <div class="map-stat-label">Outbreaks</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-number" id="mapCountries">3+</div>
+        <div class="map-stat-label">Countries</div>
+      </div>
     </div>
+
+    <!-- Map -->
     <div id="diseaseMap"></div>
+
+    <!-- Legend -->
     <div class="map-legend">
-      <strong style="font-size:12px;color:var(--text-primary)">Legend:</strong>
-      <div class="legend-item"><div class="legend-dot outbreak"></div> Critical / Outbreak (&lt;30%)</div>
+      <strong style="font-size:13px;color:var(--text-primary)">Legend:</strong>
+      <div class="legend-item"><div class="legend-dot outbreak"></div> Critical / Outbreak (&lt;30% health)</div>
       <div class="legend-item"><div class="legend-dot high"></div> High Risk (30–50%)</div>
       <div class="legend-item"><div class="legend-dot medium"></div> Medium Risk (50–70%)</div>
       <div class="legend-item"><div class="legend-dot low"></div> Healthy (70%+)</div>
       <button class="btn btn-secondary btn-sm" id="refreshMapBtn" style="margin-left:auto">Refresh</button>
     </div>
+
   </div>
 </div>
 
-<!-- ═══════════ PAGE: DASHBOARD ═══════════ -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: DASHBOARD
+═══════════════════════════════════════════════════ -->
 <div id="page-dashboard" class="page">
   <div class="container">
     <div class="page-hero">
       <div class="flex-between">
-        <div><h1>Farm Dashboard</h1><p id="dashDate">Loading date...</p></div>
+        <div>
+          <h1>Farm Dashboard</h1>
+          <p id="dashDate">Loading date...</p>
+        </div>
         <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">Refresh</button>
       </div>
     </div>
+
+    <!-- KPI Cards -->
     <div class="dashboard-grid">
       <div class="kpi-card">
-        <div class="kpi-icon"><svg viewBox="0 0 24 24" style="stroke:var(--text-secondary)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <span class="kpi-icon-sym">◎</span>
         <div class="kpi-number" id="dashTotalScans">—</div>
         <div class="kpi-label">Total Scans</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-icon"><svg viewBox="0 0 24 24" style="stroke:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="kpi-number" id="dashHealthy" style="color:var(--accent)">—</div>
+        <span class="kpi-icon-sym">✓</span>
+        <div class="kpi-number" id="dashHealthy" style="color:var(--lime)">—</div>
         <div class="kpi-label">Healthy Reports</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-icon"><svg viewBox="0 0 24 24" style="stroke:var(--danger)"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <div class="kpi-number" id="dashDiseased" style="color:var(--danger)">—</div>
+        <span class="kpi-icon-sym">⚠</span>
+        <div class="kpi-number" id="dashDiseased" style="color:var(--crimson)">—</div>
         <div class="kpi-label">Diseased Reports</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-icon"><svg viewBox="0 0 24 24" style="stroke:var(--gold)"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <span class="kpi-icon-sym">↗</span>
         <div class="kpi-number" id="dashAvgHealth" style="color:var(--gold)">—</div>
         <div class="kpi-label">Avg Health Score</div>
       </div>
     </div>
+
+    <!-- Dashboard Bottom -->
     <div class="dashboard-bottom">
+
+      <!-- Scan History -->
       <div class="card">
         <div class="flex-between mb-16">
-          <h3 style="font-size:16px;font-weight:700">Recent Scans</h3>
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">Recent Scans</h3>
           <button class="btn btn-secondary btn-sm" onclick="showPage('scan')">+ New Scan</button>
         </div>
-        <div id="scanHistoryList"><p style="color:var(--text-secondary);font-size:13px;text-align:center;padding:18px">Loading scan history...</p></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:20px">
-        <div class="card">
-          <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">Alerts</h3>
-          <div id="alertsList"><p style="color:var(--text-secondary);font-size:13px">Loading alerts...</p></div>
+        <div id="scanHistoryList">
+          <p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px">Loading scan history...</p>
         </div>
+      </div>
+
+      <!-- Right Column -->
+      <div style="display:flex;flex-direction:column;gap:24px">
+
+        <!-- Alerts -->
         <div class="card">
-          <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">Crop Health Overview</h3>
-          <div id="healthOverview"><p style="color:var(--text-secondary);font-size:13px">Loading...</p></div>
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">Alerts</h3>
+          <div id="alertsList">
+            <p style="color:var(--text-secondary);font-size:14px">Loading alerts...</p>
+          </div>
+        </div>
+
+        <!-- Crop Health Overview -->
+        <div class="card">
+          <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">Crop Health Overview</h3>
+          <div id="healthOverview">
+            <p style="color:var(--text-secondary);font-size:14px">Loading...</p>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Health Trend Chart -->
     <div class="card mt-24">
-      <div class="flex-between mb-16"><h3 style="font-size:16px;font-weight:700">Crop Health Trend</h3></div>
-      <div class="chart-container"><canvas id="healthChart"></canvas></div>
+      <div class="flex-between mb-16">
+        <h3 style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700">Crop Health Trend</h3>
+      </div>
+      <div class="chart-container">
+        <canvas id="healthChart"></canvas>
+      </div>
     </div>
+
   </div>
 </div>
 
-<!-- ═══════════ PAGE: WEATHER ═══════════ -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: WEATHER
+═══════════════════════════════════════════════════ -->
 <div id="page-weather" class="page">
   <div class="container">
     <div class="page-hero">
       <h1>Weather Forecast</h1>
       <p>Real-time weather for East African farming regions — powered by Open-Meteo</p>
     </div>
+
+    <!-- City quick-select -->
     <div class="weather-cities">
       <button class="weather-city-btn active" onclick="selectWeatherCity(this,'Kampala',0.3136,32.5811)">Kampala</button>
       <button class="weather-city-btn" onclick="selectWeatherCity(this,'Nairobi',-1.2921,36.8219)">Nairobi</button>
@@ -814,30 +801,38 @@
       <button class="weather-city-btn" onclick="selectWeatherCity(this,'Gulu',2.7748,32.2988)">Gulu</button>
       <button class="weather-city-btn" onclick="selectWeatherCity(this,'Mwanza',-2.5167,32.9000)">Mwanza</button>
     </div>
+
+    <!-- Search bar -->
     <div class="weather-search">
-      <input type="text" id="weatherSearchInput" class="weather-search-input" placeholder="Search any African city..." onkeydown="if(event.key==='Enter') searchWeatherCity()"/>
+      <input type="text" id="weatherSearchInput" class="weather-search-input"
+        placeholder="Search any African city..."
+        onkeydown="if(event.key==='Enter') searchWeatherCity()"/>
       <button class="btn btn-primary btn-sm" onclick="searchWeatherCity()">Search</button>
     </div>
+
+    <!-- Loading state -->
     <div class="weather-loading" id="weatherLoading">
-      <div class="scan-rings" style="width:76px;height:76px">
-        <div class="scan-ring ring-1" style="width:76px;height:76px"></div>
-        <div class="scan-ring ring-2" style="width:55px;height:55px"></div>
-        <div class="scan-ring ring-3" style="width:34px;height:34px"></div>
+      <div class="scan-rings" style="width:80px;height:80px">
+        <div class="scan-ring ring-1" style="width:80px;height:80px"></div>
+        <div class="scan-ring ring-2" style="width:58px;height:58px"></div>
+        <div class="scan-ring ring-3" style="width:36px;height:36px"></div>
       </div>
-      <p style="color:var(--text-secondary);margin-top:18px;font-size:14px">Fetching weather data...</p>
+      <p style="color:var(--text-secondary);margin-top:20px;font-size:15px">Fetching weather data...</p>
     </div>
+
+    <!-- Error state -->
     <div class="weather-error" id="weatherError" style="display:none">
-      <span style="display:flex;justify-content:center;margin-bottom:12px"><svg viewBox="0 0 24 24" style="width:44px;height:44px;stroke:var(--warning);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <span style="font-size:48px">⚠️</span>
       <h3>Could not load weather</h3>
       <p id="weatherErrorMsg">Please check your connection and try again.</p>
       <button class="btn btn-secondary btn-sm" onclick="loadWeather()">Try Again</button>
     </div>
+
+    <!-- Current weather card -->
     <div class="weather-main-card" id="weatherMainCard" style="display:none">
       <div class="weather-main-top">
         <div class="weather-main-left">
-          <div class="weather-big-icon" id="weatherBigIcon">
-            <svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
-          </div>
+          <div class="weather-big-icon" id="weatherBigIcon">—</div>
           <div>
             <div class="weather-big-temp" id="weatherBigTemp">--°C</div>
             <div class="weather-big-desc" id="weatherBigDesc">--</div>
@@ -846,102 +841,195 @@
         </div>
         <div class="weather-main-stats">
           <div class="weather-stat-card">
-            <span class="weather-stat-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+            <span class="weather-stat-icon-text">HUM</span>
             <span class="weather-stat-value" id="wHumidity">--%</span>
             <span class="weather-stat-label">Humidity</span>
           </div>
           <div class="weather-stat-card">
-            <span class="weather-stat-icon"><svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span>
+            <span class="weather-stat-icon-text">WND</span>
             <span class="weather-stat-value" id="wWind">-- km/h</span>
             <span class="weather-stat-label">Wind</span>
           </div>
           <div class="weather-stat-card">
-            <span class="weather-stat-icon"><svg viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><path d="M16 14v6M8 14v6M12 16v6"/></svg></span>
+            <span class="weather-stat-icon-text">RAIN</span>
             <span class="weather-stat-value" id="wRain">-- mm</span>
             <span class="weather-stat-label">Rainfall</span>
           </div>
           <div class="weather-stat-card">
-            <span class="weather-stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+            <span class="weather-stat-icon-text">UV</span>
             <span class="weather-stat-value" id="wUV">--</span>
             <span class="weather-stat-label">UV Index</span>
           </div>
         </div>
       </div>
+
+      <!-- Farming advice banner -->
       <div class="weather-farming-advice" id="weatherFarmingAdvice">
-        <div class="weather-advice-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="weather-advice-icon" id="wAdviceIcon">●</div>
         <div>
           <div class="weather-advice-title" id="wAdviceTitle">Loading farming advice...</div>
           <div class="weather-advice-text" id="wAdviceText"></div>
         </div>
       </div>
     </div>
+
+    <!-- 7-day forecast -->
     <div id="weatherForecastSection" style="display:none">
-      <div class="section-header mt-24" style="margin-bottom:14px"><h2 style="font-size:19px">7-Day Forecast</h2></div>
+      <div class="section-header mt-24" style="margin-bottom:16px">
+        <h2 style="font-size:20px">7-Day Forecast</h2>
+      </div>
       <div class="weather-forecast-grid" id="weatherForecastGrid"></div>
     </div>
+
+    <!-- Hourly forecast -->
     <div id="weatherHourlySection" style="display:none">
-      <div class="section-header mt-24" style="margin-bottom:14px"><h2 style="font-size:19px">Today by Hour</h2></div>
-      <div class="weather-hourly-scroll"><div class="weather-hourly-grid" id="weatherHourlyGrid"></div></div>
+      <div class="section-header mt-24" style="margin-bottom:16px">
+        <h2 style="font-size:20px">Today by Hour</h2>
+      </div>
+      <div class="weather-hourly-scroll">
+        <div class="weather-hourly-grid" id="weatherHourlyGrid"></div>
+      </div>
     </div>
+
+    <!-- Farming calendar -->
     <div id="weatherFarmingSection" style="display:none">
-      <div class="section-header mt-24" style="margin-bottom:14px">
-        <h2 style="font-size:19px">Farming Conditions This Week</h2>
+      <div class="section-header mt-24" style="margin-bottom:16px">
+        <h2 style="font-size:20px">Farming Conditions This Week</h2>
         <p>Based on forecast data for your selected region</p>
       </div>
       <div class="weather-farming-grid" id="weatherFarmingGrid"></div>
     </div>
+
   </div>
 </div>
 
-<!-- ═══════════ AUTH PANEL ═══════════ -->
+<!-- ═══ SLIDE-IN AUTH PANEL ═══ -->
 <div class="auth-panel-backdrop" id="authBackdrop" onclick="closeAuthPanel()"></div>
+
 <div class="auth-panel" id="authPanel">
   <div class="auth-panel-header">
-    <div class="auth-panel-logo">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    </div>
+    <div class="auth-panel-logo-text">AG</div>
     <button class="auth-panel-close" onclick="closeAuthPanel()">✕</button>
   </div>
+
+  <!-- Tab switcher -->
   <div class="auth-panel-tabs">
     <button class="auth-panel-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
     <button class="auth-panel-tab" id="tabSignup" onclick="switchTab('signup')">Create Account</button>
   </div>
+
+  <!-- LOGIN -->
   <div id="panelLogin">
-    <div class="auth-panel-title"><h2>Welcome back</h2><p>Sign in to access your AI advisor and saved chats</p></div>
-    <div class="auth-field"><label>Email address</label><input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email"/></div>
-    <div class="auth-field"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password"/></div>
+    <div class="auth-panel-title">
+      <h2>Welcome back</h2>
+      <p>Sign in to access your AI advisor and saved chats</p>
+    </div>
+    <div class="auth-field">
+      <label>Email address</label>
+      <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email"/>
+    </div>
+    <div class="auth-field">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password"/>
+    </div>
     <div class="auth-error" id="loginError"></div>
     <button class="btn btn-primary auth-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
     <p class="auth-switch-text">No account? <a onclick="switchTab('signup')">Create one free →</a></p>
   </div>
+
+  <!-- SIGNUP -->
   <div id="panelSignup" style="display:none">
-    <div class="auth-panel-title"><h2>Join AgriGuard AI</h2><p>Free forever — get AI crop advice and save all your conversations</p></div>
-    <div class="auth-field"><label>Full name</label><input type="text" id="signupName" placeholder="Your name" autocomplete="name"/></div>
-    <div class="auth-field"><label>Email address</label><input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email"/></div>
-    <div class="auth-field"><label>Password <span style="font-size:10px;opacity:0.55">(min. 6 characters)</span></label><input type="password" id="signupPassword" placeholder="Create a password" autocomplete="new-password"/></div>
+    <div class="auth-panel-title">
+      <h2>Join AgriGuard AI</h2>
+      <p>Free forever — get AI crop advice and save all your conversations</p>
+    </div>
+    <div class="auth-field">
+      <label>Full name</label>
+      <input type="text" id="signupName" placeholder="Your name" autocomplete="name"/>
+    </div>
+    <div class="auth-field">
+      <label>Email address</label>
+      <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email"/>
+    </div>
+    <div class="auth-field">
+      <label>Password <span style="font-size:11px;opacity:0.6">(min. 6 characters)</span></label>
+      <input type="password" id="signupPassword" placeholder="Create a password" autocomplete="new-password"/>
+    </div>
     <div class="auth-error" id="signupError"></div>
     <button class="btn btn-primary auth-btn" id="signupBtn" onclick="handleSignup()">Create Free Account</button>
     <p class="auth-switch-text">Already have an account? <a onclick="switchTab('login')">Sign in →</a></p>
   </div>
+
+  <!-- CHAT HISTORY (shown when logged in) -->
   <div id="panelHistory" style="display:none">
-    <div class="auth-panel-title"><h2>Chat History</h2><p>Your saved conversations with the AI Advisor</p></div>
-    <div class="chat-history-list" id="historyList"><p style="color:var(--text-secondary);font-size:13px;text-align:center;padding:18px 0">Loading...</p></div>
+    <div class="auth-panel-title">
+      <h2>Chat History</h2>
+      <p>Your saved conversations with the AI Advisor</p>
+    </div>
+    <div class="chat-history-list" id="historyList">
+      <p style="color:var(--text-secondary);font-size:14px;text-align:center;padding:20px 0">Loading...</p>
+    </div>
   </div>
 </div>
 
+
+<!-- App JS -->
+
+<!-- Hero particles + scroll fade -->
 <script>
-(function(){
-  var canvas=document.getElementById('heroCanvas');
-  if(!canvas)return;
-  var ctx=canvas.getContext('2d'),particles=[];
-  function resize(){canvas.width=canvas.offsetWidth||window.innerWidth;canvas.height=canvas.offsetHeight||window.innerHeight;}
-  function mkP(){return{x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2.2+0.4,sx:(Math.random()-0.5)*0.32,sy:-Math.random()*0.45-0.12,op:Math.random()*0.38+0.06,col:Math.random()>0.5?'100,196,132':'145,217,168'};}
-  function init(){particles=[];var n=Math.floor((canvas.width*canvas.height)/13000);for(var i=0;i<n;i++)particles.push(mkP());}
-  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(var i=0;i<particles.length;i++){var p=particles[i];p.x+=p.sx;p.y+=p.sy;p.op-=0.0007;if(p.y<-10||p.op<=0)particles[i]=mkP();ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle='rgba('+p.col+','+p.op+')';ctx.fill();}requestAnimationFrame(draw);}
-  resize();init();draw();
-  window.addEventListener('resize',function(){resize();init();});
-  var si=document.querySelector('.hero-scroll');
-  if(si)window.addEventListener('scroll',function(){si.style.opacity=Math.max(0,1-window.scrollY/160);});
+(function() {
+  var canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+
+  function resize() {
+    canvas.width = canvas.offsetWidth || window.innerWidth;
+    canvas.height = canvas.offsetHeight || window.innerHeight;
+  }
+
+  function mkParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2.5 + 0.5,
+      sx: (Math.random() - 0.5) * 0.35,
+      sy: -Math.random() * 0.5 - 0.15,
+      op: Math.random() * 0.45 + 0.08,
+      col: Math.random() > 0.5 ? '94,217,126' : '168,255,110'
+    };
+  }
+
+  function init() {
+    particles = [];
+    var n = Math.floor((canvas.width * canvas.height) / 12000);
+    for (var i = 0; i < n; i++) particles.push(mkParticle());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.sx; p.y += p.sy; p.op -= 0.0008;
+      if (p.y < -10 || p.op <= 0) particles[i] = mkParticle();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + p.col + ',' + p.op + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize(); init(); draw();
+  window.addEventListener('resize', function() { resize(); init(); });
+
+  // Scroll indicator fade
+  var si = document.querySelector('.hero-scroll');
+  if (si) {
+    window.addEventListener('scroll', function() {
+      si.style.opacity = Math.max(0, 1 - window.scrollY / 180);
+    });
+  }
 })();
 </script>
 <script src="app.js"></script>

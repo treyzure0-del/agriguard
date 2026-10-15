@@ -34,17 +34,15 @@
   --sky:            #38bdf8;
 
   /* ── UI tokens ── */
-  --glass:          rgba(255, 255, 255, 0.04);
-  --glass-border:   rgba(245, 200, 66, 0.12);
-  --text-primary:   #fef3c0;
-  --text-secondary: rgba(250, 217, 106, 0.55);
-  --card-bg:        rgba(26, 20, 8, 0.88);
-  --card-bg-hover:  rgba(35, 27, 10, 0.96);
+   --glass:          rgba(255, 255, 255, 0.04);
+  --glass-border:   rgba(255, 59, 48, 0.18);      /* red */
+  --text-primary:   #f3ecff;                      /* soft white with a violet tint */
+  --text-secondary: rgba(173, 216, 255, 0.60);    /* soft blue */
+  --card-bg:        rgba(12, 18, 40, 0.88);       /* deep blue */
+  --card-bg-hover:  rgba(20, 26, 54, 0.96);       /* lighter deep blue */
   --shadow:         0 8px 32px rgba(0, 0, 0, 0.65);
-  --shadow-glow:    0 0 40px rgba(245, 200, 66, 0.10);
-  --shadow-orange:  0 0 30px rgba(249, 115, 22, 0.14);
-
-  --radius:    12px;
+  --shadow-glow:    0 0 40px rgba(94, 92, 230, 0.18);   /* indigo glow */
+  --shadow-orange:  0 0 30px rgba(255, 149, 0, 0.18);   /* orange glow */
   --radius-sm: 8px;
   --radius-lg: 20px;
 

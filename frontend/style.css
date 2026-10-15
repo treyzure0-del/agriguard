@@ -7,20 +7,18 @@
 
 :root {
   /* ── Base backgrounds ── */
-  --deep:           #0e0b06;
-  --navy-mid:       #1a1408;
-  --surface:        #1f1a0e;
-  --surface-2:      #2a2210;
-
+  --deep:           #0d0620;  /* deep violet */
+  --navy-mid:       #0a1230;  /* deep blue */
+  --surface:        #0c2418;  /* deep green */
+  --surface-2:      #2e1210;  /* deep red */
   /* ── Golden primary palette ── */
-  --gold:           #f5c842;
-  --gold-light:     #fad96a;
-  --gold-pale:      #fef3c0;
-  --amber:          #f59e0b;
-  --amber-deep:     #d97706;
-  --orange:         #f97316;
-  --orange-deep:    #ea580c;
-
+  --gold:           #ff3b30;  /* red */
+  --gold-light:     #ff9500;  /* orange */
+  --gold-pale:      #ffe600;  /* yellow */
+  --amber:          #34c759;  /* green */
+  --amber-deep:     #0a84ff;  /* blue */
+  --orange:         #5e5ce6;  /* indigo */
+  --orange-deep:    #bf5af2;  /* violet */
   /* ── White / cream ── */
   --white:          #ffffff;
   --cream:          #fef9ed;
